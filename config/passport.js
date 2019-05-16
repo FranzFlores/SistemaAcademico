@@ -181,7 +181,7 @@ module.exports = function (passport, person, student, teacher, account) {
         passwordField: 'password',
         passReqToCallback: true
     }, function (req, email, password, done) {
-        Account.findOne({user_name: user_name})
+        Account.findOne({ user_name: user_name })
             .then((account) => {
                 if (!account) {
                     return done(null, false, req.flash('message', 'Correo o Contraseña Invalidos'));
