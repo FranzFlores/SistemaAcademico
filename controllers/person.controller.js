@@ -10,6 +10,11 @@ var Teacher = require('../models/teacher.model');
 
 const PersonController = {};
 
+PersonController.load_register_teacher = (req,res)=>{
+    res.render('register/register-teacher',{title:"Registro de Docente"});
+}
+
+
 PersonController.all_students = (req, res) => {
     var students = Student.find({ status: true });
     students.populate({ path: 'person' }).exec((err, students) => {
