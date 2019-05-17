@@ -6,8 +6,8 @@ var Account = require('../models/account.model');
 
 const AccountController = {};
 
-AccountController.test = (req,res)=>{
-  res.send('OK');
+AccountController.load_login = (req,res)=>{
+  res.render('register/login',{title:"Inicio de Sesión"});
 };
 
 AccountController.update_password = (req, res) => {

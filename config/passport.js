@@ -6,7 +6,7 @@ var Student = require('../models/student.model');
 var Teacher = require('../models/teacher.model');
 
 
-module.exports = function (passport, person, student, teacher, account) {
+module.exports = function (passport) {
     var LocalStrategy = require('passport-local').Strategy;
 
 

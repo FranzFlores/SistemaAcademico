@@ -8,11 +8,12 @@ var personController = require('../controllers/person.controller');
 
 //Cargar Vistas
 router.get('/registerTeacher',personController.load_register_teacher);
+router.get('/registerStudent',personController.load_register_student);
 
 
 //Registro de Persona
 router.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/profile',
+    successRedirect: '/login',
     failureRedirect: '/menu-register',
     failureFlash: true
   }));

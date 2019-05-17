@@ -10,10 +10,14 @@ var Teacher = require('../models/teacher.model');
 
 const PersonController = {};
 
+//Cargar Vistas 
 PersonController.load_register_teacher = (req,res)=>{
     res.render('register/register-teacher',{title:"Registro de Docente"});
 }
 
+PersonController.load_register_student = (req,res)=>{
+    res.render('register/register-student',{title:"Registro de Estudiante"});
+}
 
 PersonController.all_students = (req, res) => {
     var students = Student.find({ status: true });
