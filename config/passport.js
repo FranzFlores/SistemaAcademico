@@ -44,7 +44,9 @@ module.exports = function (passport) {
         passwordField: 'password',
         passReqToCallback: true
     }, function (req, email, password, done) {
-        //Validaciones 
+        //Validaciones
+
+
 
         //validar que el correo institucional
         var email = (req.body.institutional_mail).split('\@');
@@ -55,16 +57,16 @@ module.exports = function (passport) {
         //validar los campos que unicamente contienen letras
         var RegExPattern = /[a-zA-Z ]/;
         if ((!(req.body.name).match(RegExPattern))) {
-            return done(null, false, req.flash('message', 'El nombre unicamente debe contener letras'));
+            done(null, false, req.flash('message', 'El nombre unicamente debe contener letras'));
         }
 
         //validar los campos que unicamente contienen numeros
         RegExPattern = /[0-9]/;
         if ((!(req.body.dni_person).match(RegExPattern)) || (!(req.body.phone).match(RegExPattern))) {
-            return done(null, false, req.flash('message', 'El campo es numero'));
+            done(null, false, req.flash('message', 'El campo es numero'));
         }
 
-        //validacion de la cedula 
+        //validacion de la cedula
         var cad = req.body.dni_person;
         var total = 0;
         var longitud = cad.length;

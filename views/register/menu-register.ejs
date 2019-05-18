@@ -1,84 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
+<%-include('../header')%>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title><%= title %></title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-  <style>
-    .content {
-      position: absolute;
-      top: 25%;
-      bottom: 25%;
-      left: 10%;
-      right: 10%;
-    }
-    .title{
-      position: relative;
-      left: 45%;
-      right: 45%;
-      top: 30px;
-    }
-  </style>
-</head>
-
-<body>
-  <header class="header-area">
-
-    <!-- Top Header Area -->
-    <div class="top-header">
-      <div class="container h-100">
-        <div class="academy-logo">
-          <a href="/" class="title"><img src="img/core-img/logo.png" alt=""></a>
+<div class="container">
+    <%- include('../message') %>
+  <div class="row content ">
+    <div class="col s4">
+      <div class="card">
+        <div class="card-image">
+          <img height="300px" width="300px" src="img/menu-img/profesorado.png">
+        </div>
+        <div class="card-action">
+          <p class="center-align text"><a href="/person/registerTeacher" class="center-align">Registrar Docente</a></p>
         </div>
       </div>
     </div>
-  </header>
-
-  <div class="container">
-    <div class="row content ">
-      <div class="col s4">
-        <div class="card">
-          <div class="card-image">
-            <img height="300px" width="300px" src="img/menu-img/profesorado.png">
-          </div>
-          <div class="card-action">
-            <p class="center-align text"><a href="/person/registerTeacher" class="center-align">Registrar Docente</a></p>
-          </div>
+    <div class="col s4">
+      <div class="card">
+        <div class="card-image">
+          <img height="300px" width="300px" src="img/menu-img/estudiante.png">
+        </div>
+        <div class="card-action">
+          <p class="center-align"><a href="/person/registerStudent" class="center-align">Registrar Estudiante</a></p>
         </div>
       </div>
-      <div class="col s4">
-        <div class="card">
-          <div class="card-image">
-            <img height="300px" width="300px" src="img/menu-img/estudiante.png">
-          </div>
-          <div class="card-action">
-            <p class="center-align"><a href="/person/registerStudent" class="center-align">Registrar Estudiante</a></p>
-          </div>
+    </div>
+    <div class="col s4">
+      <div class="card">
+        <div class="card-image">
+          <img height="300px" width="300px" src="img/menu-img/login.png">
         </div>
-      </div>
-      <div class="col s4">
-        <div class="card">
-          <div class="card-image">
-            <img height="300px" width="300px" src="img/menu-img/login.png">
-          </div>
-          <div class="card-action">
-            <p class="center-align"><a href="/login" class="center-align">Iniciar Sesión</a></p>
-          </div>
+        <div class="card-action">
+          <p class="center-align"><a href="/login" class="center-align">Iniciar Sesión</a></p>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-
-
-  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
-  <!-- <script src="js/recursos.js"></script> -->
-</body>
-
-</html>
+<%-include('../footer')%>

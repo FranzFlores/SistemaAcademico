@@ -1,0 +1,21 @@
+.title {
+    position: relative;
+    left: 45%;
+    right: 45%;
+    top: 30px;
+}
+.title-form{color:#2ec56f;}
+
+.btn{background: #2ec56f;}
+
+.message{
+    color:#2ec56f;
+    text-align: center;
+}
+.content {
+    position: absolute;
+    top: 25%;
+    bottom: 25%;
+    left: 10%;
+    right: 10%;
+  }
