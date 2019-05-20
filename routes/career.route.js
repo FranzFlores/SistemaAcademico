@@ -4,7 +4,10 @@ var express = require('express');
 var CareerController = require('../controllers/career.controller');
 var router = express.Router();
 
-router.get('/career',CareerController.all_careers);
+//Vistas 
+router.get('/',CareerController.load_carrer_view);
+
+// router.get('/career',CareerController.all_careers);
 router.get('/career:id',CareerController.get_career);
 router.post('/career',CareerController.save_career);
 router.put('/career:id',CareerController.update_career);

@@ -5,11 +5,11 @@
             <h3 class="center-align title-form">Registro de Docente</h3>
             <div class="card-content">
                 <div class="row">
-                    <%- locals.flash %>
                     <form class="col s12" action="/person/signup" method="POST">
+                        <input type="hidden" name="role" value="teacher">
                         <div class="row">
                             <div class="input-field col s12">
-                                <input placeholder="Ingrese Número de Cédula" id="dni" type="text" name="dni"
+                                <input placeholder="Ingrese Número de Cédula" id="dni" type="text" name="dni_person"
                                     class="validate">
                                 <label for="dni">Cédula</label>
                             </div>

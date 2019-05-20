@@ -6,9 +6,10 @@
         <div class="card-content">
             <div class="row">
                 <form class="col s12" action="/person/signup" method="POST">
+                    <input type="hidden" name="role" value="student">
                     <div class="row">
                         <div class="input-field col s12">
-                            <input placeholder="Ingrese Número de Cédula" id="dni" type="text" name="dni"
+                            <input placeholder="Ingrese Número de Cédula" id="dni" type="text" name="dni_person"
                                 class="validate">
                             <label for="dni">Cédula</label>
                         </div>

@@ -3,6 +3,16 @@
 var Career = require('../models/career.model');
 var CareerController = {};
 
+//Cargar Vistas
+CareerController.load_carrer_view = (req,res)=>{
+    var careers = Career.find({status:true});
+    careers.populate({ path: 'faculty' }).exec((err, careers) => {
+        if (err) res.status(500).send("Error");
+        else res.render('adminProfile/career',{title:'Carreras',careers:careers});
+    });
+};
+
+
 CareerController.save_career = (req,res)=>{
     new Career({
         name: req.body.name,
@@ -11,10 +21,10 @@ CareerController.save_career = (req,res)=>{
         numPeriod: req.body.numPeriod,
         timePeriod: req.body.timePeriod
     }).save((err, newCareer)=>{
-        if(err) res.status(500).send("error en la petición");
+        if(err) req.flash('message','Ocurrio un error al guardar');
         else{
-            if(!newCareer) res.status(404).send("no se ha guardado");
-            else res.status(200).send(newCareer);
+            if(!newCareer) req.flash('message','No se pudo guardar la carrera');
+            else req.flash('success','Se ha guardado la carrera con exito');
         }
     });
 }
@@ -72,6 +82,4 @@ CareerController.all_career = (req, res) => {
     });
 }
 
-module.exports = {
-    CareerController
-};
+module.exports = CareerController;

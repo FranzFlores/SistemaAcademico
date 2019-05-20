@@ -6,12 +6,13 @@ var Student = require('../models/student.model');
 var Teacher = require('../models/teacher.model');
 
 
+
 module.exports = function (passport) {
     var LocalStrategy = require('passport-local').Strategy;
 
 
     passport.serializeUser((user, done) => {
-        done(null, user.id);
+        done(null, user);
     });
 
     passport.deserializeUser((id, done) => {
@@ -40,77 +41,10 @@ module.exports = function (passport) {
 
     //Registro de Persona
     passport.use('local-signup', new LocalStrategy({
-        usernameField: 'user_name',
-        passwordField: 'password',
+        usernameField: 'personal_mail',
+        passwordField: 'dni_person',
         passReqToCallback: true
     }, function (req, email, password, done) {
-        //Validaciones
-
-
-
-        //validar que el correo institucional
-        var email = (req.body.institutional_mail).split('\@');
-        if (email[1] == "unl.edu.ec") {
-            return done(null, false, req.flash('message', 'El Correo Institucional es Incorrecto'));
-        }
-
-        //validar los campos que unicamente contienen letras
-        var RegExPattern = /[a-zA-Z ]/;
-        if ((!(req.body.name).match(RegExPattern))) {
-            done(null, false, req.flash('message', 'El nombre unicamente debe contener letras'));
-        }
-
-        //validar los campos que unicamente contienen numeros
-        RegExPattern = /[0-9]/;
-        if ((!(req.body.dni_person).match(RegExPattern)) || (!(req.body.phone).match(RegExPattern))) {
-            done(null, false, req.flash('message', 'El campo es numero'));
-        }
-
-        //validacion de la cedula
-        var cad = req.body.dni_person;
-        var total = 0;
-        var longitud = cad.length;
-        var longcheck = longitud - 1;
-
-        if (cad !== "" && longitud === 10) {
-            for (i = 0; i < longcheck; i++) {
-                if (i % 2 === 0) {
-                    var aux = cad.charAt(i) * 2;
-                    if (aux > 9) aux -= 9;
-                    total += aux;
-                } else {
-                    total += parseInt(cad.charAt(i)); // parseInt o concatenará en lugar de sumar
-                }
-            }
-            total = total % 10 ? 10 - total % 10 : 0;
-            if (cad.charAt(longitud - 1) != total) {
-                return done(null, false, req.flash('message', 'El campo es numero'));
-            }
-        }
-
-        //validar que la fecha tenga el formato yyyy-mm-dd
-        RegExPattern = /^\d{2,4}\-\d{1,2}\-\d{1,2}$/;
-        if (!(req.body.birthday).match(RegExPattern)) {
-            return done(null, false, req.flash('message', 'El formato de Fecha es incorrecto'));
-        }
-
-        var test_birthday_user = new Date();
-        var date = (req.body.birthday).split("-");
-        test_birthday_user.setFullYear(date[0], date[1] - 1, date[2]);
-        var today = new Date();
-        var day = date[2];
-        var month = date[1];
-        var year = date[0];
-        var date1 = new Date(year, month, '0');
-        //fecha valida
-        if ((day - 0) > (date1.getDate() - 0)) {
-            return done(null, false, req.flash('message', 'La fecha ingresada es incorrecta'));
-        }
-        //fecha ingresada es mayor a la actual
-        var dateNew = today.setFullYear(today.getFullYear() - 5);
-        if (test_birthday_user > dateNew) {
-            return done(null, false, req.flash('message', 'La fecha ingresada es incorrecta'));
-        }
 
         //Registro de Persona
         Person.findOne({ dni_person: req.body.dni_person }, (err, personResult) => {
@@ -131,7 +65,7 @@ module.exports = function (passport) {
                     if (err) console.log("Error al crear persona " + err);
                     else if (newPerson) {
                         new Account({
-                            user: req.body.institutional_mail,
+                            user_name: req.body.institutional_mail,
                             password: helpers.generateHash(newPerson.dni_person),
                             person: newPerson._id
                         }).save((err, newAccount) => {
@@ -145,11 +79,7 @@ module.exports = function (passport) {
                                     }).save((err, newStudent) => {
                                         if (err) console.log('Error al crear estudiante' + err);
                                         else if (newStudent) {
-                                            var aux = {};
-                                            aux.person = newPerson;
-                                            aux.account = newAccount;
-                                            aux.student = newStudent;
-                                            done(null, aux, req.flash('success', 'Se ha realizado el registro con exito'));
+                                            done(null, newPerson, req.flash('success', 'Se ha realizado el registro con exito'));
                                         } else console.log('No se pudo crear el usuario');
                                     })
                                 } else if (req.body.role == 'teacher') {
@@ -161,11 +91,7 @@ module.exports = function (passport) {
                                     }).save((err, newTeacher) => {
                                         if (err) console.log('Error al crear maestro' + err);
                                         else if (newTeacher) {
-                                            var aux = {};
-                                            aux.person = newPerson;
-                                            aux.account = newAccount;
-                                            aux.teacher = newTeacher;
-                                            done(null, aux, req.flash('success', 'Se ha realizado el registro con exito'));
+                                            done(null, newPerson, req.flash('success', 'Se ha realizado el registro con exito'));
                                         } else console.log('No se pudo crear el usuario');
                                     })
                                 }
@@ -192,7 +118,7 @@ module.exports = function (passport) {
                     done(null, user, req.flash('success', 'Bienvenido de nuevo al sistema'));
                 }
                 else {
-                    done(null, false, req.flash('message', 'Contraseña Incorrecta'));
+                   return  done(null, false, req.flash('message', 'Contraseña Incorrecta'));
                 }
             }).catch(function (err) {
                 console.log("Error:", err);
