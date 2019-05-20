@@ -17,5 +17,10 @@ router.get('/menu-register',function(req,res,next){
 //login
 router.get('/login',accountController.load_login);
 
+//Perfil por Defecto
+router.get("/profile",function(req,res,next){
+  res.render("defaultProfile",{title:"Mi perfil"});
+});
+
 
 module.exports = router;  

@@ -18,6 +18,14 @@ router.post('/signup', passport.authenticate('local-signup', {
     failureFlash: true
   }));
 
+  //Inicio de Sesion 
+  router.post('/login', passport.authenticate('local-singin', {
+    successRedirect: '/profile',
+    failureRedirect: '/login',
+    failureFlash: true
+  }));
+
+
 router.get('/allStudents',personController.all_students);
 router.get('/allTeachers',personController.all_teachers);
 

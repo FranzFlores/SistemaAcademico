@@ -4,13 +4,13 @@
   <div class="card" style="margin-top:40px;">
     <h3 class="center-align title-form">Inicio de Sesión</h3>
     <div class="card-content">
-      <div class="row">
         <p class="message">Nota:La contraseña por defecto es su número de cédula.</p>
-        <%= locals.message %>
-        <form class="col s12">
+        <%- include("../layouts/message") %>
+      <div class="row">
+        <form class="col s12" method="POST" action="/person/login" >
           <div class="row">
             <div class="input-field col s12">
-              <input placeholder="Ingrese Correo Institucional" id="dni" type="text" name="user" class="validate">
+              <input placeholder="Ingrese Correo Institucional" id="user_name" type="text" name="user_name" class="validate">
               <label for="user">Correo Institucional</label>
             </div>
           </div>
@@ -22,7 +22,7 @@
           </div>
           <div class="card-action">
             <div class="input-field col-s12 center-align">
-              <button class="btn">Guardar</button>
+              <button class="btn">Iniciar Sesión</button>
             </div>
           </div>
         </form>

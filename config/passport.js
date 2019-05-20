@@ -33,7 +33,7 @@ module.exports = function (passport) {
                         }
                     })
                 } else {
-                    done(account.errors, null);
+                    done(null, false);
                 }
             }
         });
@@ -109,13 +109,13 @@ module.exports = function (passport) {
         passwordField: 'password',
         passReqToCallback: true
     }, function (req, email, password, done) {
-        Account.findOne({ user_name: user_name })
+        Account.findOne({ user_name: email })
             .then((account) => {
                 if (!account) {
                     return done(null, false, req.flash('message', 'Correo o Contraseña Invalidos'));
                 }
                 if (helpers.matchPassword(password, account.password)) {
-                    done(null, user, req.flash('success', 'Bienvenido de nuevo al sistema'));
+                    done(null, account, req.flash('success', 'Bienvenido de nuevo al sistema'));
                 }
                 else {
                    return  done(null, false, req.flash('message', 'Contraseña Incorrecta'));
