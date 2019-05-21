@@ -11,13 +11,84 @@ var Teacher = require('../models/teacher.model');
 const PersonController = {};
 
 //Cargar Vistas 
-PersonController.load_register_teacher = (req,res)=>{
-    res.render('register/register-teacher',{title:"Registro de Docente"});
-}
+PersonController.load_register_teacher = (req, res) => {
+    res.render('register/register-teacher', { title: "Registro de Docente" });
+};
 
-PersonController.load_register_student = (req,res)=>{
-    res.render('register/register-student',{title:"Registro de Estudiante"});
-}
+PersonController.load_register_student = (req, res) => {
+    res.render('register/register-student', { title: "Registro de Estudiante" });
+};
+
+//Registro de Personas
+PersonController.savePerson = (req,res)=>{
+    Person.findOne({ dni_person: req.body.dni_person }, (err, personResult) => {
+        if (err) {
+            console.log(err);
+            req.flash('BAD', 'Ha ocurrido un error.', '/menu-register');
+        } else if (personResult) req.flash('OK', 'El usuario ya existe');
+        else {
+            new Person({
+                dni_person: req.body.dni_person,
+                name: req.body.name,
+                birthday: req.body.birthday,
+                institutional_mail: req.body.institutional_mail,
+                personal_mail: req.body.personal_mail,
+                address: req.body.address,
+                phone: req.body.phone,
+                image: "null",
+                role: req.body.role
+            }).save((err, newPerson) => {
+                if (err) {
+                    console.log(err);
+                    req.flash('BAD', 'Ha ocurrido un error.', '/menu-register');
+                } else if (newPerson) {
+                    new Account({
+                        user_name: req.body.institutional_mail,
+                        password: helpers.generateHash(newPerson.dni_person),
+                        person: newPerson._id
+                    }).save((err, newAccount) => {
+                        if (err) {
+                            console.log(err);
+                            req.flash('BAD', 'Ha ocurrido un error.', '/menu-register');
+                        } else if (newAccount) {
+                            if (req.body.role === 'student') {
+                                new Student({
+                                    school: req.body.school,
+                                    graduation_grade: req.body.graduation_grade,
+                                    person: newPerson._id
+                                }).save((err, newStudent) => {
+                                    if (err) {
+                                        console.log(err);
+                                        req.flash('BAD', 'Ha ocurrido un error.', '/menu-register');
+                                    } else if (newStudent) {
+                                        req.flash('GOOD', 'Se ha realizado el registro con exito');
+                                    } else req.flash('OK', 'No se pudo crear el usuario');
+                                })
+                            } else if (req.body.role == 'teacher') {
+                                new Teacher({
+                                    university_degree: req.body.university_degree,
+                                    fourth_level_degree: req.body.fourth_level_degree,
+                                    timetable: req.body.timetable,
+                                    person: newPerson._id
+                                }).save((err, newTeacher) => {
+                                    if (err) {
+                                        console.log(err);
+                                        req.flash('BAD', 'Ha ocurrido un error.', '/menu-register');
+                                    } else if (newTeacher) {
+                                        req.flash('GOOD', 'Se ha realizado el registro con exito','/login');
+                                    } else req.flash('OK', 'No se pudo crear el usuario','/menu-register');
+                                })
+                            }
+                        } else req.flash('OK', 'No se pudo crear el usuario','/menu-register');
+                    })
+                } else req.flash('OK', 'No se pudo crear el usuario','/menu-register');
+            })
+        }
+    });
+};
+
+
+
 
 PersonController.all_students = (req, res) => {
     var students = Student.find({ status: true });
@@ -73,7 +144,7 @@ PersonController.update_person = (req, res) => {
                 } else if (req.body.role === 'teacher') {
                     personUpdate.university_degree = req.body.university_degree,
                         personUpdate.fourth_level_degree = req.body.fourth_level_degree,
-                         personUpdate.timetable = req.body.timetable
+                        personUpdate.timetable = req.body.timetable
 
                     Teacher.findOneAndUpdate({ person: new ObjectId(req.params.id) }, personUpdate, (err, teacher) => {
                         if (err) res.status(500).send('Error');

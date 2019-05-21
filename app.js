@@ -2,28 +2,47 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-const engine = require('ejs-mate');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 const passport = require('passport');
-var flash = require('connect-flash');
+var flash = require('express-flash-notification');
 
 //Inicializaciones
 var app = express();
 const { mongoose } = require('./database');
 require("./config/passport")(passport);
 
-
-
-// view engine setup
+//Configuraciones
 app.set('views', path.join(__dirname, 'views'));
-app.engine('ejs',engine);
 app.set('view engine', 'ejs');
 
 
+const flashOptions = {
+  beforeSingleRender: function(item, callback){
+    if (item.type) {
+      switch(item.type) {
+        case 'GOOD':
+          item.type = 'Hecho';
+          item.alertClass = 'alert-success';
+          break;
+        case 'OK':
+          item.type = 'Info';
+          item.alertClass = 'alert-info';
+          break;
+        case 'BAD':
+          item.type = 'Error';
+          item.alertClass = 'alert-danger';
+          break;
+      }
+    }
+    callback(null, item);
+  }
+};
+
+
 //Middlewares
-app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(session({
@@ -31,19 +50,22 @@ app.use(session({
   resave: true,
   saveUninitialized: false
 }));
+
+app.use(flash(app, flashOptions));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(flash());
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
 
 //Variables Globales
 app.use((req, res, next) => {
-  app.locals.message = req.flash('message');
-  app.locals.success = req.flash('success');
+  // app.locals.message = req.flash('message');
+  // app.locals.success = req.flash('success');
   app.locals.user = req.user;
-  //app.locals.account = req.isAuthenticated();
+  // //app.locals.account = req.isAuthenticated();
   next();
 });
 
