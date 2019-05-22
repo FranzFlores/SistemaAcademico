@@ -19,3 +19,13 @@
     left: 10%;
     right: 10%;
   }
+
+.options{
+    position: absolute;
+    top: 40px;
+    right: 35px;
+}
+
+.datepicker-modal{
+    height: auto;
+}

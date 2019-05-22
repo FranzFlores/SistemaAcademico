@@ -20,17 +20,66 @@ PersonController.load_register_student = (req, res) => {
 };
 
 //Registro de Personas
-PersonController.savePerson = (req,res)=>{
+PersonController.savePerson = (req, res) => {
+    console.log(req.body);
+    var dni_person = req.body.dni_person;
+    var phone = req.body.phone;
+
+    //valida que la cédula sea correcta
+    var cad = req.body.dni_person;
+    var total = 0;
+    var longitud = cad.length;
+    var longcheck = longitud - 1;
+
+    if (cad !== "" && longitud === 10) {
+        for (i = 0; i < longcheck; i++) {
+            if (i % 2 === 0) {
+                var aux = cad.charAt(i) * 2;
+                if (aux > 9) aux -= 9;
+                total += aux;
+            } else {
+                total += parseInt(cad.charAt(i)); // parseInt o concatenará en lugar de sumar
+            }
+        }
+        total = total % 10 ? 10 - total % 10 : 0;
+        if (cad.charAt(longitud - 1) != total) {
+            req.flash('BAD', 'El número de cédula es incorrecto','/menu-register');
+        }
+    }
+
+    //validar los campos que unicamente contienen numeros
+    var RegExPattern = /[0-9]/;
+    if ((!cad.match(RegExPattern)) || (!phone.match(RegExPattern))) {
+        req.flash('OK', 'Los campos cédula o teléfono unicamente deben contener numeros','/menu-register');   
+    }
+
+    var email = (req.body.institutional_mail).split('\@');
+    if (!email[1] == "unl.edu.ec") {
+        req.flash('OK', 'El Correo Institucional es Incorrecto','/menu-register');
+    }
+
+    //validar los campos que unicamente contienen letras
+    var RegExPattern1 = /[a-zA-Z ]/;
+    if ((!(req.body.name).match(RegExPattern1))) {
+        req.flash('OK', 'El nombre unicamente debe contener letras', '/menu-register');
+    }
+
+    var birthday = (req.body.birthday).split('\/');
+    var year = birthday[0];
+    var month = birthday[1];
+    var day = birthday[2];
+    var birthday_user = new Date(year, month, day);
+
     Person.findOne({ dni_person: req.body.dni_person }, (err, personResult) => {
         if (err) {
             console.log(err);
             req.flash('BAD', 'Ha ocurrido un error.', '/menu-register');
-        } else if (personResult) req.flash('OK', 'El usuario ya existe');
+        } else if (personResult) req.flash('OK', 'El usuario ya existe', '/menu-register');
         else {
             new Person({
                 dni_person: req.body.dni_person,
                 name: req.body.name,
-                birthday: req.body.birthday,
+                birthday: birthday_user,
                 institutional_mail: req.body.institutional_mail,
                 personal_mail: req.body.personal_mail,
                 address: req.body.address,
@@ -75,13 +124,15 @@ PersonController.savePerson = (req,res)=>{
                                         console.log(err);
                                         req.flash('BAD', 'Ha ocurrido un error.', '/menu-register');
                                     } else if (newTeacher) {
-                                        req.flash('GOOD', 'Se ha realizado el registro con exito','/login');
-                                    } else req.flash('OK', 'No se pudo crear el usuario','/menu-register');
+                                        req.flash('GOOD', 'Se ha realizado el registro con exito', '/login');
+                                    } else req.flash('OK', 'No se pudo crear el usuario', '/menu-register');
                                 })
+                            } else {
+                                res.status(200).send('Se ha creado el Admin');
                             }
-                        } else req.flash('OK', 'No se pudo crear el usuario','/menu-register');
+                        } else req.flash('OK', 'No se pudo crear el usuario', '/menu-register');
                     })
-                } else req.flash('OK', 'No se pudo crear el usuario','/menu-register');
+                } else req.flash('OK', 'No se pudo crear el usuario', '/menu-register');
             })
         }
     });
