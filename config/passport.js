@@ -14,51 +14,47 @@ module.exports = function (passport) {
         done(null, user);
     });
 
-    passport.deserializeUser((id, done) => {
-        Account.findById(id, (err, account) => {
+    passport.deserializeUser((user, done) => {
+        Person.findById(user.person, (err, person) => {
             if (err) console.log(err);
             else {
-                if (account) {
-                    account.populate({ path: 'person' }).exec((err, person) => {
-                        if (err) console.log(err);
-                        else {
-                            var personInfo = {
-                                idPerson: person._id,
-                                idAccount: account.id,
-                                user_name: account.user_name,
-                                role: person.role
-                            }
-                            done(null, personInfo);
-                        }
-                    })
-                } else {
-                    done(null, false);
-                }
+                if (person) {
+                    var personInfo = {
+                        idPerson: person._id,
+                        idAccount: user.id,
+                        user_name: user.user_name,
+                        role: person.role
+                    }
+                    done(null, personInfo);
+                }else {
+                done(null, false);
             }
+        }
         });
+});
+
+
+//Inicio Sesion
+passport.use('local-singin', new LocalStrategy({
+    usernameField: 'user_name',
+    passwordField: 'password',
+    passReqToCallback: true
+}, function (req, email, password, done) {
+
+    Account.findOne({ user_name: req.body.user_name }, (err, account) => {
+        if (err) {
+            console.log(err);
+            return done(null, false);
+        } else {
+            if (!account) {
+                return done(null, false);
+            } else if (helpers.matchPassword(req.body.password, account.password)) {
+                return done(null, account);
+            }
+            else {
+                return done(null, false);
+            }
+        }
     });
-
-
-    //Inicio Sesion
-    passport.use('local-singin', new LocalStrategy({
-        usernameField: 'user_name',
-        passwordField: 'password',
-        passReqToCallback: true
-    }, function (req, email, password, done) {
-        Account.findOne({ user_name: email })
-            .then((account) => {
-                if (!account) {
-                    req.flash('OK', 'Correo o Contraseña Invalidos','/login');
-                }
-                if (helpers.matchPassword(password, account.password)) {
-                    done(null, account, req.flash('GOOD', 'Bienvenido de nuevo al sistema'));
-                }
-                else {
-                   req.flash('OK', 'Contraseña Incorrecta','/login');
-                }
-            }).catch(function (err) {
-                console.log("Error:", err);
-                req.flash('BAD', 'Ha ocurrido un error','/login');
-            });
-    }));
+}));
 }

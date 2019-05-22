@@ -62,16 +62,15 @@ app.use(passport.session());
 
 //Variables Globales
 app.use((req, res, next) => {
-  // app.locals.message = req.flash('message');
-  // app.locals.success = req.flash('success');
   app.locals.user = req.user;
-  // //app.locals.account = req.isAuthenticated();
+  console.log(app.locals.user);
   next();
 });
 
 //rutas
 app.use(require('./routes/index'));
 app.use('/person',require('./routes/person'));
+app.use('/faculty',require('./routes/faculty.route'));
 app.use('/career',require('./routes/career.route'));
 
 // catch 404 and forward to error handler
