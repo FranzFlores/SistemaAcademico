@@ -3,6 +3,14 @@
 var Faculty = require('../models/faculty.model');
 var FacultyController = {};
 
+//Cargar Vista de Facultad
+FacultyController.load_faculty_view = (req,res)=>{
+    Faculty.find({},(err,faculties)=>{
+        if(err) console.log("Error " + err);
+        else res.render('adminProfile/faculty',{title:"Facultad",faculties: faculties});
+    });
+};
+
 
 FacultyController.save_faculty = (req,res)=>{
     new Faculty({
@@ -68,6 +76,4 @@ FacultyController.all_faculty = (req, res) => {
 }
 
 
-module.exports = {
-    FacultyController
-};
+module.exports = FacultyController;
