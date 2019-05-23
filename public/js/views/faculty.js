@@ -1,4 +1,17 @@
 $(document).ready(function () {
+
+   
+
+    $("#tableFaculty tbody tr .more").click(function(e){
+        var row = $(this).parent().parent(); 
+        var title = row.children("td:nth-child(1)").text();
+        var description = row.children("td:nth-child(2)").text();
+        $("#modal1 .title-faculty").text(title);
+        $("#modal1 .description").text(description);
+        $('.modal').modal();
+        e.preventDefault();
+    });
+
     $(".edit").click(function (e) {
         var idFaculty = $(this).attr('data-id');
         var url =  "http://localhost:3000/faculty/"+idFaculty;
@@ -34,6 +47,7 @@ $(document).ready(function () {
             url: url,
             success: function (data, textStatus, jqXHR) {
                 console.log(data);
+                window.location.href = "http://localhost:3000/faculty";
             }, error: function (jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);
             }

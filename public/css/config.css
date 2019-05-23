@@ -29,3 +29,12 @@
 .datepicker-modal{
     height: auto;
 }
+
+.truncate{
+    display: inline-block;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+    white-space: nowrap;
+}

@@ -1,62 +1,78 @@
 <%-include('../header')%>
 
 
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card">
-                <h4 class="center-align title-form">Facultades</h4>
-                <div class="card-content">
-                    <%- locals.flash %>
-                    <form action="/faculty/create" method="POST" id="facultyForm">
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input id="name" type="text" name="name" required class="validate name">
-                                <label for="name">Nombre Facultad</label>
-                            </div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <h4 class="center-align title-form">Facultades</h4>
+            <div class="card-content">
+                <%- locals.flash %>
+                <form action="/faculty/create" method="POST" id="facultyForm">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="name" type="text" name="name" required class="validate name">
+                            <label for="name">Nombre Facultad</label>
                         </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <textarea id="description" class="materialize-textarea description" name="description"></textarea>
-                                <label for="description">Descripción de la Facultad</label>
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea id="description" class="materialize-textarea description"
+                                name="description"></textarea>
+                            <label for="description">Descripción de la Facultad</label>
                         </div>
-                        <div class="card-action">
-                            <div class="input-field col-s12 center-align">
-                                <button class="btn" id="button" data-id="">Guardar</button>
-                            </div>
+                    </div>
+                    <div class="card-action">
+                        <div class="input-field col-s12 center-align">
+                            <button class="btn" id="button" data-id="">Guardar</button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
-        <div class="col-md-8">
-            <table class="striped">
-                <thead>
-                    <tr>
-                        <th>Nombre Facultad</th>
-                        <th>Descripción</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% faculties.forEach(function(faculty){ %>
-                    <tr>
-                        <td><%=faculty.name%></td>
-                        <td><%=faculty.description%></td>
-                        <td> 
-                            <a id="edit" class="edit" data-id="<%=faculty._id%>">
-                               <i class="material-icons btn">edit</i>
-                            </a>
-                            <a id="delete" class="delete" data-id="<%=faculty._id%>">
-                                <i class="material-icons btn">delete</i>
-                            </a>
-                        </td>
-                    </tr>
-                    <% }); %>
-                </tbody>
-            </table>
+    </div>
+    <div class="col-md-8">
+        <table class="striped" id="tableFaculty">
+            <thead>
+                <tr>
+                    <th>Nombre Facultad</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% faculties.forEach(function(faculty){ %>
+                <tr>
+                    <td><%=faculty.name%></td>
+                    <td>
+                        <span class="truncate" style="max-width: 275px"><%=faculty.description%></span>
+                    </td>
+                    <td>
+                        <a class="more modal-trigger" href="#modal1" data-id="<%=faculty._id%>">
+                            <i class="material-icons btn">remove_red_eye</i>
+                        </a>
+                        <a id="edit" class="edit" data-id="<%=faculty._id%>">
+                            <i class="material-icons btn">edit</i>
+                        </a>
+                        <a id="delete" class="delete" data-id="<%=faculty._id%>">
+                            <i class="material-icons btn">delete</i>
+                        </a>
+                    </td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h4 class="title-faculty center-align"></h4>
+            <p class="description"></p>
+        </div>
+        <div class="modal-footer">
+            <a href="/faculty" class=" modal-close waves-effect waves-green btn-flat">De acuerdo</a>
         </div>
     </div>
+</div>
 </div>
 
 
