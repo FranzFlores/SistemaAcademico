@@ -6,22 +6,23 @@
             <div class="card">
                 <h4 class="center-align title-form">Facultades</h4>
                 <div class="card-content">
-                    <form action="/faculty/save" method="POST">
+                    <%- locals.flash %>
+                    <form action="/faculty/create" method="POST" id="facultyForm">
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="name" type="text" name="name" required class="validate">
+                                <input id="name" type="text" name="name" required class="validate name">
                                 <label for="name">Nombre Facultad</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="description" type="text" name="description" required class="validate">
+                                <textarea id="description" class="materialize-textarea description" name="description"></textarea>
                                 <label for="description">Descripción de la Facultad</label>
                             </div>
                         </div>
                         <div class="card-action">
                             <div class="input-field col-s12 center-align">
-                                <button class="btn">Guardar</button>
+                                <button class="btn" id="button" data-id="">Guardar</button>
                             </div>
                         </div>
                     </form>
@@ -40,14 +41,14 @@
                 <tbody>
                     <% faculties.forEach(function(faculty){ %>
                     <tr>
-                        <td>faculty.name</td>
-                        <td>faculty.descrition</td>
-                        <td>
-                            <a>
-                                Editar<i class="material-icons">edit</i>
+                        <td><%=faculty.name%></td>
+                        <td><%=faculty.description%></td>
+                        <td> 
+                            <a id="edit" class="edit" data-id="<%=faculty._id%>">
+                               <i class="material-icons btn">edit</i>
                             </a>
-                            <a>
-                                Eliminar<i class="material-icons">delete</i>
+                            <a id="delete" class="delete" data-id="<%=faculty._id%>">
+                                <i class="material-icons btn">delete</i>
                             </a>
                         </td>
                     </tr>
@@ -58,4 +59,6 @@
     </div>
 </div>
 
+
 <%-include('../footer')%>
+<script src="/js/views/faculty.js"></script>

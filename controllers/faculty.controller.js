@@ -5,7 +5,7 @@ var FacultyController = {};
 
 //Cargar Vista de Facultad
 FacultyController.load_faculty_view = (req,res)=>{
-    Faculty.find({},(err,faculties)=>{
+    Faculty.find({status:true},(err,faculties)=>{
         if(err) console.log("Error " + err);
         else res.render('adminProfile/faculty',{title:"Facultad",faculties: faculties});
     });
@@ -17,10 +17,13 @@ FacultyController.save_faculty = (req,res)=>{
         name: req.body.name,
         description: req.body.description
     }).save((err, newFaculty)=>{
-        if(err) res.status(500).send("error");
+        if(err){
+            console.log(err);
+            req.flash("BAD","Error al guardar la facultad","/faculty");
+        } 
         else{
             if(!newFaculty) res.status(404).send("no se ha guardado");
-            else res.status(200).send(newFaculty);
+            else req.flash("GOOD","Se ha creado la facultad con éxito","/faculty");
         }
     });
 }
@@ -28,7 +31,7 @@ FacultyController.save_faculty = (req,res)=>{
 FacultyController.get_faculty = (req,res)=>{
     var facultyId = req.params.id;
     Faculty.findById(facultyId, (err, faculty) =>{
-        if (err) res.status(500).send('error en la petición');
+        if (err) console.log(err);
         else {
             if (!faculty) res.status(404).send('la facultad no existe');
          else res.status(200).send(faculty);
@@ -44,10 +47,13 @@ FacultyController.update_faculty = (req, res) => {
     };
 
     Faculty.findByIdAndUpdate(facultyId, update, (err, facultyUpdated)=>{
-        if (err) res.status(500).send('error al guardar facultad');
+        if (err){
+            console.log(err);
+            req.flash("BAD","Error al actualizar la facultad","/faculty");
+        } 
         else {
             if (!facultyUpdated) res.status(404).send('no se ha actualizado');
-            else res.status(200).send(facultyUpdated);
+            else req.flash("GOOD","Se ha actualizado la facultad con éxito","/faculty");
         }
     });
 }
@@ -56,10 +62,10 @@ FacultyController.delete_faculty = (req, res) => {
     var facultyId = req.params.id;
 
     Faculty.findByIdAndUpdate(facultyId,{status:false} ,(err, facultyRemoved)=>{
-        if (err) res.status(500).send('error en la petición');
+        if (err) req.flash("BAD","Error al actualizar la facultad","/faculty");
         else {
             if (!facultyRemoved) res.status(404).send('error al eliminar');
-            else res.status(200).send('Se ha eliminado');
+            else req.flash("GOOD","Se ha actualizado la facultad con éxito","/faculty");
         }
     });
 }
