@@ -14,17 +14,22 @@ CareerController.load_carrer_view = (req,res)=>{
 
 
 CareerController.save_career = (req,res)=>{
+    console.log(req.body);
     new Career({
         name: req.body.name,
         description: req.body.description,
+        faculty: req.body.faculty,
         diploma: req.body.diploma,
         numPeriod: req.body.numPeriod,
         timePeriod: req.body.timePeriod
     }).save((err, newCareer)=>{
-        if(err) req.flash('message','Ocurrio un error al guardar');
+        if(err) {
+            console.log(err);
+            req.flash('BAD','Ocurrio un error al guardar','/career');
+        }
         else{
-            if(!newCareer) req.flash('message','No se pudo guardar la carrera');
-            else req.flash('success','Se ha guardado la carrera con exito');
+            if(!newCareer) req.flash('OK','No se pudo guardar la carrera','/career');
+            else req.flash('GOOD','Se ha guardado la carrera con exito','/career');
         }
     });
 }
@@ -51,10 +56,10 @@ CareerController.update_career = (req, res) => {
     };
 
     Career.findByIdAndUpdate(careerId, update, (err, careerUpdated)=>{
-        if (err) res.status(500).send('error al guardar carrera');
+        if (err) req.flash('BAD','Ocurrio un error al actualizar','/career');
         else {
-            if (!careerUpdated) res.status(404).send('no se ha actualizado');
-            else res.status(200).send(careerUpdated);
+            if (!careerUpdated) req.flash('OK','No se pudo actualizar la carrera','/career');
+            else req.flash('GOOD','Se ha guardado la carrera con exito','/career');
         }
     });
 }

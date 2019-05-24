@@ -8,7 +8,7 @@ var router = express.Router();
 //Vista
 router.get('/',isLoggedIn,FacultyController.load_faculty_view);
 
-// router.get('/faculty', FacultyController.all_facults);
+router.get('/all', FacultyController.all_faculties);
 router.get('/:id', FacultyController.get_faculty);
 router.post('/create',isLoggedIn, FacultyController.save_faculty);
 router.post('/update/:id', FacultyController.update_faculty);

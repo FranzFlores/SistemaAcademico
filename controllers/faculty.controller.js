@@ -70,7 +70,7 @@ FacultyController.delete_faculty = (req, res) => {
     });
 }
 
-FacultyController.all_faculty = (req, res) => {
+FacultyController.all_faculties = (req, res) => {
     var facults = Faculty.find({status:true});
     facults.sort('name').exec((err, facults) => {
         if (err) res.status(500).send("Error");

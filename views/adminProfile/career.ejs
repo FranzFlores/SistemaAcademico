@@ -1,87 +1,90 @@
 <%-include('../header')%>
 
 
-    <div class="row">
-        <div class="col-md-3">
-            <div class="card">
-                <h4 class="center-align title-form">Carreras</h4>
-                <div class="card-content">
-                    <form action="" method="POST">
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input id="name" type="text" name="name" class="validate">
-                                <label for="name">Nombre Carrera</label>
-                            </div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <h4 class="center-align title-form">Carrera</h4>
+            <div class="card-content">
+                <%- locals.flash %>
+                <form  action="/career/create" method="POST" id="careerForm">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="name" type="text" name="name" class="validate">
+                            <label for="name">Nombre Carrera</label>
                         </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input id="description" type="text" name="description" class="validate">
-                                <label for="description">Descripción</label>
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select name="faculty" id="faculties">
+                            </select>
+                            <label for="faculty">Facultad</label>
                         </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input id="diploma" type="text" name="diploma" class="validate">
-                                <label for="diploma">Título que otorga</label>
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="description" type="text" name="description" class="validate">
+                            <label for="description">Descripción</label>
                         </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input id="numPeriod" type="text" name="numPeriod" class="validate">
-                                <label for="numPeriod">Número total de Períodos</label>
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="diploma" type="text" name="diploma" class="validate">
+                            <label for="diploma">Título que otorga</label>
                         </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input id="timePeriod" type="text" name="timePeriod" class="validate">
-                                <label for="timePeriod">Duración de Periodo</label>
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="numPeriod" type="text" name="numPeriod" class="validate">
+                            <label for="numPeriod">Número total de Períodos</label>
                         </div>
-                        <div class="card-action">
-                            <div class="input-field col-s12 center-align">
-                                <button class="btn">Guardar</button>
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="timePeriod" type="text" name="timePeriod" class="validate">
+                            <label for="timePeriod">Duración de Periodo</label>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="card-action">
+                        <div class="input-field col-s12 center-align">
+                            <button id="button" class="btn">Guardar</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-        <div class="col s8">
-            <table class="striped">
-                <thead>
-                    <tr>
-                        <th>Nombre Carrera</th>
-                        <th>Descripción</th>
-                        <th>Título</th>
-                        <th>Número Períodos</th>
-                        <th>Duración de Periodo</th>
-                        <th>Facultad</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% careers.forEach(function(career){ %>
-                    <tr>
-                        <td>career.name</td>
-                        <td>career.descrition</td>
-                        <td>career.diploma</td>
-                        <td>career.numPeriod</td>
-                        <td>career.timePeriod</td>
-                        <td>career.faculty.name</td>
-                        <td>
-                            <a>
-                                <i class="material-icons">edit</i>
-                            </a>
-                            <a>
-                                <i class="material-icons">delete</i>
-                            </a>
-                        </td>
-                    </tr>
-                    <% }); %>
-                </tbody>
-            </table>
-        </div>
     </div>
+    <div class="col s8">
+        <table class="striped">
+            <thead>
+                <tr>
+                    <th>Nombre Carrera</th>
+                    <th>Título Otorga</th>
+                    <th>Facultad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% careers.forEach(function(career){ %>
+                <tr>
+                    <td><%=career.name%></td>
+                    <td><%=career.diploma%></td>
+                    <td><%=career.faculty.name%></td>
+                    <td>
+                        <a class="edit" data-id="<%=career._id%>">
+                            <i class="material-icons btn">edit</i>
+                        </a>
+                        <a class="delete" data-id="<%=career._id%>">
+                            <i class="material-icons btn">delete</i>
+                        </a>
+                    </td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
 </div>
 
 <%-include('../footer')%>
+<script src="/js/views/career.js"></script>

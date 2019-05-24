@@ -1,7 +1,5 @@
 $(document).ready(function () {
 
-   
-
     $("#tableFaculty tbody tr .more").click(function(e){
         var row = $(this).parent().parent(); 
         var title = row.children("td:nth-child(1)").text();
@@ -44,7 +42,7 @@ $(document).ready(function () {
         var url =  "http://localhost:3000/faculty/delete/"+idFaculty;
         $.ajax({
             type: 'POST',
-            url: url,
+            url: url, 
             success: function (data, textStatus, jqXHR) {
                 console.log(data);
                 window.location.href = "http://localhost:3000/faculty";

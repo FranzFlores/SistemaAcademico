@@ -8,6 +8,7 @@ const careerSchema = new Schema({
     diploma: { type: String, required: true },
     numPeriod: { type: String, required: true },
     timePeriod: { type: String, required: true },
+    status : {type: Boolean, required:true, default:true},
     faculty: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Faculty"
