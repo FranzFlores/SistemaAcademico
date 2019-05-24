@@ -21,6 +21,10 @@ PersonController.load_register_student = (req, res) => {
     res.render('register/register-student', { title: "Registro de Estudiante" });
 };
 
+PersonController.load_profile = (req,res)=>{
+    res.render('profile',{title:"Mi perfil"});
+};
+
 //Registro de Personas
 PersonController.savePerson = (req, res) => {
 

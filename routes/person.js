@@ -9,6 +9,7 @@ var personController = require('../controllers/person.controller');
 //Cargar Vistas
 router.get('/registerTeacher', personController.load_register_teacher);
 router.get('/registerStudent', personController.load_register_student);
+router.get('/myProfile',personController.load_profile);
 
 
 //Registro de Persona

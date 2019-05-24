@@ -11,17 +11,7 @@ $(document).ready(function () {
             success: function (data, textStatus, jqXHR) {
                 console.log(data);
                 $("#name").val(data.name);
-                var options =  $(".select-dropdown").children();
-                var faculty = "select-options-"+data.faculty;
-                console.log(options);
-                $.each(options,function(i,item){
-                    if(item.id == faculty){
-                        $("select-options"+data.faculty).addClass('selected');
-                    }else{
-                        item.removeClass('selected');
-                    }
-                });
-                $(".select-dropdown").val("select-options-"+data.faculty);
+               // $(".select-dropdown").val("select-options-"+data.faculty);
                 $("#description").val(data.description);
                 $("#diploma").val(data.diploma);
                 $("#numPeriod").val(data.numPeriod);
@@ -41,6 +31,23 @@ $(document).ready(function () {
             $("#careerForm").attr('action', '/career/update/' + idCareer);
         }
     });
+
+    $(".delete").click(function (e) {
+        var idCareer = $(this).attr('data-id');
+        var url =  "http://localhost:3000/career/delete/"+idCareer;
+        $.ajax({
+            type: 'POST',
+            url: url, 
+            success: function (data, textStatus, jqXHR) {
+                console.log(data);
+                window.location.href = "http://localhost:3000/career";
+            }, error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+        e.preventDefault();
+    });
+
 
 
 });

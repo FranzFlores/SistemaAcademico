@@ -59,7 +59,7 @@ CareerController.update_career = (req, res) => {
         if (err) req.flash('BAD','Ocurrio un error al actualizar','/career');
         else {
             if (!careerUpdated) req.flash('OK','No se pudo actualizar la carrera','/career');
-            else req.flash('GOOD','Se ha guardado la carrera con exito','/career');
+            else req.flash('GOOD','Se ha actualizado la carrera con exito','/career');
         }
     });
 }
@@ -68,10 +68,10 @@ CareerController.delete_career = (req, res) => {
     var careerId = req.params.id;
 
     Career.findByIdAndUpdate(careerId,{status:false} ,(err, careerRemoved)=>{
-        if (err) res.status(500).send('error en la petición');
+        if (err) req.flash('BAD','Ocurrio un error al eliminar','/career');
         else {
-            if (!careerRemoved) res.status(404).send('error al eliminar');
-            else res.status(200).send('Se ha eliminado');
+            if (!careerRemoved) req.flash('OK','No se pudo eliminar la carrera','/career');
+            else req.flash('GOOD','Se ha eliminado la carrera con exito','/career');
         }
     });
 }

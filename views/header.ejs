@@ -28,14 +28,27 @@
     <div class="container" style="margin-top:3%;">
         <nav>
             <div class="nav-wrapper" style="background: #2ec56f;">
+                <%if(user.role=="administrador"){%>
                 <ul id="nav-mobile" class="hide-on-med-and-down">
-                    <li><a href="#">Mi perfil</a></li>
+                    <li><a href="/person/myProfile">Mi perfil</a></li>
                     <li><a href="/faculty">Facultad</a></li>
                     <li><a href="/career">Carrera</a></li>
                     <li><a href="#">Malla Curricular</a></li>
                     <li><a href="#">Materia</a></li>
                 </ul>
+                <%}else if(user.role=="student"){%>
+                <ul id="nav-mobile" class="hide-on-med-and-down">
+                    <li><a href="/profile"><i class="material-icons left">account_circle</i>Mi Perfil </a></li>
+                    <li><a href="/class"><i class="material-icons left">import_contacts</i>Clases</a></li>
+                    <li><a href="/enrollment"><i class="material-icons left">school</i>Matricularme</a></li>
+                </ul>
+                <%}else if(user.role=="teacher"){%>
+                <ul id="nav-mobile" class="hide-on-med-and-down">
+                    <li><a href="/profile"><i class="material-icons left">account_circle</i>Mi Perfil </a></li>
+                    <li><a href="/class"><i class="material-icons left">import_contacts</i>Mis Clases</a></li>
+                </ul>
+                <%}%>
             </div>
         </nav>
-    
-    <%}%>
+
+        <%}%>
