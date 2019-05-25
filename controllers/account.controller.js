@@ -11,22 +11,21 @@ AccountController.load_login = (req,res)=>{
 };
 
 AccountController.update_password = (req, res) => {
-  var accountId = req.params.id;
   var newPassword = req.body.newPassword;
   var oldPassword = req.body.oldPassword;
   
-  Account.findById(accountId, (err, account) => {
-    if (err) res.status(500).send('Error');
+  Account.findById(req.params.id, (err, account) => {
+    if (err) req.flash('BAD',"Ha ocurrido un error al actualizar contraseña","/person/myProfile");
     if (account) {
       if (helpers.matchPassword(oldPassword,account.password)) {
         var hash = helpers.generateHash(newPassword);
         var update = {};
         update.password = hash;
-        Account.findByIdAndUpdate(accountId, update, (err, account) => {
-          if (err) res.status(500).send({ message: "Error en la peticion" });
+        Account.findByIdAndUpdate(req.params.id, update, (err, account) => {
+          if (err) req.flash('BAD',"Ha ocurrido un error al actualizar contraseña","/person/myProfile");
           else {
-            if (!account) res.status(404).send({ message: "No se actualizo la cuenta" });
-            else res.status(200).send({"account":account});
+            if (!account) req.flash('OK',"No se ha podido actualizar la contraseña","/person/myProfile");
+            else req.flash('GOOD',"Se ha actualizado la contraseña con éxito","/person/myProfile");
           }
         });
       }

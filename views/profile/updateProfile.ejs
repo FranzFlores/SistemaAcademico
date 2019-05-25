@@ -1,0 +1,71 @@
+<%-include('../header')%>
+<div class="card">
+    <h3 class="center-align title-form">Actualización de la Información</h3>
+    <div class="card-content">
+        <div class="row">
+            <form class="col s12" action="/person/update-info/<%=user.idPerson%>" method="POST">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="personal_mail" type="email" placeholder="Ingrese su Correo Personal"
+                            name="personal_mail" class="validate" value="<%= user.person.personal_mail%>" required>
+                        <label for="email">Correo Personal</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="address" type="text" name="address" placeholder="Ingrese su dirección"
+                            class="validate" value="<%= user.person.address%>" required>
+                        <label for="address">Dirección</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="phone" type="text" name="phone" placeholder="Ingrese su teléfono" 
+                        class="validate" value="<%=user.person.phone %>" required>
+                        <label for="phone">Telefono</label>
+                    </div>
+                </div>
+                <div class="card-action">
+                    <div class="input-field col-s12 center-align">
+                        <button class="btn">Actualizar Información</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3 class="center-align title-form">Actualización de la Contraseña</h3>
+    <div class="card-content">
+        <div class="row">
+            <form class="col s12" action="/person/update-password/<%=user.idAccount%>" method="POST">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input  type="password" placeholder="Ingrese su Antigua Contraseña"
+                            name="oldPassword" class="validate" required>
+                        <label for="email">Antigua Contraseña</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input  type="password" name="newPassword" placeholder="Ingrese su Nueva Contraseña"
+                            class="validate" required>
+                        <label for="address">Nueva Contraseña</label>
+                    </div>
+                </div>
+                <div class="card-action">
+                    <div class="input-field col-s12 center-align">
+                        <button class="btn">Actualizar Contraseña</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<%-include('../footer')%>

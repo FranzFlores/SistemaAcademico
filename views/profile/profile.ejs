@@ -1,0 +1,83 @@
+<%-include('../header')%>
+
+<h5 class="center-align title-form">Mi Perfil Académico</h5>
+<%- locals.flash %>
+<div class="row">
+    <div class="col-md-3 center-align">
+        <img src="http://localhost:3000/person/get-image-person/<%=user.person.image%>"
+            alt="" width="200px" height="240px" style="display: block; margin: auto;">
+        <a href="/person/updateImage" class="btn" style="margin-top:10px; color: #FFF;">Cambiar Fotografia</a>
+    </div>
+
+    <div class="col-md-8">
+        <table class="striped">
+            <tr>
+                <td><span class="profile-info">Apellidos y Nombres:</span>
+                    <%= user.person.name%>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="profile-info">Cédula de Identidad:</span>
+                    <%= user.person.dni_person%>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="profile-info">Fecha de Nacimiento:</span>
+                    <%=user.person.birthday.getDate() + '/ ' + user.person.birthday.getMonth() + '/ ' + user.person.birthday.getFullYear()%>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="profile-info">Correo Institucional:</span>
+                    <%= user.person.institutional_mail%>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="profile-info">Correo Personal:</span>
+                    <%= user.person.personal_mail%>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="profile-info">Dirección:</span>
+                    <%= user.person.address%>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="profile-info">Teléfono:</span>
+                    <%= user.person.phone%>
+                </td>
+            </tr>
+            <%if(user.role=="student"){ %>
+            <tr>
+                <td><span class="profile-info">Colegio:</span>
+                    <%= student.school%>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="profile-info">Nota de Graduación:</span>
+                    <%= student.graduation_grade%>
+                </td>
+            </tr>
+            <%}else if(user.role=="teacher"){%>
+            <tr>
+                <td><span class="profile-info">Título Universitario:</span>
+                    <%= teacher.university_degree%>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="profile-info">Título de Especialización:</span>
+                    <%= teacher.fourth_level_degree %>
+                </td>
+            </tr>
+            <%}%>
+        </table>
+        <div class="center-align mt-2">
+            <a href="/person/updateProfile" class="btn" style="color: #FFF;">Actualizar</a>
+        </div>
+
+    </div>
+</div>
+
+</section>
+</div>
+
+<%-include('../footer')%>

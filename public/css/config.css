@@ -38,3 +38,10 @@
     vertical-align: top;
     white-space: nowrap;
 }
+
+.profile-info {
+    font-weight: bold;
+    margin-right: 5px;
+    float: left;
+	width: 160px;
+}

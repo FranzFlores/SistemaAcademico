@@ -2,6 +2,8 @@
 var mongoose = require('mongoose');
 mongoose.set('useFindAndModify', false);
 var ObjectId = require('mongoose').Types.ObjectId;
+var fs = require('fs');
+var path = require('path');
 
 
 var Person = require('../models/person.model');
@@ -22,8 +24,32 @@ PersonController.load_register_student = (req, res) => {
 };
 
 PersonController.load_profile = (req,res)=>{
-    res.render('profile',{title:"Mi perfil"});
+    console.log(req.user);
+    if(req.user){
+        if(req.user.role == 'student'){
+            Student.findOne({person:req.user.idPerson},(err,student)=>{
+                if(err) console.log(err);
+                else res.render('profile',{title:"Mi perfil",student:student});
+            });
+        }else if(req.user.role == 'student'){
+            Teacher.findOne({person:req.user.idPerson},(err,teacher)=>{
+                if(err) console.log(err);
+                else res.render('profile',{title:"Mi perfil",teacher:teacher});
+            });
+        }else{
+            res.render('profile/profile',{title:"Mi perfil"});
+        }
+    }
 };
+
+PersonController.load_update_profile_view = (req,res)=>{
+    res.render('profile/updateProfile',{title:"Actualizar Perfil"});
+};
+
+PersonController.load_update_image_view = (req,res)=>{
+    res.render('profile/updatePhoto',{title:"Actualizar Foto de Perfil"});
+};
+
 
 //Registro de Personas
 PersonController.savePerson = (req, res) => {
@@ -117,7 +143,6 @@ PersonController.savePerson = (req, res) => {
                                         new Teacher({
                                             university_degree: req.body.university_degree,
                                             fourth_level_degree: req.body.fourth_level_degree,
-                                            timetable: req.body.timetable,
                                             person: newPerson._id
                                         }).save((err, newTeacher) => {
                                             if (err) {
@@ -144,7 +169,6 @@ PersonController.savePerson = (req, res) => {
 
 
 
-
 PersonController.all_students = (req, res) => {
     var students = Student.find({ status: true });
     students.populate({ path: 'person' }).exec((err, students) => {
@@ -167,23 +191,27 @@ PersonController.all_teachers = (req, res) => {
     });
 }
 
+PersonController.update_info_person = (req,res)=>{
+    Person.findByIdAndUpdate(req.params.id,req.body,(err,person)=>{
+        if(err) req.flash('BAD',"Ha ocurrido un error al actualizar","/person/myProfile");
+        else{
+            if (!person) req.flash('OK',"No se pudo actializar","/person/myProfile");
+            else req.flash('GOOD',"Se ha actualizado su información con éxito","/person/myProfile");
+        }
+    });
+}
 
 PersonController.update_person = (req, res) => {
     var personUpdate = {
-        dni_person: req.body.dni,
-        name: req.body.name,
-        gender: req.body.gender,
-        birthday: req.body.birthday,
-        institutional_mail: req.body.institutional_mail,
         personal_mail: req.body.personal_mail,
         address: req.body.address,
         phone: req.body.phone
     }
 
     Person.findByIdAndUpdate(req.params.id, personUpdate, (err, person) => {
-        if (err) res.status(500).send("Error en el servidor");
+        if (err) req.flash('BAD',"Ha ocurrido un error al actualizar","/person/myProfile");
         else {
-            if (!person) res.status(404).send("No se actualizado la persona");
+            if (!person) req.flash('OK',"No se pudo actializar","/person/myProfile");
             else {
                 if (req.body.role === 'student') {
                     personUpdate.school = req.body.school,
@@ -242,9 +270,10 @@ PersonController.delete_person = (req, res) => {
     })
 };
 
-PersonController.updalodImage = (req, res) => {
+PersonController.uplodImage = (req, res) => {
     var file_name = "Imagen no encontrada";
     if (req.files) {
+        console.log(req.files);
         var file_path = req.files.image.path;
         var file_split = file_path.split('\/');
         var file_name = file_split[2];
@@ -253,25 +282,36 @@ PersonController.updalodImage = (req, res) => {
         var file_ext = ext_split[1];
 
         if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'gif' || file_ext == 'jpeg') {
-            Person.findByIdAndUpdate(req.body._id, { image: file_name }, (err, person) => {
+            Person.findByIdAndUpdate(req.params.id, { image: file_name }, (err, person) => {
                 if (err) console.log(err);
                 else {
                     if (person == 0) {
-                        req.flash('message', "No se pudo actualizar la foto de perfil del usuario");
+                        req.flash('BAD', "No se pudo actualizar la foto de perfil del usuario","/person/myProfile");
                     } else {
-                        req.flash('success', "Se actualizado de manera correcta el usuario");
+                        req.flash('GOOD', "Se actualizado la foto de perfil de manera correcta","/person/myProfile");
                     }
-                    res.redirect('/profile');
                 }
             })
         } else {
-            req.flash('message', "La extension del archivo no es correcta");
+            req.flash('OK', "La extension del archivo para la fotografía no es correcta","/person/myProfile");
         }
-        res.redirect('/profile');
     } else {
-        res.status(200).send({ message: "No se ha podido subir ninguna imagen" });
+        req.flash('OK', "No se ha podido subir la imagen","/person/myProfile");
     }
 };
+
+PersonController.getImageFile = (req, res) => {
+    var imageFile = req.params.imageFile;
+    var path_file = './uploads/person/' + imageFile;
+  
+    fs.exists(path_file, function (exists) {
+      if (exists) {
+        res.sendFile(path.resolve(path_file));
+      } else {
+        res.status(200).send({ message: "No existe la imagen" });
+      }
+    });
+  };
 
 
 module.exports = PersonController;

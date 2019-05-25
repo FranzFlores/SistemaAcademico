@@ -20,8 +20,9 @@ module.exports = function (passport) {
             else {
                 if (person) {
                     var personInfo = {
+                        person:person,
                         idPerson: person._id,
-                        idAccount: user.id,
+                        idAccount: user._id,
                         user_name: user.user_name,
                         role: person.role
                     }

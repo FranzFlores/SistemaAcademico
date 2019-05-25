@@ -5,7 +5,6 @@ const { Schema } = mongoose;
 const teacherSchema = new Schema({
     university_degree: { type: String, required: true },
     fourth_level_degree: { type: String, required: true },
-    timetable: { type: String, required: true },
     status: { type: Boolean, default: true },
     person: {
         type: mongoose.Schema.Types.ObjectId,
