@@ -3,16 +3,25 @@
 var Subject = require('../models/subject.model');
 var SubjectController = {};
 
+SubjectController.load_subject_view = (req,res)=>{
+    var subjects = Subject.find({status:true});
+    subjects.populate({ path: 'curriculum',populate:{path:'career',model:'Career'} }).exec((err, subjects) => {
+        if (err) res.status(500).send("Error");
+        else res.render('adminProfile/subject',{title:'Materia',subjects:subjects});
+    });
+};
+
+
 SubjectController.save_subject = (req,res)=>{
     new Subject({
         name: req.body.name,
         numCredit: req.body.numCredit,
-        syllable: req.body.syllable
+        curriculum: req.body.curriculum
     }).save((err, newSubject)=>{
-        if(err) res.status(500).send("error en la petición");
+        if(err) req.flash('BAD','Ocurrio un error al guardar la materia','/subject');
         else{
-            if(!newSubject) res.status(404).send("no se ha guardado");
-            else res.status(200).send(newSubject);
+            if(!newSubject) req.flash('OK','No se pudo guardar la materia','/subject');
+            else req.flash('GOOD','Se ha guardado la materia con exito','/subject');
         }
     });
 }
@@ -68,6 +77,4 @@ SubjectController.all_subject = (req, res) => {
     });
 }
 
-module.exports = {
-    SubjectController
-};
+module.exports = SubjectController;

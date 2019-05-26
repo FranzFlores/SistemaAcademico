@@ -3,15 +3,28 @@
 var Curriculum = require('../models/curriculum.model');
 var CurriculumController = {};
 
+//Cargar Vistas
+CurriculumController.load_curriculum_view = (req,res)=>{
+    var curriculums = Curriculum.find({status:true});
+    curriculums.populate({path:'Career'}).exec((err,curriculums)=>{
+        if(err) console.log(err);
+        else{
+            res.render('adminProfile/curriculum',{title:'Malla Curricular',curriculums: curriculums});
+        }
+    });
+};
+
 CurriculumController.save_curriculum = (req,res)=>{
     new Curriculum({
         year: req.body.year,
-        image: req.body.image
+        image: "null",
+        numPeriod: req.body.numPeriod,
+        timePeriod: req.body.timePeriod
     }).save((err, newCurriculum)=>{
-        if(err) res.status(500).send("error en la petición");
+        if(err) req.flash('BAD', "Ha ocurrido un error al guardar la malla curricular","/curriculum");
         else{
-            if(!newCurriculum) res.status(404).send("no se ha guardado");
-            else res.status(200).send(newCurriculum);
+            if(!newCurriculum) req.flash('OK', "No se pudo guardar la malla curricular","/curriculum");
+            else req.flash('GOOD', "Se ha guardado la malla curricular con éxito","/curriculum");
         }
     });
 }
@@ -66,6 +79,4 @@ CurriculumController.all_curriculum = (req, res) => {
     });
 }
 
-module.exports = {
-    CurriculumController
-};
+module.exports = CurriculumController;

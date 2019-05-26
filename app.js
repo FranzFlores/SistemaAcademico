@@ -71,6 +71,8 @@ app.use(require('./routes/index'));
 app.use('/person',require('./routes/person'));
 app.use('/faculty',require('./routes/faculty.route'));
 app.use('/career',require('./routes/career.route'));
+app.use('/curriculum',require('./routes/curriculum.route'));
+app.use('/subject',require('./routes/subject.route'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

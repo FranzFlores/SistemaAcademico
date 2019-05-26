@@ -19,9 +19,7 @@ CareerController.save_career = (req,res)=>{
         name: req.body.name,
         description: req.body.description,
         faculty: req.body.faculty,
-        diploma: req.body.diploma,
-        numPeriod: req.body.numPeriod,
-        timePeriod: req.body.timePeriod
+        diploma: req.body.diploma
     }).save((err, newCareer)=>{
         if(err) {
             console.log(err);

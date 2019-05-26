@@ -1,35 +1,28 @@
 <%-include('../header')%>
-
 <div class="row">
     <div class="col-md-4">
         <div class="card">
-            <h4 class="center-align title-form">Carrera</h4>
+            <h4 class="center-align title-form">Materias</h4>
             <div class="card-content">
                 <%- locals.flash %>
-                <form  action="/career/create" method="POST" id="careerForm">
+                <form  action="/subject/create" method="POST" id="subjectForm">
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="name" type="text" name="name" class="validate">
-                            <label for="name">Nombre Carrera</label>
+                            <input id="name" type="text" name="name" class="validate" required>
+                            <label for="name">Nombre Materia</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <select name="faculty" id="faculties">
+                            <select name="curriculum" id="curriculums">
                             </select>
-                            <label for="faculty">Facultad</label>
+                            <label for="career">Malla Curricular-Carrera</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="description" type="text" name="description" class="validate">
-                            <label for="description">Descripción</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="diploma" type="text" name="diploma" class="validate">
-                            <label for="diploma">Título que otorga</label>
+                            <input id="numCredit" type="text" name="numCredit" class="validate" required>
+                            <label for="numCredit">Número de créditos</label>
                         </div>
                     </div>
                     <div class="card-action">
@@ -45,23 +38,25 @@
         <table class="highlight centered responsive-table">
             <thead>
                 <tr>
-                    <th>Nombre Carrera</th>
-                    <th>Título Otorga</th>
-                    <th>Facultad</th>
+                    <th>Carrera</th>
+                    <th>Año Malla Curricular</th>
+                    <th>Nombre Materia</th>
+                    <th>Número de Créditos</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                <% careers.forEach(function(career){ %>
+                <% subjects.forEach(function(subject){ %>
                 <tr>
-                    <td><%=career.name%></td>
-                    <td><%=career.diploma%></td>
-                    <td><%=career.faculty.name%></td>
+                    <td><%=subject.curriculum.career.name%></td>
+                    <td><%=subject.curriculum.year%></td>
+                    <td><%=subject.name%></td>
+                    <td><%=subject.numCredit%></td>
                     <td>
-                        <a class="edit" data-id="<%=career._id%>">
+                        <a class="edit" data-id="<%=subject._id%>">
                             <i class="material-icons btn">edit</i>
                         </a>
-                        <a class="delete" data-id="<%=career._id%>">
+                        <a class="delete" data-id="<%=subject._id%>">
                             <i class="material-icons btn">delete</i>
                         </a>
                     </td>
@@ -73,5 +68,5 @@
 </div>
 </div>
 
+
 <%-include('../footer')%>
-<script src="/js/views/career.js"></script>
