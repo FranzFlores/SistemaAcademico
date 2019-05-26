@@ -10,6 +10,7 @@ var Person = require('../models/person.model');
 var Student = require('../models/student.model');
 var Teacher = require('../models/teacher.model');
 var Account = require("../models/account.model");
+var Career = require("../models/career.model");
 var helpers = require("../lib/helpers");
 
 const PersonController = {};
@@ -20,40 +21,47 @@ PersonController.load_register_teacher = (req, res) => {
 };
 
 PersonController.load_register_student = (req, res) => {
-    res.render('register/register-student', { title: "Registro de Estudiante" });
+    var students = Student.find({ status: true });
+    students.populate({ path: 'person',populate:{path:'career',model:'Career'} }).exec((err, students) => {
+        if (err) res.status(500).send("Error en el servidor");
+        else {
+            res.render('adminProfile/student', { title: "Registro de Estudiante", students:students });
+        }
+    });
+
 };
 
-PersonController.load_profile = (req,res)=>{
+PersonController.load_profile = (req, res) => {
     console.log(req.user);
-    if(req.user){
-        if(req.user.role == 'student'){
-            Student.findOne({person:req.user.idPerson},(err,student)=>{
-                if(err) console.log(err);
-                else res.render('profile',{title:"Mi perfil",student:student});
+    if (req.user) {
+        if (req.user.role == 'student') {
+            Student.findOne({ person: req.user.idPerson }, (err, student) => {
+                if (err) console.log(err);
+                else res.render('profile', { title: "Mi perfil", student: student });
             });
-        }else if(req.user.role == 'student'){
-            Teacher.findOne({person:req.user.idPerson},(err,teacher)=>{
-                if(err) console.log(err);
-                else res.render('profile',{title:"Mi perfil",teacher:teacher});
+        } else if (req.user.role == 'student') {
+            Teacher.findOne({ person: req.user.idPerson }, (err, teacher) => {
+                if (err) console.log(err);
+                else res.render('profile', { title: "Mi perfil", teacher: teacher });
             });
-        }else{
-            res.render('profile/profile',{title:"Mi perfil"});
+        } else {
+            res.render('profile/profile', { title: "Mi perfil" });
         }
     }
 };
 
-PersonController.load_update_profile_view = (req,res)=>{
-    res.render('profile/updateProfile',{title:"Actualizar Perfil"});
+PersonController.load_update_profile_view = (req, res) => {
+    res.render('profile/updateProfile', { title: "Actualizar Perfil" });
 };
 
-PersonController.load_update_image_view = (req,res)=>{
-    res.render('profile/updatePhoto',{title:"Actualizar Foto de Perfil"});
+PersonController.load_update_image_view = (req, res) => {
+    res.render('profile/updatePhoto', { title: "Actualizar Foto de Perfil" });
 };
+
 
 
 //Registro de Personas
 PersonController.savePerson = (req, res) => {
-
     var dni_person = req.body.dni_person;
     var phone = req.body.phone;
     var cad = req.body.dni_person;
@@ -110,6 +118,7 @@ PersonController.savePerson = (req, res) => {
                         personal_mail: req.body.personal_mail,
                         address: req.body.address,
                         phone: req.body.phone,
+                        career: req.body.career,
                         image: "null",
                         role: req.body.role
                     }).save((err, newPerson) => {
@@ -134,10 +143,10 @@ PersonController.savePerson = (req, res) => {
                                         }).save((err, newStudent) => {
                                             if (err) {
                                                 console.log(err);
-                                                req.flash('BAD', 'Ha ocurrido un error.', '/menu-register');
+                                                req.flash('BAD', 'Ha ocurrido un error.', '/person/student');
                                             } else if (newStudent) {
-                                                req.flash('GOOD', 'Se ha realizado el registro con exito', "/login");
-                                            } else req.flash('OK', 'No se pudo crear el usuario', '/menu-register');
+                                                req.flash('GOOD', 'Se ha guardado el estudiante con éxito', "/person/student");
+                                            } else req.flash('OK', 'No se pudo crear el usuario', '/person/student');
                                         })
                                     } else if (req.body.role == 'teacher') {
                                         new Teacher({
@@ -191,12 +200,12 @@ PersonController.all_teachers = (req, res) => {
     });
 }
 
-PersonController.update_info_person = (req,res)=>{
-    Person.findByIdAndUpdate(req.params.id,req.body,(err,person)=>{
-        if(err) req.flash('BAD',"Ha ocurrido un error al actualizar","/person/myProfile");
-        else{
-            if (!person) req.flash('OK',"No se pudo actializar","/person/myProfile");
-            else req.flash('GOOD',"Se ha actualizado su información con éxito","/person/myProfile");
+PersonController.update_info_person = (req, res) => {
+    Person.findByIdAndUpdate(req.params.id, req.body, (err, person) => {
+        if (err) req.flash('BAD', "Ha ocurrido un error al actualizar", "/person/myProfile");
+        else {
+            if (!person) req.flash('OK', "No se pudo actializar", "/person/myProfile");
+            else req.flash('GOOD', "Se ha actualizado su información con éxito", "/person/myProfile");
         }
     });
 }
@@ -209,9 +218,9 @@ PersonController.update_person = (req, res) => {
     }
 
     Person.findByIdAndUpdate(req.params.id, personUpdate, (err, person) => {
-        if (err) req.flash('BAD',"Ha ocurrido un error al actualizar","/person/myProfile");
+        if (err) req.flash('BAD', "Ha ocurrido un error al actualizar", "/person/myProfile");
         else {
-            if (!person) req.flash('OK',"No se pudo actializar","/person/myProfile");
+            if (!person) req.flash('OK', "No se pudo actializar", "/person/myProfile");
             else {
                 if (req.body.role === 'student') {
                     personUpdate.school = req.body.school,
@@ -286,32 +295,37 @@ PersonController.uplodImage = (req, res) => {
                 if (err) console.log(err);
                 else {
                     if (person == 0) {
-                        req.flash('BAD', "No se pudo actualizar la foto de perfil del usuario","/person/myProfile");
+                        req.flash('BAD', "No se pudo actualizar la foto de perfil del usuario", "/person/myProfile");
                     } else {
-                        req.flash('GOOD', "Se actualizado la foto de perfil de manera correcta","/person/myProfile");
+                        req.flash('GOOD', "Se actualizado la foto de perfil de manera correcta", "/person/myProfile");
                     }
                 }
             })
         } else {
-            req.flash('OK', "La extension del archivo para la fotografía no es correcta","/person/myProfile");
+            req.flash('OK', "La extension del archivo para la fotografía no es correcta", "/person/myProfile");
         }
     } else {
-        req.flash('OK', "No se ha podido subir la imagen","/person/myProfile");
+        req.flash('OK', "No se ha podido subir la imagen", "/person/myProfile");
     }
 };
 
 PersonController.getImageFile = (req, res) => {
     var imageFile = req.params.imageFile;
     var path_file = './uploads/person/' + imageFile;
-  
+
     fs.exists(path_file, function (exists) {
-      if (exists) {
-        res.sendFile(path.resolve(path_file));
-      } else {
-        res.status(200).send({ message: "No existe la imagen" });
-      }
+        if (exists) {
+            res.sendFile(path.resolve(path_file));
+        } else {
+            res.status(200).send({ message: "No existe la imagen" });
+        }
     });
-  };
+};
+
+PersonController.logout = (req,res)=>{
+    req.logOut();
+    res.redirect('/');
+};
 
 
 module.exports = PersonController;

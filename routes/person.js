@@ -12,7 +12,7 @@ var md_upload = multipart({uploadDir: './uploads/person'});
 
 //Cargar Vistas
 router.get('/registerTeacher', personController.load_register_teacher);
-router.get('/registerStudent', personController.load_register_student);
+router.get('/student', personController.load_register_student);
 
 router.get('/myProfile',isLoggedIn,personController.load_profile);
 router.get('/updateProfile',isLoggedIn,personController.load_update_profile_view);
@@ -27,6 +27,9 @@ router.post('/signin', passport.authenticate('local-singin', {
   failureRedirect: '/login',
   failureFlash: true
 }));
+
+//Cerrar Sesion
+router.get('/logout',isLoggedIn,personController.logout);
 
 //Actualizar informacion
 router.post('/update-info/:id',personController.update_info_person);

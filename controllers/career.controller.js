@@ -76,7 +76,7 @@ CareerController.delete_career = (req, res) => {
     });
 }
 
-CareerController.all_career = (req, res) => {
+CareerController.all_careers = (req, res) => {
     var careers = Career.find({status:true});
     careers.populate({ path: 'faculty' }).exec((err, careers) => {
         if (err) res.status(500).send("Error");

@@ -3,6 +3,7 @@
 <div class="container">
     <div class="card" style="margin-top:40px;">
         <h3 class="center-align title-form">Registro de Estudiante</h3>
+        <%- locals.flash %>
         <div class="card-content">
             <div class="row">
                 <form class="col s12" action="/person/signup" method="POST">
@@ -57,6 +58,12 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
+                            <select name="career" id="careers"></select>
+                            <label for="career">Carrera</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
                             <input id="school" type="text" name="school" placeholder="Ingrese el Colegio"
                                 class="validate">
                             <label for="university_degree">Colegio</label>
@@ -80,4 +87,31 @@
     </div>
 </div>
 
+<table class="highlight centered responsive-table" >
+    <thead>
+        <tr style="color: #2ec56f;">
+            <th>Cédula</th>
+            <th>Nombres y Apellidos</th>
+            <th>Carrera</th>
+            <th>Colegio</th>
+            <th>Nota Graduación</th>
+        </tr>
+    </thead>
+    <tbody>
+        <%students.forEach(function(student){ %>
+        <tr>
+            <td><%=student.person.dni_person%></td>
+            <td><%=student.person.name%></td>
+            <td><%=student.person.career.name%></td>
+            <td><%=student.school%></td>
+            <td><%=student.graduation_grade%></td>
+        </tr>
+        <%})%>
+
+
+
+    </tbody>
+</table>
+
 <%-include('../footer')%>
+<script src="/js/views/person.js"></script>
