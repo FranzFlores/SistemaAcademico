@@ -8,7 +8,7 @@
                 <form  action="/curriculum/create" method="POST" id="curriculumForm">
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="name" type="text" name="year" class="validate">
+                            <input id="name" type="text" name="year" class="validate" readonly>
                             <label for="name">Año Malla Curricular</label>
                         </div>
                     </div>
@@ -21,13 +21,13 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="numPeriod" type="text" name="numPeriod" class="validate">
+                            <input id="numPeriod" type="text" name="numPeriod" class="validate" required>
                             <label for="numPeriod">Número total de Períodos</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="timePeriod" type="text" name="timePeriod" class="validate">
+                            <input id="timePeriod" type="text" name="timePeriod" class="validate" required>
                             <label for="timePeriod">Duración de Periodo(Número de Semanas)</label>
                         </div>
                     </div>

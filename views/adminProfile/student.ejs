@@ -7,52 +7,52 @@
         <div class="card-content">
             <div class="row">
                 <form class="col s12" action="/person/signup" method="POST">
-                    <input type="hidden" name="role" value="student">
+                    <input type="hidden" name="role" value="student" required>
                     <div class="row">
                         <div class="input-field col s12">
                             <input placeholder="Ingrese Número de Cédula" id="dni" type="text" name="dni_person"
-                                class="validate">
+                                class="validate" required>
                             <label for="dni">Cédula</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input placeholder="Ingrese Nombres y Apellidos" id="name" type="text" name="name"
-                                class="validate">
+                                class="validate" required>
                             <label for="name">Nombres y Apellidos</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input type="text" class="datepicker" name="birthday">
+                            <input type="text" class="datepicker" name="birthday" required>
                             <label for="name">Fecha de Nacimiento</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="institutional_mail" placeholder="Ingrese su Correo Institucional" type="email"
-                                name="institutional_mail" class="validate">
+                                name="institutional_mail" class="validate" required>
                             <label for="email">Correo Institucional</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="personal_mail" type="email" placeholder="Ingrese su Correo Personal"
-                                name="personal_mail" class="validate">
+                                name="personal_mail" class="validate" required>
                             <label for="email">Correo Personal</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="address" type="text" name="address" placeholder="Ingrese su dirección"
-                                class="validate">
+                                class="validate" required>
                             <label for="address">Dirección</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="phone" type="text" name="phone" placeholder="Ingrese su telefono"
-                                class="validate">
+                                class="validate" required>
                             <label for="phone">Telefono</label>
                         </div>
                     </div>
@@ -65,14 +65,14 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="school" type="text" name="school" placeholder="Ingrese el Colegio"
-                                class="validate">
+                                class="validate" required>
                             <label for="university_degree">Colegio</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="graduation_grade" type="text" name="graduation_grade"
-                                placeholder="Ingrese Nota de Graduación" class="validate">
+                                placeholder="Ingrese Nota de Graduación" class="validate" required>
                             <label for="graduation_grade">Nota de Graduación de Bachiller</label>
                         </div>
                     </div>

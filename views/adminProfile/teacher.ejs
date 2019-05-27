@@ -7,52 +7,52 @@
         <div class="card-content">
             <div class="row">
                 <form class="col s12" action="/person/signup" method="POST">
-                    <input type="hidden" name="role" value="teacher">
+                    <input type="hidden" name="role" value="teacher" required>
                     <div class="row">
                         <div class="input-field col s12">
                             <input placeholder="Ingrese Número de Cédula" id="dni" type="text" name="dni_person"
-                                class="validate">
+                                class="validate" required>
                             <label for="dni">Cédula</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input placeholder="Ingrese Nombres y Apellidos" id="name" type="text" name="name"
-                                class="validate">
+                                class="validate" required>
                             <label for="name">Nombres y Apellidos</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input type="text" class="datepicker" name="birthday">
+                            <input type="text" class="datepicker" name="birthday" required>
                             <label for="name">Fecha de Nacimiento</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="institutional_mail" placeholder="Ingrese su Correo Institucional" type="email"
-                                name="institutional_mail" class="validate">
+                                name="institutional_mail" class="validate" required>
                             <label for="email">Correo Institucional</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="personal_mail" type="email" placeholder="Ingrese su Correo Personal"
-                                name="personal_mail" class="validate">
+                                name="personal_mail" class="validate" required>
                             <label for="email">Correo Personal</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="address" type="text" name="address" placeholder="Ingrese su dirección"
-                                class="validate">
+                                class="validate" required>
                             <label for="address">Dirección</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="phone" type="text" name="phone" placeholder="Ingrese su telefono"
-                                class="validate">
+                                class="validate" required>
                             <label for="phone">Teléfono</label>
                         </div>
                     </div>
@@ -65,14 +65,14 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="university_degree" type="text" name="university_degree"
-                                placeholder="Ingrese su Título Universitario" class="validate">
+                                placeholder="Ingrese su Título Universitario" class="validate" required>
                             <label for="university_degree">Título Universitario</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="fourth_level_degree" type="text" name="fourth_level_degree"
-                                placeholder="Ingrese su Título Cuarto Nivel" class="validate">
+                                placeholder="Ingrese su Título Cuarto Nivel" class="validate" required>
                             <label for="university_degree">Título Cuarto Nivel</label>
                         </div>
                     </div>
