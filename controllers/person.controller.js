@@ -17,7 +17,14 @@ const PersonController = {};
 
 //Cargar Vistas 
 PersonController.load_register_teacher = (req, res) => {
-    res.render('register/register-teacher', { title: "Registro de Docente" });
+    var teachers = Teacher.find({ status: true });
+    teachers.populate({ path: 'person',populate:{path:'career',model:'Career'} }).exec((err, teachers) => {
+        if (err) res.status(500).send("Error en el servidor");
+        else {
+            res.render('adminProfile/teacher', { title: "Registro de Docente",teachers: teachers });
+        }
+    });
+    
 };
 
 PersonController.load_register_student = (req, res) => {
@@ -37,12 +44,12 @@ PersonController.load_profile = (req, res) => {
         if (req.user.role == 'student') {
             Student.findOne({ person: req.user.idPerson }, (err, student) => {
                 if (err) console.log(err);
-                else res.render('profile', { title: "Mi perfil", student: student });
+                else res.render('profile/profile', { title: "Mi perfil", student: student });
             });
-        } else if (req.user.role == 'student') {
+        } else if (req.user.role == 'teacher') {
             Teacher.findOne({ person: req.user.idPerson }, (err, teacher) => {
                 if (err) console.log(err);
-                else res.render('profile', { title: "Mi perfil", teacher: teacher });
+                else res.render('profile/profile', { title: "Mi perfil", teacher: teacher });
             });
         } else {
             res.render('profile/profile', { title: "Mi perfil" });
@@ -156,10 +163,10 @@ PersonController.savePerson = (req, res) => {
                                         }).save((err, newTeacher) => {
                                             if (err) {
                                                 console.log(err);
-                                                req.flash('BAD', 'Ha ocurrido un error.', '/menu-register');
+                                                req.flash('BAD', 'Ha ocurrido un error.', '/person/teacher');
                                             } else if (newTeacher) {
-                                                req.flash('GOOD', 'Se ha realizado el registro con exito', '/login');
-                                            } else req.flash('OK', 'No se pudo crear el usuario', '/menu-register');
+                                                req.flash('GOOD', 'Se ha realizado el registro con exito', '/person/teacher');
+                                            } else req.flash('OK', 'No se pudo crear el usuario', '/person/teacher');
                                         })
                                     } else {
                                         res.status(200).send('Se ha creado el Admin');

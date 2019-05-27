@@ -1,0 +1,70 @@
+<%-include('../header')%>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <h4 class="center-align title-form">Períodos Académicos</h4>
+            <div class="card-content">
+                <%- locals.flash %>
+                <form  action="/period/create" method="POST" id="periodForm">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="name" type="text" name="name" class="validate" required>
+                            <label for="name">Nombre Período</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="text" class="datepicker" name="start" required>
+                            <label for="name">Fecha de Inicio</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="text" class="datepicker" name="end" required>
+                            <label for="name">Fecha de Finalización</label>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <div class="input-field col-s12 center-align">
+                            <button id="button" class="btn">Guardar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col s8">
+        <table class="highlight centered responsive-table">
+            <thead>
+                <tr>
+                    <th>Nombre Período</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Finalización</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% periods.forEach(function(period){ %>
+                <tr>
+                    <td><%=period.name%></td>
+                    <td><%=period.start.getDate() + '/' + period.start.getMonth() + '/' + period.start.getFullYear() %></td>
+                    <td><%=period.end.getDate() + '/' + period.end.getMonth() + '/' + period.end.getFullYear()%></td>
+                    <td>
+                        <a class="edit" data-id="<%=period._id%>">
+                            <i class="material-icons btn">edit</i>
+                        </a>
+                        <a class="delete" data-id="<%=period._id%>">
+                            <i class="material-icons btn">delete</i>
+                        </a>
+                    </td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+
+<%-include('../footer')%>
+<script src="/js/views/career.js"></script>

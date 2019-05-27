@@ -2,12 +2,12 @@
 
 <div class="container">
     <div class="card" style="margin-top:40px;">
-        <h3 class="center-align title-form">Registro de Estudiantes</h3>
+        <h3 class="center-align title-form">Registro de Docentes</h3>
         <%- locals.flash %>
         <div class="card-content">
             <div class="row">
                 <form class="col s12" action="/person/signup" method="POST">
-                    <input type="hidden" name="role" value="student">
+                    <input type="hidden" name="role" value="teacher">
                     <div class="row">
                         <div class="input-field col s12">
                             <input placeholder="Ingrese Número de Cédula" id="dni" type="text" name="dni_person"
@@ -53,7 +53,7 @@
                         <div class="input-field col s12">
                             <input id="phone" type="text" name="phone" placeholder="Ingrese su telefono"
                                 class="validate">
-                            <label for="phone">Telefono</label>
+                            <label for="phone">Teléfono</label>
                         </div>
                     </div>
                     <div class="row">
@@ -64,16 +64,16 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="school" type="text" name="school" placeholder="Ingrese el Colegio"
-                                class="validate">
-                            <label for="university_degree">Colegio</label>
+                            <input id="university_degree" type="text" name="university_degree"
+                                placeholder="Ingrese su Título Universitario" class="validate">
+                            <label for="university_degree">Título Universitario</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="graduation_grade" type="text" name="graduation_grade"
-                                placeholder="Ingrese Nota de Graduación" class="validate">
-                            <label for="graduation_grade">Nota de Graduación de Bachiller</label>
+                            <input id="fourth_level_degree" type="text" name="fourth_level_degree"
+                                placeholder="Ingrese su Título Cuarto Nivel" class="validate">
+                            <label for="university_degree">Título Cuarto Nivel</label>
                         </div>
                     </div>
                     <div class="card-action">
@@ -87,24 +87,34 @@
     </div>
 </div>
 
-<table class="highlight centered responsive-table" >
+
+<table class="highlight centered responsive-table">
     <thead>
         <tr style="color: #2ec56f;">
             <th>Cédula</th>
             <th>Nombres y Apellidos</th>
             <th>Carrera</th>
-            <th>Colegio</th>
-            <th>Nota Graduación</th>
+            <th>Título Universitario</th>
+            <th>Especialidad</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
-        <%students.forEach(function(student){ %>
+        <%teachers.forEach(function(teacher){ %>
         <tr>
-            <td><%=student.person.dni_person%></td>
-            <td><%=student.person.name%></td>
-            <td><%=student.person.career.name%></td>
-            <td><%=student.school%></td>
-            <td><%=student.graduation_grade%></td>
+            <td><%=teacher.person.dni_person%></td>
+            <td><%=teacher.person.name%></td>
+            <td><%=teacher.person.career.name%></td>
+            <td><%=teacher.university_degree%></td>
+            <td><%=teacher.fourth_level_degree%></td>
+            <td>
+                <a id="edit" class="edit" data-id="<%=teacher._id%>">
+                    <i class="material-icons btn">edit</i>
+                </a>
+                <a id="delete" class="delete" data-id="<%=teacher._id%>">
+                    <i class="material-icons btn">delete</i>
+                </a>
+            </td>
         </tr>
         <%})%>
 

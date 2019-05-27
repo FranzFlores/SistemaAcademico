@@ -11,8 +11,8 @@ var multipart = require('connect-multiparty');
 var md_upload = multipart({uploadDir: './uploads/person'});
 
 //Cargar Vistas
-router.get('/registerTeacher', personController.load_register_teacher);
-router.get('/student', personController.load_register_student);
+router.get('/teacher',isLoggedIn, personController.load_register_teacher);
+router.get('/student',isLoggedIn, personController.load_register_student);
 
 router.get('/myProfile',isLoggedIn,personController.load_profile);
 router.get('/updateProfile',isLoggedIn,personController.load_update_profile_view);

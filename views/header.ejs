@@ -37,26 +37,28 @@
                     <li><a href="/faculty">Facultad</a></li>
                     <li><a href="/career">Carrera</a></li>
                     <li><a href="/person/student">Estudiante</a></li>
-                    <li><a href="/person/registerTeacher">Docente</a></li>
+                    <li><a href="/person/teacher">Docente</a></li>
                     <li><a href="/curriculum">Malla Curricular</a></li>
                     <li><a href="/subject">Materia</a></li>
+                    <li><a href="/period">Período</a></li>
                 </ul>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a href="/person/logout">Salir</a></li>
                 </ul>
                 <ul class="sidenav" id="mobile-demo">
-                        <li><a href="/person/myProfile">Mi perfil</a></li>
-                        <li><a href="/faculty">Facultad</a></li>
-                        <li><a href="/career">Carrera</a></li>
-                        <li><a href="/person/student">Estudiante</a></li>
-                        <li><a href="/person/registerTeacher">Docente</a></li>
-                        <li><a href="#">Malla Curricular</a></li>
-                        <li><a href="#">Materia</a></li>
-                        <li><a href="/">Salir</a></li>
+                    <li><a href="/person/myProfile">Mi perfil</a></li>
+                    <li><a href="/faculty">Facultad</a></li>
+                    <li><a href="/career">Carrera</a></li>
+                    <li><a href="/person/student">Estudiante</a></li>
+                    <li><a href="/person/teacher">Docente</a></li>
+                    <li><a href="/curriculum">Malla Curricular</a></li>
+                    <li><a href="/subject">Materia</a></li>
+                    <li><a href="/period">Período</a></li>
+                    <li><a href="/person/logout">Salir</a></li>
                 </ul>
                 <%}else if(user.role=="student"){%>
                 <ul id="nav-mobile" class="hide-on-med-and-down">
-                    <li><a href="/profile"><i class="material-icons left">account_circle</i>Mi Perfil </a></li>
+                    <li><a href="/person/myProfile"><i class="material-icons left">account_circle</i>Mi Perfil </a></li>
                     <li><a href="/class"><i class="material-icons left">import_contacts</i>Clases</a></li>
                     <li><a href="/enrollment"><i class="material-icons left">school</i>Matricularme</a></li>
                 </ul>
@@ -65,11 +67,16 @@
                 </ul>
                 <%}else if(user.role=="teacher"){%>
                 <ul id="nav-mobile" class="hide-on-med-and-down">
-                    <li><a href="/profile"><i class="material-icons left">account_circle</i>Mi Perfil </a></li>
+                    <li><a href="/person/myProfile"><i class="material-icons left">account_circle</i>Mi Perfil </a></li>
                     <li><a href="/class"><i class="material-icons left">import_contacts</i>Mis Clases</a></li>
                 </ul>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="">Salir</a></li>
+                    <li><a href="/person/logout"><i class="material-icons left">exit_to_app</i>Salir</a></li>
+                </ul>
+                <ul class="sidenav" id="mobile-demo">
+                    <li><a href="/person/myProfile"><i class="material-icons left">account_circle</i>Mi Perfil </a></li>
+                    <li><a href="/class"><i class="material-icons left">import_contacts</i>Mis Clases</a></li>
+                    <li><a href="/person/logout">Salir</a></li>
                 </ul>
                 <%}%>
             </div>
