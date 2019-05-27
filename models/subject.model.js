@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const subjectSchema = new Schema({
     name: { type: String, required: true },
     numCredit: { type: String, required: true },
-    status: {type: String, required:true, default:true},
+    status: {type: Boolean, required:true, default:true},
     curriculum: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Curriculum"
