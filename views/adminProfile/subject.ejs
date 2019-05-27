@@ -25,6 +25,12 @@
                             <label for="numCredit">Número de créditos</label>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="numCredit" type="number" min="1" max="<%=subject.curriculum.numPeriod%>" name="numCredit" class="validate" required>
+                            <label for="numCredit">Ciclo</label>
+                        </div>
+                    </div>
                     <div class="card-action">
                         <div class="input-field col-s12 center-align">
                             <button id="button" class="btn">Guardar</button>
@@ -70,3 +76,4 @@
 
 
 <%-include('../footer')%>
+<script src="/js/views/subject.js"></script>

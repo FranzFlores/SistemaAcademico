@@ -8,7 +8,7 @@
                 <form  action="/curriculum/create" method="POST" id="curriculumForm">
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="name" type="text" name="year" class="validate" readonly>
+                            <input id="name" type="text" name="year" class="validate" required>
                             <label for="name">Año Malla Curricular</label>
                         </div>
                     </div>
@@ -59,10 +59,10 @@
                     <td><%=curriculum.numPeriod%></td>
                     <td><%=curriculum.timePeriod%></td>
                     <td>
-                        <a class="edit" data-id="<%=career._id%>">
+                        <a class="edit" data-id="<%=curriculum._id%>">
                             <i class="material-icons btn">edit</i>
                         </a>
-                        <a class="delete" data-id="<%=career._id%>">
+                        <a class="delete" data-id="<%=curriculum._id%>">
                             <i class="material-icons btn">delete</i>
                         </a>
                     </td>
@@ -76,3 +76,4 @@
 
 
 <%-include('../footer')%>
+<script src="/js/views/curriculum.js"></script>

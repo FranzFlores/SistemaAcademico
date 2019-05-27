@@ -18,21 +18,21 @@ const PersonController = {};
 //Cargar Vistas 
 PersonController.load_register_teacher = (req, res) => {
     var teachers = Teacher.find({ status: true });
-    teachers.populate({ path: 'person',populate:{path:'career',model:'Career'} }).exec((err, teachers) => {
+    teachers.populate({ path: 'person', populate: { path: 'career', model: 'Career' } }).exec((err, teachers) => {
         if (err) res.status(500).send("Error en el servidor");
         else {
-            res.render('adminProfile/teacher', { title: "Registro de Docente",teachers: teachers });
+            res.render('adminProfile/teacher', { title: "Registro de Docente", teachers: teachers });
         }
     });
-    
+
 };
 
 PersonController.load_register_student = (req, res) => {
     var students = Student.find({ status: true });
-    students.populate({ path: 'person',populate:{path:'career',model:'Career'} }).exec((err, students) => {
+    students.populate({ path: 'person', populate: { path: 'career', model: 'Career' } }).exec((err, students) => {
         if (err) res.status(500).send("Error en el servidor");
         else {
-            res.render('adminProfile/student', { title: "Registro de Estudiante", students:students });
+            res.render('adminProfile/student', { title: "Registro de Estudiante", students: students });
         }
     });
 
@@ -85,8 +85,13 @@ PersonController.savePerson = (req, res) => {
     var RegExPattern1 = /[a-zA-Z ]/;
 
 
+
     if ((!cad.match(RegExPattern)) || (!phone.match(RegExPattern))) {
-        req.flash('OK', 'Los campos cédula o teléfono unicamente deben contener numeros', '/menu-register');
+        if (req.user.role == "student") {
+            req.flash('OK', 'Los campos cédula o teléfono unicamente deben contener numeros', '/person/student');
+        } else if (req.user.role == "teacher") {
+            req.flash('OK', 'Los campos cédula o teléfono unicamente deben contener numeros', '/person/student');
+        }
     } else if (cad !== "" && longitud === 10) {
         for (var i = 0; i < longcheck; i++) {
             if (i % 2 === 0) {
@@ -99,11 +104,23 @@ PersonController.savePerson = (req, res) => {
         }
         total = total % 10 ? 10 - total % 10 : 0;
         if (cad.charAt(longitud - 1) != total) {
-            req.flash('BAD', 'El número de cédula es incorrecto', '/menu-register');
+            if (req.user.role == "student") {
+                req.flash('BAD', 'El número de cédula es incorrecto', '/person/student');
+            } else if (req.user.role == "teacher") {
+                req.flash('BAD', 'El número de cédula es incorrecto', '/person/teacher');
+            }
         } else if (!email[1] == "unl.edu.ec") {
-            req.flash('OK', 'El Correo Institucional es Incorrecto', '/menu-register');
+            if (req.user.role == "student") {
+                req.flash('OK', 'El Correo Institucional es Incorrecto', '/person/student');
+            } else if (req.user.role == "teacher") {
+                req.flash('OK', 'El Correo Institucional es Incorrecto', '/person/teacher');
+            }
         } else if ((!(req.body.name).match(RegExPattern1))) {
-            req.flash('OK', 'El nombre unicamente debe contener letras', '/menu-register');
+            if (req.user.role == "student") {
+                req.flash('OK', 'El nombre unicamente debe contener letras', '/person/student');
+            } else if (req.user.role == "teacher") {
+                req.flash('OK', 'El nombre unicamente debe contener letras', '/person/teacher');
+            }
         } else {
             var birthday = (req.body.birthday).split('\/');
             var year = birthday[0];
@@ -113,10 +130,18 @@ PersonController.savePerson = (req, res) => {
 
             Person.findOne({ dni_person: req.body.dni_person }, (err, personResult) => {
                 if (err) {
-                    console.log(err);
-                    req.flash('BAD', 'Ha ocurrido un error.', '/menu-register');
-                } else if (personResult) req.flash('OK', 'El usuario ya existe', '/menu-register');
-                else {
+                    if (req.user.role == "student") {
+                        req.flash('BAD', 'Ha ocurrido un error.', '/person/student');
+                    } else if (req.user.role == "teacher") {
+                        req.flash('BAD', 'Ha ocurrido un error.', '/person/teacher');
+                    }
+                } else if (personResult) {
+                    if (req.user.role == "student") {
+                        req.flash('OK', 'El usuario ya existe', '/person/student');
+                    } else if (req.user.role == "teacher") {
+                        req.flash('OK', 'El usuario ya existe', '/person/teacher');
+                    }
+                } else {
                     new Person({
                         dni_person: req.body.dni_person,
                         name: req.body.name,
@@ -125,13 +150,15 @@ PersonController.savePerson = (req, res) => {
                         personal_mail: req.body.personal_mail,
                         address: req.body.address,
                         phone: req.body.phone,
-                        career: req.body.career,
                         image: "null",
                         role: req.body.role
                     }).save((err, newPerson) => {
                         if (err) {
-                            console.log(err);
-                            req.flash('BAD', 'Ha ocurrido un error.', '/menu-register');
+                            if (req.user.role == "student") {
+                                req.flash('BAD', 'Ha ocurrido un error.', '/person/student');
+                            } else if (req.user.role == "teacher") {
+                                req.flash('BAD', 'Ha ocurrido un error.', '/person/teacher');
+                            }
                         } else if (newPerson) {
                             new Account({
                                 user_name: req.body.institutional_mail,
@@ -139,8 +166,11 @@ PersonController.savePerson = (req, res) => {
                                 person: newPerson._id
                             }).save((err, newAccount) => {
                                 if (err) {
-                                    console.log(err);
-                                    req.flash('BAD', 'Ha ocurrido un error.', '/menu-register');
+                                    if (req.user.role == "student") {
+                                        req.flash('BAD', 'Ha ocurrido un error.', '/person/student');
+                                    } else if (req.user.role == "teacher") {
+                                        req.flash('BAD', 'Ha ocurrido un error.', '/person/teacher');
+                                    }
                                 } else if (newAccount) {
                                     if (req.body.role === 'student') {
                                         new Student({
@@ -171,7 +201,13 @@ PersonController.savePerson = (req, res) => {
                                     } else {
                                         res.status(200).send('Se ha creado el Admin');
                                     }
-                                } else req.flash('OK', 'No se pudo crear el usuario', '/menu-register');
+                                } else {
+                                    if (req.user.role == "student") {
+                                        req.flash('OK',  'No se pudo crear el usuario', '/person/student');
+                                    } else if (req.user.role == "teacher") {
+                                        req.flash('OK',  'No se pudo crear el usuario', '/person/teacher');
+                                    }
+                                }
                             })
                         } else req.flash('OK', 'No se pudo crear el usuario', '/menu-register');
                     })
@@ -179,7 +215,11 @@ PersonController.savePerson = (req, res) => {
             });
         }
     } else {
-        req.flash('OK', 'El número de cédula es incorrecto', '/menu-register');
+        if (req.user.role == "student") {
+            req.flash('OK',  'El número de cédula es incorrecto', '/person/student');
+        } else if (req.user.role == "teacher") {
+            req.flash('OK', 'El número de cédula es incorrecto', '/person/teacher');
+        }
     }
 };
 
@@ -329,7 +369,7 @@ PersonController.getImageFile = (req, res) => {
     });
 };
 
-PersonController.logout = (req,res)=>{
+PersonController.logout = (req, res) => {
     req.logOut();
     res.redirect('/');
 };

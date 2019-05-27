@@ -1,6 +1,6 @@
 'use strict'
 
-var Class = require('../models/class.models');
+var Class = require('../models/class.model');
 var ClassController = {};
 
 

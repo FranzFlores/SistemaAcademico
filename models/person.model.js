@@ -12,11 +12,7 @@ const personSchema = new Schema({
     phone: { type: String, required: true },
     image: {type: String,required:true},
     status: { type: Boolean, default: true },
-    role: { type: String, default: true },
-    career:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Career"
-    }
+    role: { type: String, default: true }
 }, { timestamps: { createdAt: 'created_at', updateAt: 'update_at' } });
 
 module.exports = mongoose.model('Person', personSchema);

@@ -6,7 +6,7 @@ var CurriculumController = {};
 //Cargar Vistas
 CurriculumController.load_curriculum_view = (req,res)=>{
     var curriculums = Curriculum.find({status:true});
-    curriculums.populate({path:'Career'}).exec((err,curriculums)=>{
+    curriculums.populate({path:'career'}).exec((err,curriculums)=>{
         if(err) console.log(err);
         else{
             res.render('adminProfile/curriculum',{title:'Malla Curricular',curriculums: curriculums});
@@ -19,7 +19,8 @@ CurriculumController.save_curriculum = (req,res)=>{
         year: req.body.year,
         image: "null",
         numPeriod: req.body.numPeriod,
-        timePeriod: req.body.timePeriod
+        timePeriod: req.body.timePeriod,
+        career: req.body.career
     }).save((err, newCurriculum)=>{
         if(err) req.flash('BAD', "Ha ocurrido un error al guardar la malla curricular","/curriculum");
         else{

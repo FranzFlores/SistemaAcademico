@@ -9,9 +9,9 @@ const { isLoggedIn } = require('../lib/auth');
 //Cargar Vistas
 router.get('/',isLoggedIn,CurriculumController.load_curriculum_view);
 
-router.get('/curriculum',CurriculumController.all_curriculum);
+router.get('/all',CurriculumController.all_curriculum);
 router.get('/curriculum:id',CurriculumController.get_curriculum);
-router.post('/curriculum',CurriculumController.save_curriculum);
+router.post('/create',CurriculumController.save_curriculum);
 router.put('/curriculum:id',CurriculumController.update_curriculum);
 router.put('/curriculum:id',CurriculumController.delete_curriculum);
 

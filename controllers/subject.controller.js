@@ -16,7 +16,8 @@ SubjectController.save_subject = (req,res)=>{
     new Subject({
         name: req.body.name,
         numCredit: req.body.numCredit,
-        curriculum: req.body.curriculum
+        curriculum: req.body.curriculum,
+        cycle : req.body.cycle
     }).save((err, newSubject)=>{
         if(err) req.flash('BAD','Ocurrio un error al guardar la materia','/subject');
         else{
