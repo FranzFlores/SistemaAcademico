@@ -9,7 +9,7 @@ const { isLoggedIn } = require('../lib/auth');
 //Cargar Vistas
 router.get('/',isLoggedIn,SubjectController.load_subject_view);
 
-router.get('/subject',SubjectController.all_subject);
+router.get('/all',SubjectController.all_subject);
 router.get('/subject:id',SubjectController.get_subject);
 router.post('/create',SubjectController.save_subject);
 router.put('/subject:id',SubjectController.update_subject);

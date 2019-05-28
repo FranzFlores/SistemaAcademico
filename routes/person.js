@@ -37,6 +37,7 @@ router.post('/update-password/:id',accountController.update_password);
 router.post('/upload-image/:id',[md_upload,isLoggedIn],personController.uplodImage);
 router.get('/get-image-person/:imageFile',personController.getImageFile);
 
+router.post('/addSubjectTeacher',personController.add_subject_teacher);
 router.get('/allStudents', personController.all_students);
 router.get('/allTeachers', personController.all_teachers);
 

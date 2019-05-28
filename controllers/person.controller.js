@@ -10,7 +10,7 @@ var Person = require('../models/person.model');
 var Student = require('../models/student.model');
 var Teacher = require('../models/teacher.model');
 var Account = require("../models/account.model");
-var Career = require("../models/career.model");
+var SubjectTeacher = require('../models/subject_teacher.model');
 var helpers = require("../lib/helpers");
 
 const PersonController = {};
@@ -83,8 +83,6 @@ PersonController.savePerson = (req, res) => {
     var email = (req.body.institutional_mail).split('\@');
     //validar los campos que unicamente contienen letras
     var RegExPattern1 = /[a-zA-Z ]/;
-
-
 
     if ((!cad.match(RegExPattern)) || (!phone.match(RegExPattern))) {
         if (req.user.role == "student") {
@@ -372,6 +370,14 @@ PersonController.getImageFile = (req, res) => {
 PersonController.logout = (req, res) => {
     req.logOut();
     res.redirect('/');
+};
+
+PersonController.add_subject_teacher = (req,res)=>{
+    console.log(req.body);
+    console.log(req.body['subjects[]']);
+    // new SubjectTeacher({
+    //     subject:
+    // })
 };
 
 

@@ -1,18 +1,21 @@
 $(document).ready(function () {
     var subjects = [];
-    var teacher = "";
+    var period = "";
 
     $(".plus").click(function (e) {
-        teacher = $(this).attr('data-id');
+        period = $(this).attr('data-id');
     });
+
     var url = "http://localhost:3000/subject/all";
     $.ajax({
         type: 'GET',
         url: url,
         success: function (data, textStatus, jqXHR) {
+            console.log(data);
+            
             var html = "";
             $.each(data, function (i, item) {
-                html += "<li class='collection-item valign-wrapper'>"+item.name + "<button class='light-blue btn add right-align' data-external=" +item._id +" data-add='true'>Agregar</button></li>";
+                html += "<li class='collection-item valign-wrapper'>"+item.name +  "<br>Carrera " + item.curriculum.career.name + "<button class='light-blue btn add right-align' data-external=" +item._id +" data-add='true'>Agregar</button></li>";
             });
             $("#subjects").html(html);
             $(".add").click(function (e) {
@@ -39,7 +42,7 @@ $(document).ready(function () {
                     url: "http://localhost:3000/person/addSubjectTeacher",
                     data: {
                         subjects: subjects,
-                        teacher:teacher
+                        period: period
                     },
                     success: function (data, textStatus, jqXHR) {
                         console.log("Se ha enviado correctamete");
@@ -55,41 +58,8 @@ $(document).ready(function () {
         }
     });
 
-    loadCarrers();
-    loadSubjects();
-
-    $("#teacherTable tbody tr .plus").click(function(e){
+    $("#PeriodTable tbody tr td .plus").click(function(e){
         $('.modal').modal();
         e.preventDefault();
     });
-
-
-    
 });
-
-
-
-
-
-
-function loadSubjects(){
-  
-}
-
-function loadCarrers() {
-    var url = "http://localhost:3000/career/all";
-    $.ajax({
-        type: 'GET',
-        url: url,
-        success: function (data, textStatus, jqXHR) {
-            var html = "";
-            $.each(data, function (i, item) {
-                html += "<option value='" + item._id + "'>" + item.name + "</option>";
-            });
-            $("#careers").html(html);
-            $('select').formSelect();
-        }, error: function (jqXHR, textStatus, errorThrown) {
-            console.log(errorThrown);
-        }
-    });
-}

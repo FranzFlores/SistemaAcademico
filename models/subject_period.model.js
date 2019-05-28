@@ -13,4 +13,4 @@ const subject_periodSchema = new Schema({
     }
 }, { timestamps: { createdAt: 'created_at', updateAt: 'update_at' } });
 
-module.exports = mongoose.model('SubjectPeriod', subjectSchema);
+module.exports = mongoose.model('SubjectPeriod',  subject_periodSchema);

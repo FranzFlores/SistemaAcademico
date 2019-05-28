@@ -82,12 +82,11 @@
 </div>
 
 
-<table class="highlight centered responsive-table">
+<table id="teacherTable" class="highlight centered responsive-table">
     <thead>
         <tr style="color: #2ec56f;">
             <th>Cédula</th>
             <th>Nombres y Apellidos</th>
-            <th>Carrera</th>
             <th>Título Universitario</th>
             <th>Especialidad</th>
             <th>Acciones</th>
@@ -101,6 +100,9 @@
             <td><%=teacher.university_degree%></td>
             <td><%=teacher.fourth_level_degree%></td>
             <td>
+                <a id="plus" class="plus modal-trigger" href="#modal1" data-id="<%=teacher._id%>">
+                    <i class="material-icons btn">add</i>
+                </a>
                 <a id="edit" class="edit" data-id="<%=teacher._id%>">
                     <i class="material-icons btn">edit</i>
                 </a>
@@ -110,11 +112,21 @@
             </td>
         </tr>
         <%})%>
-
-
-
     </tbody>
 </table>
 
-<%-include('../footer')%>
-<script src="/js/views/person.js"></script>
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <h3 class="center-align title-form">Asignar Materias a Docente</h3>
+        <ul class="collection" id="subjects">
+        </ul>
+        <div class="modal-footer">
+            <a href="/person/teacher" class="modal-close waves-effect waves-green btn red">Cancelar</a>
+            <div class="input-field col-s12 center-align">
+                    <button class="btn" id="save">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <%-include('../footer')%>
+    <script src="/js/views/person.js"></script>

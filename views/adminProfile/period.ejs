@@ -6,7 +6,7 @@
             <h4 class="center-align title-form">Períodos Académicos</h4>
             <div class="card-content">
                 <%- locals.flash %>
-                <form  action="/period/create" method="POST" id="periodForm">
+                <form action="/period/create" method="POST" id="periodForm">
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="name" type="text" name="name" class="validate" required>
@@ -35,7 +35,7 @@
         </div>
     </div>
     <div class="col s8">
-        <table class="highlight centered responsive-table">
+        <table class="highlight centered responsive-table" id="PeriodTable">
             <thead>
                 <tr>
                     <th>Nombre Período</th>
@@ -48,9 +48,13 @@
                 <% periods.forEach(function(period){ %>
                 <tr>
                     <td><%=period.name%></td>
-                    <td><%=period.start.getDate() + '/' + period.start.getMonth() + '/' + period.start.getFullYear() %></td>
+                    <td><%=period.start.getDate() + '/' + period.start.getMonth() + '/' + period.start.getFullYear() %>
+                    </td>
                     <td><%=period.end.getDate() + '/' + period.end.getMonth() + '/' + period.end.getFullYear()%></td>
                     <td>
+                        <a id="plus" class="plus modal-trigger" href="#modal1" data-id="<%=period._id%>">
+                            <i class="material-icons btn">add</i>
+                        </a>
                         <a class="edit" data-id="<%=period._id%>">
                             <i class="material-icons btn">edit</i>
                         </a>
@@ -63,8 +67,20 @@
             </tbody>
         </table>
     </div>
-</div>
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h3 class="center-align title-form">Asignar Materias Disponibles para el Período Académico</h3>
+            <ul class="collection" id="subjects">
+            </ul>
+            <div class="modal-footer">
+                <a href="/period" class="modal-close waves-effect waves-green btn red">Cancelar</a>
+                <div class="input-field col-s12 center-align">
+                    <button class="btn" id="save">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <%-include('../footer')%>
-<script src="/js/views/career.js"></script>
+<script src="/js/views/period.js"></script>
