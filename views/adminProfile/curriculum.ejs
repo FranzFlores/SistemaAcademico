@@ -28,7 +28,7 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="timePeriod" type="text" name="timePeriod" class="validate" required>
-                            <label for="timePeriod">Duración de Periodo(Número de Semanas)</label>
+                            <label for="timePeriod">Duración de Periodo(Semanas)</label>
                         </div>
                     </div>
                     <div class="card-action">
@@ -56,8 +56,8 @@
                 <tr>
                     <td><%=curriculum.career.name%></td>
                     <td><%=curriculum.year%></td>
-                    <td><%=curriculum.numPeriod%></td>
-                    <td><%=curriculum.timePeriod%></td>
+                    <td><%=curriculum.numPeriod%> períodos</td>
+                    <td><%=curriculum.timePeriod%> semanas</td>
                     <td>
                         <a class="edit" data-id="<%=curriculum._id%>">
                             <i class="material-icons btn">edit</i>
