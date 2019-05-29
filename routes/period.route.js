@@ -9,7 +9,7 @@ var router = express.Router();
 router.get('/',isLoggedIn,PeriodController.load_period_view);
 
 router.post('/create',isLoggedIn,PeriodController.save_period);
-
+router.post('/addPeriodSubject',PeriodController.add_subject_period);
 // router.get('/all',CareerController.all_careers);
 
 // router.get('/:id',CareerController.get_career);

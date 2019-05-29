@@ -15,7 +15,8 @@ $(document).ready(function () {
             
             var html = "";
             $.each(data, function (i, item) {
-                html += "<li class='collection-item valign-wrapper'>"+item.name +  "<br>Carrera " + item.curriculum.career.name + "<button class='light-blue btn add right-align' data-external=" +item._id +" data-add='true'>Agregar</button></li>";
+                html += "<li class='collection-item valign-wrapper'>"+item.name +  "<br>Carrera " + item.curriculum.career.name +" Malla "+item.curriculum.year;
+                html += "<button class='light-blue btn add right-align' data-external=" +item._id +" data-add='true'>Agregar</button></li>";
             });
             $("#subjects").html(html);
             $(".add").click(function (e) {
@@ -37,20 +38,25 @@ $(document).ready(function () {
             });
            
             $("#save").click(function () {
+                var instance = M.Modal.getInstance($('.modal'));
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:3000/person/addSubjectTeacher",
+                    url: "http://localhost:3000/period/addPeriodSubject",
                     data: {
                         subjects: subjects,
                         period: period
                     },
                     success: function (data, textStatus, jqXHR) {
-                        console.log("Se ha enviado correctamete");
-                        //location.reload();
+                        if(data=='ok'){
+                            M.toast({html: 'Se subio con exito la información'});
+                            $('#modal1').modal('close');
+                        }
                     }, error: function (jqXHR, textStatus, errorThrown) {
                         console.log(errorThrown);
+                        M.toast({html: 'Ocurrio un error'});
                     }
                 });
+               //location.reload();
             });
         
         }, error: function (jqXHR, textStatus, errorThrown) {
