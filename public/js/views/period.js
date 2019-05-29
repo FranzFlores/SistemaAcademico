@@ -25,8 +25,7 @@ $(document).ready(function () {
                     $(this).removeClass('btn light-blue').addClass('btn red');
                     $(this).text('Cancelar');
                     $(this).attr('data-add', 'false');
-                    subjects.push(external);
-                    
+                    subjects.push(external);       
                 } else {
                     $(this).removeClass('btn red').addClass('btn light-blue');
                     $(this).text('Agregar');
@@ -38,7 +37,6 @@ $(document).ready(function () {
             });
            
             $("#save").click(function () {
-                var instance = M.Modal.getInstance($('.modal'));
                 $.ajax({
                     type: "POST",
                     url: "http://localhost:3000/period/addPeriodSubject",
@@ -49,14 +47,15 @@ $(document).ready(function () {
                     success: function (data, textStatus, jqXHR) {
                         if(data=='ok'){
                             M.toast({html: 'Se subio con exito la información'});
-                            $('#modal1').modal('close');
+                            $('.ok').show();
+                            $('.cancel').hide();
+                            $('#save').hide();
                         }
                     }, error: function (jqXHR, textStatus, errorThrown) {
                         console.log(errorThrown);
                         M.toast({html: 'Ocurrio un error'});
                     }
                 });
-               //location.reload();
             });
         
         }, error: function (jqXHR, textStatus, errorThrown) {
@@ -66,6 +65,7 @@ $(document).ready(function () {
 
     $("#PeriodTable tbody tr td .plus").click(function(e){
         $('.modal').modal();
+        $('.ok').hide();
         e.preventDefault();
     });
 });

@@ -10,9 +10,11 @@ $(document).ready(function () {
         type: 'GET',
         url: url,
         success: function (data, textStatus, jqXHR) {
+            console.log(data);
             var html = "";
             $.each(data, function (i, item) {
-                html += "<li class='collection-item valign-wrapper'>"+item.name + "<button class='light-blue btn add right-align' data-external=" +item._id +" data-add='true'>Agregar</button></li>";
+                html += "<li class='collection-item valign-wrapper'>"+item.name+"<br>Carrera " + item.curriculum.career.name;
+                html += "<button class='light-blue btn add right-align' data-external=" +item._id +" data-add='true'>Agregar</button></li>";
             });
             $("#subjects").html(html);
             $(".add").click(function (e) {
@@ -21,8 +23,7 @@ $(document).ready(function () {
                     $(this).removeClass('btn light-blue').addClass('btn red');
                     $(this).text('Cancelar');
                     $(this).attr('data-add', 'false');
-                    subjects.push(external);
-                    
+                    subjects.push(external);         
                 } else {
                     $(this).removeClass('btn red').addClass('btn light-blue');
                     $(this).text('Agregar');
@@ -42,10 +43,15 @@ $(document).ready(function () {
                         teacher:teacher
                     },
                     success: function (data, textStatus, jqXHR) {
-                        console.log("Se ha enviado correctamete");
-                        //location.reload();
+                        if(data=='ok'){
+                            M.toast({html: 'Se subio con exito la información'});
+                            $('.ok').show();
+                            $('.cancel').hide();
+                            $('#save').hide();
+                        }
                     }, error: function (jqXHR, textStatus, errorThrown) {
                         console.log(errorThrown);
+                        M.toast({html: 'Ocurrio un error'});
                     }
                 });
             });
@@ -60,11 +66,9 @@ $(document).ready(function () {
 
     $("#teacherTable tbody tr .plus").click(function(e){
         $('.modal').modal();
+        $('.ok').hide();
         e.preventDefault();
-    });
-
-
-    
+    });    
 });
 
 

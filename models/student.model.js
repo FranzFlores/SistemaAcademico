@@ -9,6 +9,10 @@ const studentSchema = new Schema({
     person: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Person"
+    },
+    career:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Career"
     }
 }, { timestamps: { createdAt: 'created_at', updateAt: 'update_at' } });
 

@@ -29,9 +29,10 @@ PersonController.load_register_teacher = (req, res) => {
 
 PersonController.load_register_student = (req, res) => {
     var students = Student.find({ status: true });
-    students.populate({ path: 'person', populate: { path: 'career', model: 'Career' } }).exec((err, students) => {
+    students.populate({ path: 'person'}).populate({path:'career'}).exec((err, students) => {
         if (err) res.status(500).send("Error en el servidor");
         else {
+            console.log(students);
             res.render('adminProfile/student', { title: "Registro de Estudiante", students: students });
         }
     });
@@ -174,6 +175,7 @@ PersonController.savePerson = (req, res) => {
                                         new Student({
                                             school: req.body.school,
                                             graduation_grade: req.body.graduation_grade,
+                                            career:req.body.career,
                                             person: newPerson._id
                                         }).save((err, newStudent) => {
                                             if (err) {
@@ -373,11 +375,45 @@ PersonController.logout = (req, res) => {
 };
 
 PersonController.add_subject_teacher = (req,res)=>{
-    console.log(req.body);
-    console.log(req.body['subjects[]']);
-    // new SubjectTeacher({
-    //     subject:
-    // })
+    var subjects = req.body['subjects[]'];
+    if (Array.isArray(subjects)) {
+        subjects.forEach(element => {
+            SubjectTeacher.findOne({ subject: element }, (err, response) => {
+                if (err) console.log(err);
+                else {
+                    if (response == null) {
+                        new SubjectTeacher({
+                            subject: element,
+                            teacher: req.body.teacher
+                        }).save((err, teacherSubject) => {
+                            if (err) res.send('error');
+                            else{
+                                console.log(teacherSubject);
+                                if(subjects[subjects.length-1]==element){
+                                    res.status(200).send('ok');
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    } else {
+        PeriodSubject.findOne({ subject: subjects }, (err, response) => {
+            if (err) console.log(err);
+            else {
+                if (response == null) {
+                    new PeriodSubject({
+                        subject: subjects,
+                        teacher: req.body.teacher
+                    }).save((err, periodSubject) => {
+                        if (err) res.send('error');
+                        else if (periodSubject) res.status(200).send('ok');
+                    });
+                }
+            }
+        });
+    }
 };
 
 

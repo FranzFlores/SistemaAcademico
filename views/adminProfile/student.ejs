@@ -58,6 +58,12 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
+                            <select name="career" id="careers"></select>
+                            <label for="career">Carrera</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
                             <input id="school" type="text" name="school" placeholder="Ingrese el Colegio"
                                 class="validate" required>
                             <label for="university_degree">Colegio</label>
@@ -81,14 +87,14 @@
     </div>
 </div>
 
-<table class="highlight centered responsive-table" >
+<table class="highlight centered responsive-table">
     <thead>
         <tr style="color: #2ec56f;">
             <th>Cédula</th>
             <th>Nombres y Apellidos</th>
             <th>Carrera</th>
             <th>Colegio</th>
-            <th>Nota Graduación</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -96,9 +102,16 @@
         <tr>
             <td><%=student.person.dni_person%></td>
             <td><%=student.person.name%></td>
-            <td><%=student.person.career.name%></td>
+            <td><%=student.career.name%></td>
             <td><%=student.school%></td>
-            <td><%=student.graduation_grade%></td>
+            <td>
+                <a class="edit" data-id="<%=student._id%>">
+                    <i class="material-icons btn">edit</i>
+                </a>
+                <a class="delete" data-id="<%=student._id%>">
+                    <i class="material-icons btn">delete</i>
+                </a>
+            </td>
         </tr>
         <%})%>
 
