@@ -374,47 +374,6 @@ PersonController.logout = (req, res) => {
     res.redirect('/');
 };
 
-PersonController.add_subject_teacher = (req,res)=>{
-    var subjects = req.body['subjects[]'];
-    if (Array.isArray(subjects)) {
-        subjects.forEach(element => {
-            SubjectTeacher.findOne({ subject: element }, (err, response) => {
-                if (err) console.log(err);
-                else {
-                    if (response == null) {
-                        new SubjectTeacher({
-                            subject: element,
-                            teacher: req.body.teacher
-                        }).save((err, teacherSubject) => {
-                            if (err) res.send('error');
-                            else{
-                                console.log(teacherSubject);
-                                if(subjects[subjects.length-1]==element){
-                                    res.status(200).send('ok');
-                                }
-                            }
-                        });
-                    }
-                }
-            });
-        });
-    } else {
-        PeriodSubject.findOne({ subject: subjects }, (err, response) => {
-            if (err) console.log(err);
-            else {
-                if (response == null) {
-                    new PeriodSubject({
-                        subject: subjects,
-                        teacher: req.body.teacher
-                    }).save((err, periodSubject) => {
-                        if (err) res.send('error');
-                        else if (periodSubject) res.status(200).send('ok');
-                    });
-                }
-            }
-        });
-    }
-};
 
 
 module.exports = PersonController;

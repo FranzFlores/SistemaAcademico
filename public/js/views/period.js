@@ -39,7 +39,7 @@ $(document).ready(function () {
             $("#save").click(function () {
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:3000/period/addPeriodSubject",
+                    url: "http://localhost:3000/subject-period/create",
                     data: {
                         subjects: subjects,
                         period: period

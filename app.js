@@ -73,7 +73,10 @@ app.use('/faculty',require('./routes/faculty.route'));
 app.use('/career',require('./routes/career.route'));
 app.use('/curriculum',require('./routes/curriculum.route'));
 app.use('/subject',require('./routes/subject.route'));
+app.use('/subject-period',require('./routes/subject_period.route'));
+app.use('/subject-teacher',require('./routes/subject_teacher.route'));
 app.use('/period',require('./routes/period.route'));
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

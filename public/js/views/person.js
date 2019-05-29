@@ -5,7 +5,7 @@ $(document).ready(function () {
     $(".plus").click(function (e) {
         teacher = $(this).attr('data-id');
     });
-    var url = "http://localhost:3000/subject/all";
+    var url = "http://localhost:3000/subject-period/all";
     $.ajax({
         type: 'GET',
         url: url,
@@ -13,8 +13,8 @@ $(document).ready(function () {
             console.log(data);
             var html = "";
             $.each(data, function (i, item) {
-                html += "<li class='collection-item valign-wrapper'>"+item.name+"<br>Carrera " + item.curriculum.career.name;
-                html += "<button class='light-blue btn add right-align' data-external=" +item._id +" data-add='true'>Agregar</button></li>";
+                html += "<li class='collection-item valign-wrapper'>" + item.subject.name + "<br>Carrera: " + item.subject.curriculum.career.name + "<br>Periodo: " + item.period.name;
+                html += "<button class='light-blue btn add right-align' data-external=" + item.subject._id + " data-add='true'>Agregar</button></li>";
             });
             $("#subjects").html(html);
             $(".add").click(function (e) {
@@ -23,7 +23,7 @@ $(document).ready(function () {
                     $(this).removeClass('btn light-blue').addClass('btn red');
                     $(this).text('Cancelar');
                     $(this).attr('data-add', 'false');
-                    subjects.push(external);         
+                    subjects.push(external);
                 } else {
                     $(this).removeClass('btn red').addClass('btn light-blue');
                     $(this).text('Agregar');
@@ -33,29 +33,29 @@ $(document).ready(function () {
                 console.log(subjects);
                 e.preventDefault();
             });
-           
+
             $("#save").click(function () {
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:3000/person/addSubjectTeacher",
+                    url: "http://localhost:3000/subject-teacher/create",
                     data: {
                         subjects: subjects,
-                        teacher:teacher
+                        teacher: teacher
                     },
                     success: function (data, textStatus, jqXHR) {
-                        if(data=='ok'){
-                            M.toast({html: 'Se subio con exito la información'});
+                        if (data == 'ok') {
+                            M.toast({ html: 'Se subio con exito la información' });
                             $('.ok').show();
                             $('.cancel').hide();
                             $('#save').hide();
                         }
                     }, error: function (jqXHR, textStatus, errorThrown) {
                         console.log(errorThrown);
-                        M.toast({html: 'Ocurrio un error'});
+                        M.toast({ html: 'Ocurrio un error' });
                     }
                 });
             });
-        
+
         }, error: function (jqXHR, textStatus, errorThrown) {
             console.log(errorThrown);
         }
@@ -64,11 +64,11 @@ $(document).ready(function () {
     loadCarrers();
     loadSubjects();
 
-    $("#teacherTable tbody tr .plus").click(function(e){
+    $("#teacherTable tbody tr .plus").click(function (e) {
         $('.modal').modal();
         $('.ok').hide();
         e.preventDefault();
-    });    
+    });
 });
 
 
@@ -76,8 +76,8 @@ $(document).ready(function () {
 
 
 
-function loadSubjects(){
-  
+function loadSubjects() {
+
 }
 
 function loadCarrers() {
