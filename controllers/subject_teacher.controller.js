@@ -6,6 +6,7 @@ var SubjectTeacherController = {};
 
 SubjectTeacherController.save_subject_teacher = (req, res) => {
     var subjects = req.body['subjects[]'];
+    var aux=[];
     if (Array.isArray(subjects)) {
         subjects.forEach(element => {
             SubjectTeacher.findOne({ subject: element }, (err, response) => {
@@ -24,6 +25,11 @@ SubjectTeacherController.save_subject_teacher = (req, res) => {
                                 }
                             }
                         });
+                    }else{
+                        aux.push(response);
+                        if(subjects[subjects.length-1]==element){
+                            res.status(200).send(aux);
+                        }
                     }
                 }
             });
@@ -40,6 +46,8 @@ SubjectTeacherController.save_subject_teacher = (req, res) => {
                         if (err) res.send('error');
                         else if (subjectTeacher) res.status(200).send('ok');
                     });
+                }else{
+                    res.status(200).send('ingresado');
                 }
             }
         });
@@ -47,13 +55,12 @@ SubjectTeacherController.save_subject_teacher = (req, res) => {
 };
 
 
-SubjectTeacherController.get_period_subjects = (req, res) => {
-    var periodSubjects =  PeriodSubject.find();
-    periodSubjects.populate({path:'period'}).populate({path:'subject',populate:{ path: 'curriculum', model: 'Curriculum', populate: { path: 'career', model: 'Career' }}}).exec((err,periodsubjects)=>{
+SubjectTeacherController.get_teacher_subjects = (req, res) => {
+    var teacherSubjects = SubjectTeacher.find();
+    teacherSubjects.populate({path:'teacher',select:'_id',populate:{path:'person',select:'name'}}).populate({path:'subject',populate:{ path: 'curriculum', model: 'Curriculum',select:'_id', populate: { path: 'career', model: 'Career',select: 'name' }}}).exec((err,teachersubjects)=>{
         if(err) console.log(err);
-        else res.status(200).send(periodsubjects)
+        else res.status(200).send(teachersubjects);
     });
-    //res.render('teacherProfile/subject',{title:"Materias Docente",periodSubject:periodsubjects});
 };
 
 

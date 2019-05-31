@@ -7,7 +7,7 @@ var router = express.Router();
 const { isLoggedIn } = require('../lib/auth');
 
 //Cargar Vistas
-router.get('/all');
+router.get('/all',SubjectTeacherController.get_teacher_subjects);
 
 // router.get('/subject:id',SubjectController.get_subject);
 router.post('/create',SubjectTeacherController.save_subject_teacher);

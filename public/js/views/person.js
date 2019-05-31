@@ -45,10 +45,14 @@ $(document).ready(function () {
                     success: function (data, textStatus, jqXHR) {
                         if (data == 'ok') {
                             M.toast({ html: 'Se subio con exito la información' });
-                            $('.ok').show();
-                            $('.cancel').hide();
-                            $('#save').hide();
+                        }else if(data=='ingresado'){
+                            M.toast({ html: 'La materia que escogió ya esta asignadas al docente' });
+                        }else{
+                            M.toast({ html: 'La materias que escogió ya estan asignadas al docente' });
                         }
+                        $('.ok').show();
+                        $('.cancel').hide();
+                        $('#save').hide();
                     }, error: function (jqXHR, textStatus, errorThrown) {
                         console.log(errorThrown);
                         M.toast({ html: 'Ocurrio un error' });
@@ -62,23 +66,17 @@ $(document).ready(function () {
     });
 
     loadCarrers();
-    loadSubjects();
+    loadTeacherSubjects();
 
     $("#teacherTable tbody tr .plus").click(function (e) {
         $('.modal').modal();
         $('.ok').hide();
         e.preventDefault();
     });
+
+
 });
 
-
-
-
-
-
-function loadSubjects() {
-
-}
 
 function loadCarrers() {
     var url = "http://localhost:3000/career/all";
@@ -97,3 +95,27 @@ function loadCarrers() {
         }
     });
 }
+
+function loadTeacherSubjects() {
+    var url = "http://localhost:3000/subject-teacher/all";
+    $.ajax({
+        type: 'GET',
+        url: url,
+        success: function (data, textStatus, jqXHR) {
+            var html = "";
+            $.each(data, function (i, item) {
+                html += `<tr><td>`+ item.teacher.person.name+`</td>
+                <td>
+                    <ul>
+                        <li>`+item.subject.name+`<br>Carrera: `+item.subject.curriculum.career.name +`</li>
+                    </ul>
+                </td></tr>`
+            });
+            $("#teacherSubject tbody").html(html);
+        }, error: function (jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown);
+        }
+    });
+}
+
+

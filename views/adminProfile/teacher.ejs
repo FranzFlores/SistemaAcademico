@@ -83,6 +83,7 @@
 
 
 <table id="teacherTable" class="highlight centered responsive-table">
+    <h4 class="title-form center-align">Resumen de los Docentes Ingresados</h4>
     <thead>
         <tr style="color: #2ec56f;">
             <th>Cédula</th>
@@ -115,6 +116,16 @@
     </tbody>
 </table>
 
+<table id="teacherSubject" class="highlight centered responsive-table">
+    <h4 class="title-form center-align">Docente-Materia </h4>
+    <thead style="color: #2ec56f;">
+        <th>Docente</th>
+        <th>Materias</th>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
 <div id="modal1" class="modal">
     <div class="modal-content">
         <h3 class="center-align title-form">Asignar Materias a Docente</h3>
@@ -123,11 +134,14 @@
         <div class="modal-footer">
             <a href="/person/teacher" class="modal-close waves-effect waves-green btn red cancel">Cancelar</a>
             <div class="input-field col-s12 center-align">
-                    <button class="btn" id="save">Guardar</button>
+                <button class="btn save" id="save">Guardar</button>
             </div>
             <a href="/person/teacher" class="modal-close ok waves-effect center-align waves-green btn green">Aceptar</a>
         </div>
     </div>
+</div>
+
+
 
     <%-include('../footer')%>
     <script src="/js/views/person.js"></script>
