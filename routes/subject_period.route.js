@@ -7,6 +7,8 @@ var router = express.Router();
 const { isLoggedIn } = require('../lib/auth');
 
 //Cargar Vistas
+
+
 router.get('/all', SubjectPeriodController.get_period_subjects);
 
 // router.get('/subject:id',SubjectController.get_subject);

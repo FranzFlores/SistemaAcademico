@@ -22,3 +22,28 @@ function loadCurriculums() {
         }
     });
 }
+
+function loadPeriodSubject(){
+    var url = "http://localhost:3000/subject-period/all";
+    $.ajax({
+        type: 'GET',
+        url: url,
+        success: function (data, textStatus, jqXHR) {
+            var html = "";
+            $.each(data, function (i, item) {
+                html += '<tr><td>' + item.teacher.person.name + '</td>';
+                html += `<td>
+                <ul>
+                    <li>`+ item.subject.name + `<br>Carrera: ` + item.subject.curriculum.career.name + `<a class="delete" data-id=`+item.subject._id+`>
+                    <i class="material-icons btn">delete</i>
+                    </a>
+                    </li>
+                </ul>
+                </td></tr>`;
+            });
+            $("#teacherSubject tbody").html(html);
+        }, error: function (jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown);
+        }
+    });
+}

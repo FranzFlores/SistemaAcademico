@@ -1,4 +1,7 @@
 $(document).ready(function () {
+
+    loadTeacherSubjects();
+
     var subjects = [];
     var teacher = "";
 
@@ -45,9 +48,9 @@ $(document).ready(function () {
                     success: function (data, textStatus, jqXHR) {
                         if (data == 'ok') {
                             M.toast({ html: 'Se subio con exito la información' });
-                        }else if(data=='ingresado'){
+                        } else if (data == 'ingresado') {
                             M.toast({ html: 'La materia que escogió ya esta asignadas al docente' });
-                        }else{
+                        } else {
                             M.toast({ html: 'La materias que escogió ya estan asignadas al docente' });
                         }
                         $('.ok').show();
@@ -66,7 +69,7 @@ $(document).ready(function () {
     });
 
     loadCarrers();
-    loadTeacherSubjects();
+
 
     $("#teacherTable tbody tr .plus").click(function (e) {
         $('.modal').modal();
@@ -104,12 +107,15 @@ function loadTeacherSubjects() {
         success: function (data, textStatus, jqXHR) {
             var html = "";
             $.each(data, function (i, item) {
-                html += `<tr><td>`+ item.teacher.person.name+`</td>
-                <td>
-                    <ul>
-                        <li>`+item.subject.name+`<br>Carrera: `+item.subject.curriculum.career.name +`</li>
-                    </ul>
-                </td></tr>`
+                html += '<tr><td>' + item.teacher.person.name + '</td>';
+                html += `<td>
+                <ul>
+                    <li>`+ item.subject.name + `<br>Carrera: ` + item.subject.curriculum.career.name + `<a class="delete" data-id=`+item.subject._id+`>
+                    <i class="material-icons btn">delete</i>
+                    </a>
+                    </li>
+                </ul>
+                </td></tr>`;
             });
             $("#teacherSubject tbody").html(html);
         }, error: function (jqXHR, textStatus, errorThrown) {

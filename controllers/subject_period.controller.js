@@ -54,8 +54,6 @@ PeriodSubjectController.get_period_subjects = (req, res) => {
         if(err) console.log(err);
         else res.status(200).send(periodsubjects)
     });
-    //res.render('teacherProfile/subject',{title:"Materias Docente",periodSubject:periodsubjects});
 };
-
 
 module.exports = PeriodSubjectController;
