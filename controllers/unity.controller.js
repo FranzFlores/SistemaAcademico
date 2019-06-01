@@ -1,8 +1,11 @@
 'use strict'
 
-var Unity = require('../models/unity.models');
+var Unity = require('../models/unity.model');
 var UnityController = {};
 
+UnityController.load_unity_view = (req,res)=>{
+    res.render('teacherProfile/unity',{title:"Materia"});
+};
 
 UnityController.save_class = (req,res)=>{
     new Class({
