@@ -1,5 +1,8 @@
 $(document).ready(function () {
     loadCurriculums();
+
+    //Para la vista de Docente
+    $('.collapsible').collapsible();
 });
 
 

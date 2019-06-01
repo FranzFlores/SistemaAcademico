@@ -1,6 +1,18 @@
 <%-include('../header')%>
-    <h2 class="center-align title-form">Mis Materias</h2>
-    <ul class="collapsible">
-    </ul>
+<h2 class="center-align title-form">Mis Materias</h2>
+
+<ul class="collapsible">
+    <%periods.forEach(function(period){%>
+    <li>
+        <div class="collapsible-header">Período <%=period.name%></div>
+        <%subjects.forEach(function(subject){%>
+        <div class="collapsible-body"><span><a href="#"><%=subject.subject.name%></a></span></div>
+        <%});%>
+    </li>
+    <%});%>
+</ul>
+
+
+
 <%-include('../footer')%>
 <script src="/js/views/subject.js"></script>

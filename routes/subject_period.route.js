@@ -4,7 +4,7 @@ var express = require('express');
 var SubjectPeriodController = require('../controllers/subject_period.controller');
 var router = express.Router();
 
-const { isLoggedIn } = require('../lib/auth');
+const { isLoggedIn } = require('../lib/auth'); 
 
 //Cargar Vistas
 
