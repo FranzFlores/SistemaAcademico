@@ -1,5 +1,25 @@
 $(document).ready(function () {
     loadCarrers();
+
+    $('.edit').click(function(e){
+        var idCurriculum = $(this).attr('data-id');
+        var url =  "http://localhost:3000/curriculum/"+idCurriculum;
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function (data, textStatus, jqXHR) {
+                console.log(data);
+                $("#year").val(data.year);
+                $("#numPeriod").val(data.numPeriod);
+                $("#timePeriod").val(data.timePeriod);
+                $("#button").text("Editar");
+                $("#button").attr('data-id',idCurriculum);
+            }, error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+        e.preventDefault();
+    })
 });
 
 function loadCarrers() {
