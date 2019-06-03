@@ -4,13 +4,15 @@
 <h2 class="center-align title-form"><%=subjectTeacher.subject.name%></h2>
 <div class="center-align">
     <a class=" waves-effect waves-light btn-large" href="/unity/new/<%=subjectTeacher._id%>">Añadir Unidad</a>
-    <a class=" waves-effect waves-light btn-large" href="/class/new">Añadir Clase</a>
 </div>
 
 
 <h3 class="center-align title-form">Unidades</h3>
 <%unities.forEach(function(unity){%>
-<h4 class="title-form"><%=unity.name%></h4>
+<div class="row">
+    <div class="col-md-6 center-align"><h4 class="title-form"><%=unity.name%></h4></div>
+    <div class="col-md-6 valign-wrapper right-align"><a class=" waves-effect waves-light btn-large" href="/class/new/<%=unity._id%>">Añadir Clase</a></div>
+</div>
 <p><span class="profile-info">Fecha Inicio</span>
     <%=unity.start_unity.getDate() + '/' + unity.start_unity.getMonth() + '/' + unity.start_unity.getFullYear()%>
 </p>

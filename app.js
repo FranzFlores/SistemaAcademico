@@ -77,6 +77,7 @@ app.use('/subject-period',require('./routes/subject_period.route'));
 app.use('/subject-teacher',require('./routes/subject_teacher.route'));
 app.use('/period',require('./routes/period.route'));
 app.use('/unity',require('./routes/unity.route'));
+app.use('/class',require('./routes/class.route'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
