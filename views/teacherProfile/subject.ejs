@@ -6,11 +6,13 @@
     <li>
         <div class="collapsible-header">Período <%=period.name%></div>
         <%subjects.forEach(function(subject){%>
-        <div class="collapsible-body"><span><a href="/unity"><%=subject.subject.name%></a></span></div>
+        <div class="collapsible-body"><span><a href="/unity/<%=subject._id%>"><%=subject.subject.name%></a></span></div>
         <%});%>
     </li>
     <%});%>
 </ul>
+
+
 
 
 

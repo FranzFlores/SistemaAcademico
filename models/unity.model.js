@@ -4,13 +4,12 @@ const { Schema } = mongoose;
 
 const unitySchema = new Schema({
     name: { type: String, required: true },
-    start_unit: { type: String, required: true },
-    end_unit: { type: String, required: true },
-    subject: {
+    start_unity: { type: Date, required: true },
+    end_unity: { type: Date, required: true },
+    subjectTeacher: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Subject" 
-    },
-    status: { type: Boolean, default: true },
+        ref: "SubjectTeacher" 
+    }
 }, { timestamps: { createdAt: 'created_at', updateAt: 'update_at' } });
 
 module.exports = mongoose.model('Unity', unitySchema);

@@ -1,0 +1,23 @@
+<%-include('../header')%>
+
+<%- locals.flash %>
+<h2 class="center-align title-form"><%=subjectTeacher.subject.name%></h2>
+<div class="center-align">
+    <a class=" waves-effect waves-light btn-large" href="/unity/new/<%=subjectTeacher._id%>">Añadir Unidad</a>
+    <a class=" waves-effect waves-light btn-large" href="/class/new">Añadir Clase</a>
+</div>
+
+
+<h3 class="center-align title-form">Unidades</h3>
+<%unities.forEach(function(unity){%>
+<h4 class="title-form"><%=unity.name%></h4>
+<p><span class="profile-info">Fecha Inicio</span>
+    <%=unity.start_unity.getDate() + '/' + unity.start_unity.getMonth() + '/' + unity.start_unity.getFullYear()%>
+</p>
+<p><span class="profile-info">Fecha Final</span>
+    <%=unity.end_unity.getDate() + '/' + unity.end_unity.getMonth() + '/' + unity.end_unity.getFullYear()%>
+</p>
+<ul></ul>
+<%});%>
+
+<%-include('../footer')%>

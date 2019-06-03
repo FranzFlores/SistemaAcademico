@@ -1,6 +1,7 @@
 $(document).ready(function () {
 
     loadTeacherSubjects();
+    $('.datepicker').datepicker({ format: 'yyyy/mm/dd', maxDate: new Date() });
 
     var subjects = [];
     var teacher = "";

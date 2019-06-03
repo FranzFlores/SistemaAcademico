@@ -1,32 +1,61 @@
 'use strict'
 
 var Unity = require('../models/unity.model');
+var SubjectTeacher = require('../models/subject_teacher.model');
+var helpers = require('../lib/helpers');
 var UnityController = {};
 
-UnityController.load_unity_view = (req,res)=>{
-    res.render('teacherProfile/unity',{title:"Materia"});
+UnityController.load_content_home_view = (req, res) => {
+    SubjectTeacher.findById(req.params.id).populate({ path: 'subject', select: 'name' }).exec((err, subjectTeacher) => {
+        if (err) console.log(err);
+        else {
+           Unity.find({subjectTeacher:subjectTeacher},(err,unities)=>{
+            res.render('teacherProfile/content_home', { title: "Materia", subjectTeacher: subjectTeacher,unities:unities });
+           }); 
+        }
+    });
 };
 
-UnityController.save_class = (req,res)=>{
-    new Class({
-        name: req.body.name,
-        description: req.body.description
-    }).save((err, newclass)=>{
-        if(err) res.status(500).send("error");
+
+UnityController.load_create_view = (req, res) => {
+    SubjectTeacher.findById(req.params.id, (err, subjectTeacher) => {
+        if (err) console.log(err);
+        else res.render('teacherProfile/create_unity', { title: "Materia", subjectTeacher: subjectTeacher });
+    });
+};
+
+UnityController.save_unity = (req, res) => {
+    var start_unity = helpers.formatDate(req.body.start_unity);
+    var end_unity = helpers.formatDate(req.body.end_unity);
+    
+    SubjectTeacher.findById(req.body.subjectTeacher,(err,subjectTeacher)=>{
+        if(err) console.log(err);
         else{
-            if(!newClass) res.status(404).send("no se ha guardado");
-            else res.status(200).send(newUnity);
+            new Unity({
+                name: req.body.name,
+                start_unity: start_unity,
+                end_unity: end_unity,
+                subjectTeacher: subjectTeacher._id
+            }).save((err, newunity) => {
+                if (err) {
+                    console.log(err);
+                    req.flash('BAD', 'Ha ocurrido un error al guardar la Unidad','/unity/'+subjectTeacher._id);
+                } else {
+                    console.log(newunity);
+                    req.flash('GOOD', 'Se ha guardado con éxito la Unidad','/unity/'+subjectTeacher._id);
+                }
+            });
         }
     });
 }
 
-UnityController.get_Class = (req,res)=>{
+UnityController.get_Class = (req, res) => {
     var UnityId = req.params.id;
-    Class.findById(UnityId, (err, Class) =>{
+    Class.findById(UnityId, (err, Class) => {
         if (err) res.status(500).send('error en la petición');
         else {
             if (!Class) res.status(404).send('la unidad no existe');
-         else res.status(200).send(Class);
+            else res.status(200).send(Class);
         }
     });
 }
@@ -34,11 +63,11 @@ UnityController.get_Class = (req,res)=>{
 UnityController.update_Unity = (req, res) => {
     var UnityId = req.params.id;
     var update = {
-        name : req.body.name,
-        description : req.body.description
+        name: req.body.name,
+        description: req.body.description
     };
 
-    Class.findByIdAndUpdate(UnityId, update, (err, UnityUpdated)=>{
+    Class.findByIdAndUpdate(UnityId, update, (err, UnityUpdated) => {
         if (err) res.status(500).send('error al guardar clase');
         else {
             if (!UnityUpdated) res.status(404).send('no se ha actualizado');
@@ -47,10 +76,10 @@ UnityController.update_Unity = (req, res) => {
     });
 }
 
-UnityController.delete_Class= (req, res) => {
+UnityController.delete_Class = (req, res) => {
     var UnityId = req.params.id;
 
-    Unity.findByIdAndUpdate(UnityId,{status:false} ,(err, UnityRemoved)=>{
+    Unity.findByIdAndUpdate(UnityId, { status: false }, (err, UnityRemoved) => {
         if (err) res.status(500).send('error en la petición');
         else {
             if (!UnityRemoved) res.status(404).send('error al eliminar');
@@ -60,7 +89,7 @@ UnityController.delete_Class= (req, res) => {
 }
 
 UnityController.all_Unity = (req, res) => {
-    var Unity = Unity.find({status:true});
+    var Unity = Unity.find({ status: true });
     Unity.sort('name').exec((err, Unity) => {
         if (err) res.status(500).send("Error");
         else {

@@ -1,0 +1,43 @@
+<%-include('../header')%>
+
+<div class="container">
+    <div class="card" style="margin-top:40px;">
+        <h3 class="center-align title-form">Registro de Unidad</h3>
+        <%- locals.flash %>
+        <div class="card-content">
+            <div class="row">
+                <form class="col s12" action="/unity/create" method="POST">
+                    <div class="row">
+                        <input type="text" name="subjectTeacher" hidden value="<%=subjectTeacher._id%>">
+                        <div class="input-field col s12">
+                            <input id="name" type="text" name="name" placeholder="Ingrese nombre de unidad"
+                                class="validate" required>
+                            <label for="name">Nombre de Unidad</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="text" class="datepicker" name="start_unity" required>
+                            <label for="start_unity">Fecha de Inicio</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="text" class="datepicker" name="end_unity" required>
+                            <label for="end_unity">Fecha de Finalización</label>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <div class="input-field col-s12 center-align">
+                            <button class="btn">Guardar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<%-include('../footer')%>
+<script src="/js/views/unity.js"></script>
