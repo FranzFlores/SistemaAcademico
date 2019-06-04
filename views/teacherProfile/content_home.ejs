@@ -10,16 +10,48 @@
 <h3 class="center-align title-form">Unidades</h3>
 <%unities.forEach(function(unity){%>
 <div class="row">
-    <div class="col-md-6 center-align"><h4 class="title-form"><%=unity.name%></h4></div>
-    <div class="col-md-6 valign-wrapper right-align"><a class=" waves-effect waves-light btn-large" href="/class/new/<%=unity._id%>">Añadir Clase</a></div>
+    <div class="col-md-6 center-align">
+        <h4 class="title-form"><%=unity.unity.name%></h4>
+    </div>
+    <div class="col-md-6 valign-wrapper right-align"><a class=" waves-effect waves-light btn-large"
+            href="/class/new/<%=unity.unity._id%>">Añadir Clase</a></div>
 </div>
-<p><span class="profile-info">Fecha Inicio</span>
-    <%=unity.start_unity.getDate() + '/' + unity.start_unity.getMonth() + '/' + unity.start_unity.getFullYear()%>
-</p>
-<p><span class="profile-info">Fecha Final</span>
-    <%=unity.end_unity.getDate() + '/' + unity.end_unity.getMonth() + '/' + unity.end_unity.getFullYear()%>
-</p>
-<ul></ul>
+<div class="row">
+    <div class="col-md-6">
+        <p><span class="profile-info">Fecha Inicio</span>
+            <%=unity.unity.start_unity.getDate() + '/' +unity.unity.start_unity.getMonth() + '/' + unity.unity.start_unity.getFullYear()%>
+        </p>
+    </div>
+    <div class="col-md-6">
+        <p><span class="profile-info">Fecha Final</span>
+            <%=unity.unity.end_unity.getDate() + '/' +unity.unity.end_unity.getMonth() + '/' + unity.unity.end_unity.getFullYear()%>
+        </p>
+    </div>
+</div>
+
+<ul class="collapsible">
+    <%unity.classes.forEach(function(classes){%>
+    <li>
+        <div class="collapsible-header"><%=classes.topic%></div>
+        <div class="collapsible-body">
+            <h5 class="title-form center-align">Detalles de la Clase</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><span class="info">Fecha de la Clase</span>
+                        <%=classes.date.getDate() + '/' +classes.date.getMonth() + '/' + classes.date.getFullYear()%>
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p><span class="info">Paralelo</span>
+                        <%=classes.parallel%>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </li>
+    <%});%>
+</ul>
 <%});%>
 
 <%-include('../footer')%>
+<script src="/js/views/unity.js"></script>

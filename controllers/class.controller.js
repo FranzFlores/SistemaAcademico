@@ -17,23 +17,29 @@ ClassController.save_class = (req, res) => {
     Unity.findById(req.body.unity, (err, unity) => {
         if (err) console.log(err);
         else {
-            console.log(unity);
-            
-            // var date = helpers.formatDate(req.body.date);
-            // new Class({
-            //     topic: req.body.topic,
-            //     parallel: req.body.parallel,
-            //     date: date,
-            //     unity: req.body.unity
-            // }).save((err, newClass) => {
-            //     console.log(unity.subjectTeacher);
-                
-            //     if (err) req.flash('BAD','Ocurrio un error al guardar la clase','/unity/'+unity.subjectTeacher);
-            //     else{
-            //         console.log(newClass);
-            //         req.flash('GOOD','Se ha guardado Correctamente la clase','/unity/'+unity.subjectTeacher);
-            //     } 
-            // });
+            var date = helpers.formatDate(req.body.date);
+            new Class({
+                topic: req.body.topic,
+                parallel: req.body.parallel,
+                date: date,
+                unity: req.body.unity
+            }).save((err, newClass) => {                
+                if (err) req.flash('BAD','Ocurrio un error al guardar la clase','/unity/'+unity.subjectTeacher);
+                else{
+                    console.log(newClass);
+                    req.flash('GOOD','Se ha guardado Correctamente la clase','/unity/'+unity.subjectTeacher);
+                } 
+            });
+        }
+    });
+}
+
+ClassController.all_class_unity = (req, res) => {
+    Class.find({unity:req.params.id},(err,classes)=>{
+        if(err) console.log(err);
+        else{
+            if (!classes) res.status(404).send("error al listar"); 
+            else res.status(200).send(Class);
         }
     });
 }
@@ -77,16 +83,7 @@ ClassController.delete_Class = (req, res) => {
     });
 }
 
-ClassController.all_Class = (req, res) => {
-    var Class = Class.find({ status: true });
-    Class.sort('name').exec((err, Class) => {
-        if (err) res.status(500).send("Error");
-        else {
-            if (!Class) res.status(404).send("error al listar");
-            else res.status(200).send(Class);
-        }
-    });
-}
+
 
 
 module.exports = ClassController;

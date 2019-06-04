@@ -8,6 +8,7 @@ const { isLoggedIn } = require('../lib/auth');
 
 //Cargar Vistas
 router.get('/new/:id',isLoggedIn,ClassController.load_class_create_view);
+router.get('/all/:id',isLoggedIn,ClassController.all_class_unity);
 
 router.post('/create',ClassController.save_class);
 

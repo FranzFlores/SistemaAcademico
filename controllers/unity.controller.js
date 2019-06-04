@@ -2,15 +2,31 @@
 
 var Unity = require('../models/unity.model');
 var SubjectTeacher = require('../models/subject_teacher.model');
+var Class = require('../models/class.model');
 var helpers = require('../lib/helpers');
 var UnityController = {};
 
 UnityController.load_content_home_view = (req, res) => {
+    var unity=[];
     SubjectTeacher.findById(req.params.id).populate({ path: 'subject', select: 'name' }).exec((err, subjectTeacher) => {
         if (err) console.log(err);
         else {
            Unity.find({subjectTeacher:subjectTeacher},(err,unities)=>{
-            res.render('teacherProfile/content_home', { title: "Materia", subjectTeacher: subjectTeacher,unities:unities });
+               unities.forEach(element=>{
+                    Class.find({unity:element._id},(err,classes)=>{
+                        if(err) console.log(err);
+                        else{
+                            var obj = {};
+                            obj.unity = element;
+                            obj.classes = classes;
+                            unity.push(obj);
+                            if(unities[unities.length-1].name==element.name){                                
+                               res.render('teacherProfile/content_home', { title: "Materia", subjectTeacher: subjectTeacher,unities:unity });
+                            }
+                        }
+                    });
+               });
+           
            }); 
         }
     });

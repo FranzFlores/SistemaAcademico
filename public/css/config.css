@@ -46,6 +46,13 @@
 	width: 160px;
 }
 
+.info {
+    font-weight: bold;
+    margin-right: 5px;
+    float: left;
+	width: 110px;
+}
+
 .add{
     position: absolute;
     left: 75%;
