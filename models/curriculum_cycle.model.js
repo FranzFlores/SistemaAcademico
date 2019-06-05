@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const curriculumCycleSchema = new Schema({
     curriculum: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Curriculum"
+        ref: "Curriculum" 
     },
     cycle: {
         type: mongoose.Schema.Types.ObjectId,

@@ -16,8 +16,7 @@ function loadCurriculums() {
             var html = "";
             $.each(data, function (i, item) {
                 html += "<option value='" + item._id + "'>" + item.year + "-"+ item.career.name+  "</option>";
-            });
-            
+            }); 
             $("#curriculums").html(html);
             $('select').formSelect();
         }, error: function (jqXHR, textStatus, errorThrown) {

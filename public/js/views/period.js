@@ -2,6 +2,7 @@ $(document).ready(function () {
     var subjects = [];
     var period = "";
 
+    $('.datepicker').datepicker();
 
     $(".plus").click(function (e) {
         period = $(this).attr('data-id');
@@ -69,11 +70,12 @@ $(document).ready(function () {
         $('.ok').hide();
         e.preventDefault();
     });
+    
     $('.edit').click(function(e){
         var idPeriod = $(this).attr('data-id');
         console.log(idPeriod)
         var url =  "http://localhost:3000/period/"+idPeriod ;
-        $.ajax({
+        $.ajax({ 
             type: 'GET',
             url: url,
             success: function (data, textStatus, jqXHR) {

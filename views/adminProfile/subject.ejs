@@ -55,8 +55,8 @@
             <tbody>
                 <% subjects.forEach(function(subject){ %>
                 <tr>
-                    <td><%=subject.curriculum.career.name%></td>
-                    <td><%=subject.curriculum.year%></td>
+                    <td><%=subject.curriculum_cycle.curriculum.career.name%></td>
+                    <td><%=subject.curriculum_cycle.curriculum.year%></td>
                     <td><%=subject.name%></td>
                     <td><%=subject.numCredit%></td>
                     <td>
