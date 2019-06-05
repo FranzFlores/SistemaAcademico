@@ -7,6 +7,8 @@ var SubjectController = {};
 SubjectController.load_subject_view = (req, res) => {
     var subjects = Subject.find({ status: true });
     subjects.populate({ path: 'curriculum', populate: { path: 'career', model: 'Career' } }).exec((err, subjects) => {
+        console.log(subjects);
+        
         if (err) res.status(500).send("Error");
         else res.render('adminProfile/subject', { title: 'Materia', subjects: subjects });
     });

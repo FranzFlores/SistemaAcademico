@@ -5,7 +5,7 @@ var CurriculumController = {};
 
 //Cargar Vistas
 CurriculumController.load_curriculum_view = (req,res)=>{
-    var curriculums = Curriculum.find({status:true});
+    var curriculums = Curriculum.find();
     curriculums.populate({path:'career'}).exec((err,curriculums)=>{
         if(err) console.log(err);
         else{
