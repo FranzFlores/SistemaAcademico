@@ -5,8 +5,7 @@ var CareerController = {};
 
 //Cargar Vistas
 CareerController.load_carrer_view = (req,res)=>{
-    var careers = Career.find({status:true});
-    careers.populate({ path: 'faculty' }).exec((err, careers) => {
+    Career.find().populate({ path: 'faculty' }).exec((err, careers) => {
         if (err) res.status(500).send("Error");
         else res.render('adminProfile/career',{title:'Carreras',careers:careers});
     });
@@ -63,16 +62,14 @@ CareerController.update_career = (req, res) => {
 }
 
 CareerController.delete_career = (req, res) => {
-    var careerId = req.params.id;
-
-    Career.findByIdAndUpdate(careerId,{status:false} ,(err, careerRemoved)=>{
+    Career.findByIdAndRemove(req.params.id,(err,careerRemoved) =>{
         if (err) req.flash('BAD','Ocurrio un error al eliminar','/career');
         else {
             if (!careerRemoved) req.flash('OK','No se pudo eliminar la carrera','/career');
             else req.flash('GOOD','Se ha eliminado la carrera con exito','/career');
         }
     });
-}
+};
 
 CareerController.all_careers = (req, res) => {
     var careers = Career.find({status:true});
