@@ -5,7 +5,7 @@ var FacultyController = {};
 
 //Cargar Vista de Facultad
 FacultyController.load_faculty_view = (req,res)=>{
-    Faculty.find({status:true},(err,faculties)=>{
+    Faculty.find((err,faculties)=>{
         if(err) console.log("Error " + err);
         else res.render('adminProfile/faculty',{title:"Facultad",faculties: faculties});
     });
@@ -59,16 +59,14 @@ FacultyController.update_faculty = (req, res) => {
 }
 
 FacultyController.delete_faculty = (req, res) => {
-    var facultyId = req.params.id;
-
-    Faculty.findByIdAndUpdate(facultyId,{status:false} ,(err, facultyRemoved)=>{
-        if (err) req.flash("BAD","Error al actualizar la facultad","/faculty");
+    Faculty.findByIdAndRemove(req.params.id,(err,facultyRemoved)=>{
+        if (err) req.flash("BAD","Error al eliminar la facultad","/faculty");
         else {
-            if (!facultyRemoved) res.status(404).send('error al eliminar');
+            if (!facultyRemoved) req.flash("OK","No se pudo eliminar la facultad","/faculty");
             else req.flash("GOOD","Se ha actualizado la facultad con éxito","/faculty");
-        }
+        } 
     });
-}
+};
 
 FacultyController.all_faculties = (req, res) => {
     var facults = Faculty.find({status:true});
