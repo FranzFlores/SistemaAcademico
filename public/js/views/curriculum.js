@@ -47,3 +47,18 @@ function loadCarrers() {
         }
     });
 }
+$(".delete").click(function (e) {
+    var idCurriculum = $(this).attr('data-id');
+    var url =  "http://localhost:3000/curriculum/delete/"+idCurriculum;
+    $.ajax({
+        type: 'POST',
+        url: url, 
+        success: function (data, textStatus, jqXHR) {
+            console.log(data);
+            window.location.href = "http://localhost:3000/curriculum";
+        }, error: function (jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown);
+        }
+    });
+    e.preventDefault();
+});

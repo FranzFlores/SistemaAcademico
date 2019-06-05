@@ -13,6 +13,6 @@ router.get('/all',CurriculumController.all_curriculum);
 router.get('/:id',CurriculumController.get_curriculum);
 router.post('/create',CurriculumController.save_curriculum);
 router.post('/update/:id',CurriculumController.update_curriculum);
-router.put('/curriculum:id',CurriculumController.delete_curriculum);
+router.post('/delete/:id',CurriculumController.delete_curriculum);
 
 module.exports = router;

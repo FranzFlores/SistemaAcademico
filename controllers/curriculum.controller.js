@@ -60,16 +60,15 @@ CurriculumController.update_curriculum = (req, res) => {
 }
 
 CurriculumController.delete_curriculum = (req, res) => {
-    var curriculumId = req.params.id;
-
-    Curriculum.findByIdAndUpdate(curriculumId,{status:false} ,(err, curriculumRemoved)=>{
-        if (err) res.status(500).send('error en la petición');
+    Curriculum.findByIdAndRemove(req.params.id,(err,curriculumRemoved) =>{
+        if (err) req.flash('BAD','Ocurrio un error al eliminar','/curriculum');
         else {
-            if (!curriculumRemoved) res.status(404).send('error al eliminar');
-            else res.status(200).send('Se ha eliminado');
+            if (!curriculumRemoved) req.flash('OK','No se pudo eliminar la carrera','/curriculum');
+            else req.flash('GOOD','Se ha eliminado la carrera con exito','/curriculum');
         }
+        
     });
-}
+};
 
 CurriculumController.all_curriculum = (req, res) => {
     var curriculums = Curriculum.find();
