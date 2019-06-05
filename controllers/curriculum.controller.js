@@ -5,7 +5,7 @@ var CurriculumController = {};
 
 //Cargar Vistas
 CurriculumController.load_curriculum_view = (req,res)=>{
-    var curriculums = Curriculum.find();
+    var curriculums = Curriculum.find({status:true});
     curriculums.populate({path:'career'}).exec((err,curriculums)=>{
         if(err) console.log(err);
         else{
@@ -45,14 +45,16 @@ CurriculumController.update_curriculum = (req, res) => {
     var curriculumId = req.params.id;
     var update = {
         year : req.body.year,
-        image : req.body.image
+        numPeriod : req.body.numPeriod,
+        timePeriod: req.body.timePeriod,
+        career: req.body.career
     };
 
-    curriculum.findByIdAndUpdate(curriculumId, update, (err, curriculumUpdated)=>{
-        if (err) res.status(500).send('error al guardar malla curricular');
+    Curriculum.findByIdAndUpdate(curriculumId, update, (err, curriculumUpdated)=>{
+        if (err) req.flash('BAD', "Ha ocurrido un error al guardar la malla curricular","/curriculum");
         else {
-            if (!curriculumUpdated) res.status(404).send('no se ha actualizado');
-            else res.status(200).send(curriculumUpdated);
+            if(!curriculumUpdated) req.flash('OK', "No se pudo guardar la malla curricular","/curriculum");
+            else req.flash('GOOD', "Se ha guardado la malla curricular con éxito","/curriculum");
         }
     });
 }

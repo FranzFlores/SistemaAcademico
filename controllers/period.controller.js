@@ -32,7 +32,7 @@ PeriodController.save_period = (req, res) => {
     });
 }
 
-PeriodController.get_Class = (req, res) => {
+PeriodController.get_Period = (req, res) => {
     var PeriodId = req.params.id;
     Period.findById(PeriodId, (err, Class) => {
         if (err) res.status(500).send('error en la petición');

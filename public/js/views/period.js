@@ -2,6 +2,7 @@ $(document).ready(function () {
     var subjects = [];
     var period = "";
 
+
     $(".plus").click(function (e) {
         period = $(this).attr('data-id');
     });
@@ -68,4 +69,23 @@ $(document).ready(function () {
         $('.ok').hide();
         e.preventDefault();
     });
+    $('.edit').click(function(e){
+        var idPeriod = $(this).attr('data-id');
+        console.log(idPeriod)
+        var url =  "http://localhost:3000/period/"+idPeriod ;
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function (data, textStatus, jqXHR) {
+                console.log(data);
+                $("#name").val(data.name );
+                $("#button").text("Editar");
+                $("#button").attr('data-id',idPeriod );
+            }, error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+        e.preventDefault();
+    })
+
 });

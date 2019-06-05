@@ -20,6 +20,14 @@ $(document).ready(function () {
         });
         e.preventDefault();
     })
+
+    $("#button").click(function(e){
+        var idCurriculum = $(this).attr('data-id');
+        if($(this).text()=="Editar"){
+           $("#curriculumForm").attr('action','/curriculum/update/'+idCurriculum);
+        }
+    });
+
 });
 
 function loadCarrers() {

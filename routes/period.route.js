@@ -12,7 +12,7 @@ router.post('/create',isLoggedIn,PeriodController.save_period);
 router.post('/addPeriodSubject',PeriodController.add_subject_period);
 // router.get('/all',CareerController.all_careers);
 
-// router.get('/:id',CareerController.get_career);
+router.get('/:id',PeriodController.get_Period);
 // router.post('/update/:id',CareerController.update_career);
 // router.post('/delete/:id',CareerController.delete_career);
  
