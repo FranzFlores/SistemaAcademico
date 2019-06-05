@@ -1,4 +1,33 @@
 $(document).ready(function () {
+
+    //Editar Materia
+    $(".edit").click(function (e) {
+        var idSubject = $(this).attr('data-id');
+        var url =  "http://localhost:3000/subject/"+idSubject;
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function (data, textStatus, jqXHR) {
+                console.log(data);
+                $("#name").val(data.name);
+                $("#numCredit").val(data.numCredit);
+                $("#button").text("Editar");
+                $("#button").attr('data-id',idSubject);
+            }, error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+        e.preventDefault();
+    });
+
+    $("#button").click(function(e){
+        var idSubject = $(this).attr('data-id');
+        if($(this).text()=="Editar"){
+           $("#subjectForm").attr('action','/subject/update/'+idSubject);
+        }
+    });
+
+
     loadCurriculums();
     loadCycles();
     //Para la vista de Docente
@@ -52,7 +81,6 @@ function loadPeriodSubject(){
 
 function loadCycles(){
     var url = "http://localhost:3000/cycle/all";
-
     $.ajax({ 
         type: 'GET',
         url: url,

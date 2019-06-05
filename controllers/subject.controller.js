@@ -42,29 +42,26 @@ SubjectController.save_subject = (req, res) => {
 }
 
 SubjectController.get_subject = (req, res) => {
-    var subjectId = req.params.id;
-    Subject.findById(subjectId, (err, subject) => {
+    Subject.findById(req.params.id, (err, subject) => {
         if (err) res.status(500).send('error en la petición');
         else {
-            if (!subject) res.status(404).send('la carrera no existe');
+            if (!subject) res.status(404).send('la materia no existe');
             else res.status(200).send(subject);
         }
     });
 }
 
 SubjectController.update_subject = (req, res) => {
-    var subjectId = req.params.id;
     var update = {
         name: req.body.name,
         numCredit: req.body.numCredit,
-        syllable: req.body.syllable
     };
 
-    Subject.findByIdAndUpdate(subjectId, update, (err, subjectUpdated) => {
-        if (err) res.status(500).send('error al guardar carrera');
+    Subject.findByIdAndUpdate(req.params.id, update, (err, subjectUpdated) => {
+        if (err) req.flash('BAD', 'Ocurrio un error al actualizar la materia', '/subject');
         else {
-            if (!subjectUpdated) res.status(404).send('no se ha actualizado');
-            else res.status(200).send(subjectUpdated);
+            if (!subjectUpdated) req.flash('OK', 'No se pudo actualizar la materia', '/subject');
+            else req.flash('GOOD', 'Se ha actualizado la materia con éxito', '/subject');
         }
     });
 }

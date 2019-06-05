@@ -5,10 +5,10 @@ var CurriculumController = {};
 
 //Cargar Vistas
 CurriculumController.load_curriculum_view = (req,res)=>{
-    var curriculums = Curriculum.find();
-    curriculums.populate({path:'career'}).exec((err,curriculums)=>{
+    Curriculum.find().populate({path:'career'}).exec((err,curriculums)=>{
         if(err) console.log(err);
         else{
+            console.log(curriculums);
             res.render('adminProfile/curriculum',{title:'Malla Curricular',curriculums: curriculums});
         }
     });
