@@ -51,10 +51,10 @@ PeriodController.update_Period = (req, res) => {
     };
 
     Period.findByIdAndUpdate(Period, update, (err, PeriodUpdated) => {
-        if (err) res.status(500).send('error al guardar clase');
+        if (err) req.flash('BAD', 'Ocurrio un error al actualizado  el período', '/period');
         else {
-            if (!PeriodUpdated) res.status(404).send('no se ha actualizado');
-            else res.status(200).send(PeriodUpdated);
+            if (!newPeriod) req.flash('OK', 'No se pudo actualizado el período', '/period');
+            else req.flash('GOOD', 'Se ha actualizado el período con exito', '/period');
         }
     });
 }
@@ -63,10 +63,10 @@ PeriodController.delete_Class = (req, res) => {
     var PeriodId = req.params.id;
 
     Period.findByIdAndUpdate(PeriodId, { status: false }, (err, PeriodRemoved) => {
-        if (err) res.status(500).send('error en la petición');
+        if (err) req.flash('BAD', 'Ocurrio un error al actualizado  el período', '/period');
         else {
-            if (!PeriodRemoved) res.status(404).send('error al eliminar');
-            else res.status(200).send('Se ha eliminado');
+            if (!newPeriod) req.flash('OK', 'No se pudo actualizado el período', '/period');
+            else req.flash('GOOD', 'Se ha actualizado el período con exito', '/period');
         }
     });
 }
@@ -74,10 +74,10 @@ PeriodController.delete_Class = (req, res) => {
 PeriodController.all_Period = (req, res) => {
     var Period = Period.find({ status: true });
     Period.sort('name').exec((err, Period) => {
-        if (err) res.status(500).send("Error");
+        if (err) req.flash('BAD', 'Ocurrio un error al actualizado  el período', '/period');
         else {
-            if (!Period) res.status(404).send("error al listar");
-            else res.status(200).send(Period);
+            if (!newPeriod) req.flash('OK', 'No se pudo actualizado el período', '/period');
+            else req.flash('GOOD', 'Se ha actualizado el período con exito', '/period');
         }
     });
 }
