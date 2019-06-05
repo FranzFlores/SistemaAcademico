@@ -1,6 +1,6 @@
 $(document).ready(function () {
     loadCurriculums();
-
+    loadCycles();
     //Para la vista de Docente
     $('.collapsible').collapsible();
 });
@@ -8,7 +8,7 @@ $(document).ready(function () {
 
 function loadCurriculums() {
     var url = "http://localhost:3000/curriculum/all";
-    $.ajax({
+    $.ajax({ 
         type: 'GET',
         url: url,
         success: function (data, textStatus, jqXHR) {    
@@ -45,6 +45,25 @@ function loadPeriodSubject(){
                 </td></tr>`;
             });
             $("#teacherSubject tbody").html(html);
+        }, error: function (jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown);
+        }
+    });
+}
+
+function loadCycles(){
+    var url = "http://localhost:3000/cycle/all";
+
+    $.ajax({ 
+        type: 'GET',
+        url: url,
+        success: function (data, textStatus, jqXHR) {     
+            var html = "";
+            $.each(data, function (i, item) {
+                    html += "<option value='" + item._id + "'>" + item.name + "</option>";
+            });
+            $("#cycles").html(html);
+            $('select').formSelect();
         }, error: function (jqXHR, textStatus, errorThrown) {
             console.log(errorThrown);
         }

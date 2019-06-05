@@ -1,6 +1,7 @@
 'use strict'
 
 var Subject = require('../models/subject.model');
+var CurriculumCycle = require('../models/curriculum_cycle.model');
 var SubjectController = {};
 
 SubjectController.load_subject_view = (req, res) => {
@@ -13,21 +14,30 @@ SubjectController.load_subject_view = (req, res) => {
 
 
 SubjectController.save_subject = (req, res) => {
-    new Subject({
-        name: req.body.name,
-        numCredit: req.body.numCredit,
+    new CurriculumCycle({
         curriculum: req.body.curriculum,
         cycle: req.body.cycle
-    }).save((err, newSubject) => {
-        if (err) {
-            console.log(err);
-            req.flash('BAD', 'Ocurrio un error al guardar la materia', '/subject');
-        }
+    }).save((err, curriculumCycle) => {
+        if (err) console.log(err);
         else {
-            if (!newSubject) req.flash('OK', 'No se pudo guardar la materia', '/subject');
-            else req.flash('GOOD', 'Se ha guardado la materia con exito', '/subject');
+            new Subject({
+                name: req.body.name,
+                numCredit: req.body.numCredit,
+                curriculum_cycle: curriculumCycle
+            }).save((err, newSubject) => {
+                if (err) {
+                    console.log(err);
+                    req.flash('BAD', 'Ocurrio un error al guardar la materia', '/subject');
+                }
+                else {
+                    if (!newSubject) req.flash('OK', 'No se pudo guardar la materia', '/subject');
+                    else req.flash('GOOD', 'Se ha guardado la materia con exito', '/subject');
+                }
+            });
         }
     });
+
+
 }
 
 SubjectController.get_subject = (req, res) => {

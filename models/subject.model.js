@@ -5,11 +5,9 @@ const { Schema } = mongoose;
 const subjectSchema = new Schema({
     name: { type: String, required: true },
     numCredit: { type: String, required: true },
-    cycle: { type: String, required: true},
-    status: {type: Boolean, required:true, default:true},
-    curriculum: {
+    curriculum_cycle: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Curriculum"
+        ref: "CurriculumCycle"
     }
 }, { timestamps: { createdAt: 'created_at', updateAt: 'update_at' } });
 

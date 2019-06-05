@@ -13,7 +13,12 @@ const enrollmentSchema = new Schema({
     subject:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Subject"
+    },
+    Period:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Period"
     }
+
 }, { timestamps: { createdAt: 'created_at', updateAt: 'update_at' } });
 
 module.exports = mongoose.model('Enrollment', enrollmentSchema);
