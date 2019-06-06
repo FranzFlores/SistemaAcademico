@@ -2,17 +2,17 @@
 
 var Subject = require('../models/subject.model');
 var CurriculumCycle = require('../models/curriculum_cycle.model');
+var SubjectTeacher = require('../models/subject_teacher.model');
+var SubjectPeriod = require('../models/subject_period.model');
 var SubjectController = {};
 
 SubjectController.load_subject_view = (req, res) => {
-    var subjects = Subject.find();
-    subjects.populate({ path: 'curriculum_cycle', populate: {path: 'curriculum',model:"Curriculum",populate:{path:"career"}}} ).exec((err, subjects) => {
+    Subject.find().populate({ path: 'curriculum_cycle', populate: { path: 'curriculum', select: 'year', populate: { path: "career", select: 'name' } } }).populate({ path: 'curriculum_cycle', populate: { path: "cycle", select: 'name' } }).exec((err, subjects) => {
         console.log(subjects);
         if (err) res.status(500).send("Error");
         else res.render('adminProfile/subject', { title: 'Materia', subjects: subjects });
     });
 };
-
 
 SubjectController.save_subject = (req, res) => {
     new CurriculumCycle({
@@ -37,58 +37,89 @@ SubjectController.save_subject = (req, res) => {
             });
         }
     });
+}
 
-
+SubjectController.all_subject = (req, res) => {
+    Subject.find().populate({ path: 'curriculum_cycle', populate: { path: 'curriculum', select: 'year', populate: { path: "career", select: 'name' } } }).exec((err, subjects) => {
+        if (err) res.status(500).send("Error");
+        else res.status(200).send(subjects);
+    });
 }
 
 SubjectController.get_subject = (req, res) => {
     Subject.findById(req.params.id, (err, subject) => {
         if (err) res.status(500).send('error en la petición');
-        else {
-            if (!subject) res.status(404).send('la materia no existe');
-            else res.status(200).send(subject);
-        }
+        else res.status(200).send(subject);
     });
 }
 
 SubjectController.update_subject = (req, res) => {
-    var update = {
-        name: req.body.name,
-        numCredit: req.body.numCredit,
-    };
-
-    Subject.findByIdAndUpdate(req.params.id, update, (err, subjectUpdated) => {
-        if (err) req.flash('BAD', 'Ocurrio un error al actualizar la materia', '/subject');
+    CurriculumCycle.findOne({ curriculum: req.body.curriculum, cycle: req.body.cycle }, (err, curriculum_cycle) => {
+        if (err) console.log(err);
         else {
-            if (!subjectUpdated) req.flash('OK', 'No se pudo actualizar la materia', '/subject');
-            else req.flash('GOOD', 'Se ha actualizado la materia con éxito', '/subject');
+            if (curriculum_cycle) {
+                var update = {
+                    name: req.body.name,
+                    numCredit: req.body.numCredit,
+                    curriculum_cycle: curriculum_cycle
+                };
+                Subject.findByIdAndUpdate(req.params.id, update, (err, subjectUpdated) => {
+                    if (err) req.flash('BAD', 'Ocurrio un error al actualizar la materia', '/subject');
+                    else {
+                        if (!subjectUpdated) req.flash('OK', 'No se pudo actualizar la materia', '/subject');
+                        else req.flash('GOOD', 'Se ha actualizado la materia con éxito', '/subject');
+                    }
+                });
+            } else {
+                new CurriculumCycle({
+                    curriculum: req.body.curriculum,
+                    cycle: req.body.cycle
+                }).save((err, curriculumCycle) => {
+                    if (err) console.log(err);
+                    else {
+                        var update = {
+                            name: req.body.name,
+                            numCredit: req.body.numCredit,
+                            curriculum_cycle: curriculumCycle
+                        };
+                        Subject.findByIdAndUpdate(req.params.id, update, (err, subjectUpdated) => {
+                            if (err) req.flash('BAD', 'Ocurrio un error al actualizar la materia', '/subject');
+                            else {
+                                if (!subjectUpdated) req.flash('OK', 'No se pudo actualizar la materia', '/subject');
+                                else req.flash('GOOD', 'Se ha actualizado la materia con éxito', '/subject');
+                            }
+                        });
+                    }
+                });
+            }
         }
     });
 }
 
 SubjectController.delete_subject = (req, res) => {
-    var subjectId = req.params.id;
 
-    Subject.findByIdAndUpdate(subjectId, { status: false }, (err, subjectRemoved) => {
-        if (err) res.status(500).send('error en la petición');
-        else {
-            if (!subjectRemoved) res.status(404).send('error al eliminar');
-            else res.status(200).send('Se ha eliminado');
+    SubjectTeacher.findOne({subject:req.params.id},(err,subjectTeacher)=>{
+        if(err) console.log(err);
+        else{
+            if(subjectTeacher){
+                res.status(200).send('Yes');
+            }else{
+                SubjectPeriod.findOne({subject:req.params.id},(err,subjectPeriod)=>{
+                    if(err) console.log(err);
+                    else{
+                        if(subjectPeriod){
+                            res.status(200).send('Yes');
+                        }else{
+                            Subject.findByIdAndRemove(req.params.id, (err, subjectRemoved) => {
+                                if (err) console.log(err);
+                                else res.status(200).send('OK');
+                            });
+                        }
+                    }
+                });
+            }
         }
     });
 }
-
-SubjectController.all_subject = (req, res) => {
-    var subjects = Subject.find({ status: true });
-    subjects.populate({ path: 'curriculum', populate: { path: 'career', model: 'Career' } }).exec((err, subjects) => {
-        if (err) res.status(500).send("Error");
-        else {
-            if (!subjects) res.status(404).send("error al listar");
-            else res.status(200).send(subjects);
-        }
-    });
-}
-
-
 
 module.exports = SubjectController;

@@ -13,6 +13,6 @@ router.get('/all',SubjectController.all_subject);
 router.get('/:id',SubjectController.get_subject);
 router.post('/create',SubjectController.save_subject);
 router.post('/update/:id',SubjectController.update_subject);
-router.post('/subject:id',SubjectController.delete_subject);
+router.post('/delete/:id',SubjectController.delete_subject);
 
 module.exports = router;

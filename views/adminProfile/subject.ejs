@@ -49,6 +49,7 @@
                     <th>Año Malla Curricular</th>
                     <th>Nombre Materia</th>
                     <th>Número de Créditos</th>
+                    <th>Ciclo</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -59,6 +60,7 @@
                     <td><%=subject.curriculum_cycle.curriculum.year%></td>
                     <td><%=subject.name%></td>
                     <td><%=subject.numCredit%></td>
+                    <td><%=subject.curriculum_cycle.cycle.name%></td>
                     <td>
                         <a class="edit" data-id="<%=subject._id%>">
                             <i class="material-icons btn">edit</i>

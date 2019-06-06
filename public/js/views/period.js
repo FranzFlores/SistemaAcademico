@@ -1,8 +1,27 @@
 $(document).ready(function () {
+
+    $('.datepicker').datepicker({ format: 'yyyy/mm/dd'});
+
+    loadPeriodSubjectModal();
+    loadSubjectstoModal();
+    editPeriod();
+    
+
+    
+
+});
+
+function loadPeriodSubjectModal(){
+    $("#PeriodTable tbody tr td .plus").click(function(e){
+        $('.modal').modal();
+        $('.ok').hide();
+        e.preventDefault();
+    });
+}
+
+function loadSubjectstoModal(){
     var subjects = [];
     var period = "";
-
-    $('.datepicker').datepicker();
 
     $(".plus").click(function (e) {
         period = $(this).attr('data-id');
@@ -64,23 +83,24 @@ $(document).ready(function () {
             console.log(errorThrown);
         }
     });
+}
 
-    $("#PeriodTable tbody tr td .plus").click(function(e){
-        $('.modal').modal();
-        $('.ok').hide();
-        e.preventDefault();
-    });
-    
+
+function editPeriod(){
     $('.edit').click(function(e){
         var idPeriod = $(this).attr('data-id');
-        console.log(idPeriod)
-        var url =  "http://localhost:3000/period/"+idPeriod ;
+        var url =  "http://localhost:3000/period/"+idPeriod;
         $.ajax({ 
             type: 'GET',
             url: url,
             success: function (data, textStatus, jqXHR) {
-                console.log(data);
+                var aux = data.start.split('\T');
+                var start_date = aux[0];
+                var aux1 = data.end.split('\T');
+                var end_date = aux1[0];
                 $("#name").val(data.name );
+                $("#start").val(start_date);
+                $("#end").val(end_date);
                 $("#button").text("Editar");
                 $("#button").attr('data-id',idPeriod );
             }, error: function (jqXHR, textStatus, errorThrown) {
@@ -90,4 +110,12 @@ $(document).ready(function () {
         e.preventDefault();
     })
 
-});
+    $("#button").click(function(e){
+        var idPeriod = $(this).attr('data-id');
+        if($(this).text()=="Editar"){
+           $("#periodForm").attr('action','/period/update/'+idPeriod);
+        }
+    });
+}
+
+
