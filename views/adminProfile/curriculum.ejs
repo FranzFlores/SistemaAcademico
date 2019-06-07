@@ -5,11 +5,11 @@
             <h4 class="center-align title-form">Mallas Curriculares</h4>
             <div class="card-content">
                 <%- locals.flash %>
-                <form  action="/curriculum/create" method="POST" id="curriculumForm">
+                <form action="/curriculum/create" method="POST" id="curriculumForm">
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="year" type="text" name="year" class="validate" required>
-                            <label for="name">Año Malla Curricular</label>
+                            <label for="year">Año Malla Curricular</label>
                         </div>
                     </div>
                     <div class="row">
@@ -21,14 +21,22 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="numPeriod" type="text" name="numPeriod" class="validate" required>
-                            <label for="numPeriod">Número total de Períodos</label>
+                            <select name="numCycles" id="numCycles">
+                                <% for(var i=8;i<=12;i++){ %>
+                                <option value="<%=i%>"><%= i%></option>
+                                <% } %>
+                            </select>
+                            <label for="numCycles">Número de Ciclos</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="timePeriod" type="text" name="timePeriod" class="validate" required>
-                            <label for="timePeriod">Duración de Periodo(Semanas)</label>
+                            <select name="timeCycle" id="timeCycle">
+                                <% for(var i=16;i<=20;i++){ %>
+                                <option value="<%=i%>"><%= i %></option>
+                                <% } %>
+                            </select>
+                            <label for="timeCycle">Duración del Ciclo(Semanas)</label>
                         </div>
                     </div>
                     <div class="card-action">
@@ -56,8 +64,8 @@
                 <tr>
                     <td><%=curriculum.career.name%></td>
                     <td><%=curriculum.year%></td>
-                    <td><%=curriculum.numPeriod%> períodos</td>
-                    <td><%=curriculum.timePeriod%> semanas</td>
+                    <td><%=curriculum.numCycles%> períodos</td>
+                    <td><%=curriculum.timeCycle%> semanas</td>
                     <td>
                         <a class="edit" data-id="<%=curriculum._id%>">
                             <i class="material-icons btn">edit</i>

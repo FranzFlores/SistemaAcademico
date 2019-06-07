@@ -4,8 +4,8 @@ const { Schema } = mongoose;
 
 const curriculumSchema = new Schema({
     year: { type: Number, required: true },
-    numPeriod: { type: Number, required: true },
-    timePeriod: { type: Number, required: true },
+    numCycles: { type: Number, required: true },
+    timeCycle: { type: Number, required: true },
     career: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Career"

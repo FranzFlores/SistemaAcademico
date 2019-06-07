@@ -34,6 +34,7 @@ function loadCycles(){
         type: 'GET',
         url: url,
         success: function (data, textStatus, jqXHR) {     
+
             var html = "";
             $.each(data, function (i, item) {
                     html += "<option value='" + item._id + "'>" + item.name + "</option>";

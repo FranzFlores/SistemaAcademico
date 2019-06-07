@@ -9,7 +9,7 @@ const { isLoggedIn } = require('../lib/auth');
 //Cargar Vistas
 
 
-router.get('/all', SubjectPeriodController.get_period_subjects);
+router.get('/all', SubjectPeriodController.all_period_subjects);
 
 // router.get('/subject:id',SubjectController.get_subject);
 router.post('/create',SubjectPeriodController.save_subject_period);

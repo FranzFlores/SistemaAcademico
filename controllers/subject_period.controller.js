@@ -24,6 +24,8 @@ PeriodSubjectController.save_subject_period = (req, res) => {
                                 }
                             }
                         });
+                    }else{
+                        res.status(200).send('yes');
                     }
                 }
             });
@@ -41,6 +43,8 @@ PeriodSubjectController.save_subject_period = (req, res) => {
                         if (err) res.send('error');
                         else if (periodSubject) res.status(200).send('ok');
                     });
+                }else{
+                    res.status(200).send('yes');
                 }
             }
         });
@@ -48,10 +52,9 @@ PeriodSubjectController.save_subject_period = (req, res) => {
 };
 
 
-PeriodSubjectController.get_period_subjects = (req, res) => {
-    var periodSubjects =  PeriodSubject.find();
-    periodSubjects.populate({path:'period'}).populate({path:'subject',populate:{ path: 'curriculum', model: 'Curriculum', populate: { path: 'career', model: 'Career' }}}).exec((err,periodsubjects)=>{
-        if(err) console.log(err);
+PeriodSubjectController.all_period_subjects = (req, res) => {
+    PeriodSubject.find().populate({path: 'period',select:'name'}).populate({path: 'subject',select:'name',populate: { path: 'curriculum_cycle', populate: { path: 'curriculum',select:'_id', populate:{path:'career',select:'name'}}}}).exec((err, periodsubjects) => {
+        if (err) console.log(err);
         else res.status(200).send(periodsubjects)
     });
 };

@@ -1,23 +1,40 @@
 $(document).ready(function () {
 
-    loadTeacherSubjects();
     $('.datepicker').datepicker({ format: 'yyyy/mm/dd', maxDate: new Date() });
+    
+    loadCurriculums();
+    loadSubjectTeacherModal();
+    loadSubjectsToModal();
+    loadTeacherSubjects();
+    
 
+});
+
+function loadSubjectTeacherModal() {
+    $("#teacherTable tbody tr .plus").click(function (e) {
+        $('.modal').modal();
+        $('.ok').hide();
+        e.preventDefault();
+    });
+}
+
+function loadSubjectsToModal() {
     var subjects = [];
     var teacher = "";
 
     $(".plus").click(function (e) {
         teacher = $(this).attr('data-id');
     });
+
     var url = "http://localhost:3000/subject-period/all";
     $.ajax({
         type: 'GET',
         url: url,
         success: function (data, textStatus, jqXHR) {
-            console.log(data);
+
             var html = "";
             $.each(data, function (i, item) {
-                html += "<li class='collection-item valign-wrapper'>" + item.subject.name + "<br>Carrera: " + item.subject.curriculum.career.name + "<br>Periodo: " + item.period.name;
+                html += "<li class='collection-item valign-wrapper'>" + item.subject.name + "<br>Carrera: " + item.subject.curriculum_cycle.curriculum.career.name + "<br>Periodo: " + item.period.name;
                 html += "<button class='light-blue btn add right-align' data-external=" + item.subject._id + " data-add='true'>Agregar</button></li>";
             });
             $("#subjects").html(html);
@@ -69,30 +86,21 @@ $(document).ready(function () {
         }
     });
 
-    loadCarrers();
+}
 
 
-    $("#teacherTable tbody tr .plus").click(function (e) {
-        $('.modal').modal();
-        $('.ok').hide();
-        e.preventDefault();
-    });
-
-
-});
-
-
-function loadCarrers() {
-    var url = "http://localhost:3000/career/all";
+function loadCurriculums() {
+    var url = "http://localhost:3000/curriculum/all";
     $.ajax({
         type: 'GET',
         url: url,
         success: function (data, textStatus, jqXHR) {
+
             var html = "";
             $.each(data, function (i, item) {
-                html += "<option value='" + item._id + "'>" + item.name + "</option>";
+                html += "<option value='" + item._id + "'>" + item.career.name + " - Malla Curricular " + item.year + "</option>";
             });
-            $("#careers").html(html);
+            $("#curriculums").html(html);
             $('select').formSelect();
         }, error: function (jqXHR, textStatus, errorThrown) {
             console.log(errorThrown);
@@ -106,17 +114,16 @@ function loadTeacherSubjects() {
         type: 'GET',
         url: url,
         success: function (data, textStatus, jqXHR) {
+            console.log(data);
             var html = "";
             $.each(data, function (i, item) {
                 html += '<tr><td>' + item.teacher.person.name + '</td>';
-                html += `<td>
-                <ul>
-                    <li>`+ item.subject.name + `<br>Carrera: ` + item.subject.curriculum.career.name + `<a class="delete" data-id=`+item.subject._id+`>
-                    <i class="material-icons btn">delete</i>
-                    </a>
-                    </li>
-                </ul>
-                </td></tr>`;
+                html += `<td><ul>
+                            <li>`+ item.subject.name + `<br>Carrera: ` + item.subject.curriculum_cycle.curriculum.career.name + `</li>
+                        </ul></td>
+                        <td>
+                            <a class="delete" data-id=` + item.subject._id + `><i class="material-icons btn">delete</i></a>
+                        </td></tr>`;
             });
             $("#teacherSubject tbody").html(html);
         }, error: function (jqXHR, textStatus, errorThrown) {

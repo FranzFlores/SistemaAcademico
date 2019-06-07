@@ -5,4 +5,5 @@ var CurriculumCycleController = {};
 
 CurriculumCycleController.save_curriculum_cycle = (req,res)=>{
 
+
 };

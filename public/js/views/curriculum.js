@@ -22,20 +22,22 @@ function loadCarrers() {
     });
 }
 
-function editCurriculum(){
-    $('.edit').click(function(e){
+
+function editCurriculum() {
+    $('.edit').click(function (e) {
         var idCurriculum = $(this).attr('data-id');
-        var url =  "http://localhost:3000/curriculum/"+idCurriculum;
+        var url = "http://localhost:3000/curriculum/" + idCurriculum;
         $.ajax({
             type: 'GET',
             url: url,
             success: function (data, textStatus, jqXHR) {
                 console.log(data);
                 $("#year").val(data.year);
-                $("#numPeriod").val(data.numPeriod);
-                $("#timePeriod").val(data.timePeriod);
+                $("#careers").prop('disabled',"disabled");
+                $('#numCycles').prop('disabled',"disabled");
+                $('select').formSelect();
                 $("#button").text("Editar");
-                $("#button").attr('data-id',idCurriculum);
+                $("#button").attr('data-id', idCurriculum);
             }, error: function (jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);
             }
@@ -43,26 +45,26 @@ function editCurriculum(){
         e.preventDefault();
     })
 
-    $("#button").click(function(e){
+    $("#button").click(function (e) {
         var idCurriculum = $(this).attr('data-id');
-        if($(this).text()=="Editar"){
-           $("#curriculumForm").attr('action','/curriculum/update/'+idCurriculum);
+        if ($(this).text() == "Editar") {
+            $("#curriculumForm").attr('action', '/curriculum/update/' + idCurriculum);
         }
     });
 }
 
-function deleteCurriculum(){
+function deleteCurriculum() {
     $(".delete").click(function (e) {
         var idCurriculum = $(this).attr('data-id');
-        var url =  "http://localhost:3000/curriculum/delete/"+idCurriculum;
+        var url = "http://localhost:3000/curriculum/delete/" + idCurriculum;
         $.ajax({
             type: 'POST',
-            url: url, 
+            url: url,
             success: function (data, textStatus, jqXHR) {
-                if(data=="Yes"){
-                    M.toast({html: 'No se puede eliminar la Malla Curricular porque tiene elementos Asociadas'});
-                }else if(data=="OK"){
-                    M.toast({html: 'Facultad Eliminada con éxito '});
+                if (data == "Yes") {
+                    M.toast({ html: 'No se puede eliminar la Malla Curricular porque tiene elementos Asociadas' });
+                } else if (data == "OK") {
+                    M.toast({ html: 'Facultad Eliminada con éxito ' });
                     window.location.href = "http://localhost:3000/faculty";
                 }
             }, error: function (jqXHR, textStatus, errorThrown) {

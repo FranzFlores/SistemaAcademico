@@ -36,7 +36,7 @@ function loadSubjectstoModal(){
             
             var html = "";
             $.each(data, function (i, item) {
-                html += "<li class='collection-item valign-wrapper'>"+item.name +  "<br>Carrera " + item.curriculum.career.name +" Malla "+item.curriculum.year;
+                html += "<li class='collection-item valign-wrapper'>"+ item.name +  "<br>Carrera " + item.curriculum_cycle.curriculum.career.name +" Malla "+item.curriculum_cycle.curriculum.year;
                 html += "<button class='light-blue btn add right-align' data-external=" +item._id +" data-add='true'>Agregar</button></li>";
             });
             $("#subjects").html(html);
@@ -68,10 +68,12 @@ function loadSubjectstoModal(){
                     success: function (data, textStatus, jqXHR) {
                         if(data=='ok'){
                             M.toast({html: 'Se subio con exito la información'});
-                            $('.ok').show();
-                            $('.cancel').hide();
-                            $('#save').hide();
+                        }else{
+                            M.toast({html: 'La Materia ya está asignada al período'});
                         }
+                        $('.ok').show();
+                        $('.cancel').hide();
+                        $('#save').hide();
                     }, error: function (jqXHR, textStatus, errorThrown) {
                         console.log(errorThrown);
                         M.toast({html: 'Ocurrio un error'});

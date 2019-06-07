@@ -58,8 +58,7 @@ SubjectTeacherController.save_subject_teacher = (req, res) => {
 
 
 SubjectTeacherController.get_teacher_subjects = (req, res) => {
-    var teacherSubjects = SubjectTeacher.find();
-    teacherSubjects.populate({ path: 'teacher', select: '_id', populate: { path: 'person', select: 'name' } }).populate({ path: 'subject', select: 'name', populate: { path: 'curriculum', model: 'Curriculum', select: '_id', populate: { path: 'career', model: 'Career', select: 'name' } } }).exec((err, teachersubjects) => {
+    SubjectTeacher.find().populate({ path: 'teacher', select: '_id', populate: { path: 'person', select: 'name' } }).populate({ path: 'subject', select: 'name', populate: { path: 'curriculum_cycle',select:'_id', populate: { path: 'curriculum', select: '_id',populate:{path:'career',select:'name'} } } }).exec((err, teachersubjects) => {
         if (err) console.log(err);
         else res.status(200).send(teachersubjects);
     });

@@ -1,43 +1,57 @@
 'use strict'
 
 var Enrollment = require('../models/enrollment.model');
+var CurriculumCycle = require('../models/curriculum_cycle.model');
 var SubjectPeriod = require('../models/subject_period.model');
+var Subject = require('../models/subject.model');
 var Student = require('../models/student.model');
 var Person = require('../models/person.model');
 var EnrollmentController = {};
 
 EnrollmentController.load_enrollement_view = (req, res) => {
-    var subjects = [];
+
     Person.findById(req.params.id, (err, person) => {
         if (err) console.log(err);
         else {
-            Student.findOne({ person: person._id }).populate({ path: 'career', select: 'name' }).exec((err, student) => {
+            Student.findOne({ person: person._id }).populate({ path: 'curriculum', select: '_id' }).exec((err, student) => {
                 if (err) console.log(err);
                 else {
-                    SubjectPeriod.find().populate({ path: 'subject', populate: { path: 'curriculum', populate: { path: 'career', select: 'name' } } }).populate('period').exec((err, subject_period) => {
-                        if (err) console.log(err);
-                        else {
-                            
-                            subject_period.forEach(element => {
-                                if (student.career.name == element.subject.curriculum.career.name) {
-                                    var obj = {};
-                                    obj.subject = element.subject;
-                                    obj.period = element.period;
-                                    subjects.push(obj);
-                                    console.log();
-                                    
-                                    if (subject_period[subject_period.length - 1].subject.name == element.subject.name) {  
-                                        res.render('studentProfile/enrollment', { title: 'Matrícula', subjects: subjects,numPeriod:subject_period[0].subject.curriculum.numPeriod });
-                                    }
-                                }
-                            });
-                        }
+                    CurriculumCycle.find({curriculum:student.curriculum._id},(err,curriculum_cycle)=>{
+
                     });
+                    Subject.find({})
                 }
             });
+            // var subjects = [];
+            // Person.findById(req.params.id, (err, person) => {
+            //     if (err) console.log(err);
+            //     else {
+            //         Student.findOne({ person: person._id }).populate({ path: 'curriculum', select: '_id',populate:{path:'career',select:'name'} }).exec((err, student) => {
+            //             if (err) console.log(err);
+            //             else {
+            //                 SubjectPeriod.find().populate({ path: 'subject', populate: { path: 'curriculum_cycle', populate: { path: 'curriculum', select: '_id',populate:{path:'career',select:'name'} } } }).populate('period').exec((err, subject_period) => {
+            //                     if (err) console.log(err);
+            //                     else {
+
+            //                         subject_period.forEach(element => {
+            //                             if (student.curriculum.career.name == element.subject.curriculum_cycle.curriculum.career.name) {
+            //                                 var obj = {};
+            //                                 obj.subject = element.subject;
+            //                                 obj.period = element.period;
+            //                                 subjects.push(obj);
+            //                                 console.log();
+
+            //                                 if (subject_period[subject_period.length - 1].subject.name == element.subject.name) {  
+            //                                     res.render('studentProfile/enrollment', { title: 'Matrícula', subjects: subjects,numPeriod:subject_period[0].subject.curriculum.numPeriod });
+            //                                 }
+            //                             }
+            //                         });
+            //                     }
+            //                 });
+            //             }
+            //         });
         }
     });
-
 };
 
 

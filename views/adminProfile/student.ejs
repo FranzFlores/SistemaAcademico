@@ -58,8 +58,8 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <select name="career" id="careers"></select>
-                            <label for="career">Carrera</label>
+                            <select name="curriculum" id="curriculums"></select>
+                            <label for="career">Carrera-Malla Curricular</label>
                         </div>
                     </div>
                     <div class="row">
@@ -102,7 +102,7 @@
         <tr>
             <td><%=student.person.dni_person%></td>
             <td><%=student.person.name%></td>
-            <td><%=student.career.name%></td>
+            <td><%=student.curriculum.career.name%></td>
             <td><%=student.school%></td>
             <td>
                 <a class="edit" data-id="<%=student._id%>">

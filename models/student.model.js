@@ -10,9 +10,9 @@ const studentSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Person"
     },
-    career:{
+    curriculum:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Career"
+        ref: "Curriculum"
     }
 }, { timestamps: { createdAt: 'created_at', updateAt: 'update_at' } });
 
