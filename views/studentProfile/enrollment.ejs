@@ -2,22 +2,18 @@
 
 <h3 class="center-align">Materias Disponibles</h3>
 <ul class="collapsible">
-    <% for(var i=0;i<numPeriod;i++){ %>
-    <%if(i==0){%>
+    <% cycles.forEach(function(cycle){  %>
+    
     <li>
-        <div class="collapsible-header">Primer Ciclo</div>
+        <div class="collapsible-header"><%=cycle.cycle%></div>
         <div class="collapsible-body">
             <ul class="collection">
-                <%subjects.forEach(function(subject){%>
-                <%if(subject.subject.cycle=='Primero'){%>
-                    <li class="collection-item"><%=subject.subject.name%></li>
-                <%}%>
-                <%})%>
+                
             </ul>
         </div>
     </li>
-        <%}%>
-    <%}%>
+       
+    <%});%>
 </ul>
 
 <%-include('../footer')%>
