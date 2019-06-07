@@ -15,28 +15,29 @@ SubjectController.load_subject_view = (req, res) => {
 };
 
 SubjectController.save_subject = (req, res) => {
-    new CurriculumCycle({
-        curriculum: req.body.curriculum,
-        cycle: req.body.cycle
-    }).save((err, curriculumCycle) => {
+    CurriculumCycle.findOne({ curriculum: req.body.curriculum, cycle: req.body.cycle }, (err, curriculum_cycle) => {
         if (err) console.log(err);
         else {
-            new Subject({
-                name: req.body.name,
-                numCredit: req.body.numCredit,
-                curriculum_cycle: curriculumCycle
-            }).save((err, newSubject) => {
-                if (err) {
-                    console.log(err);
-                    req.flash('BAD', 'Ocurrio un error al guardar la materia', '/subject');
-                }
-                else {
-                    if (!newSubject) req.flash('OK', 'No se pudo guardar la materia', '/subject');
-                    else req.flash('GOOD', 'Se ha guardado la materia con exito', '/subject');
-                }
-            });
+            if (curriculum_cycle) {
+                new Subject({
+                    name: req.body.name,
+                    numCredit: req.body.numCredit,
+                    curriculum_cycle: curriculum_cycle
+                }).save((err, newSubject) => {
+                    if (err) {
+                        console.log(err);
+                        req.flash('BAD', 'Ocurrio un error al guardar la materia', '/subject');
+                    }
+                    else {
+                        if (!newSubject) req.flash('OK', 'No se pudo guardar la materia', '/subject');
+                        else req.flash('GOOD', 'Se ha guardado la materia con exito', '/subject');
+                    }
+                });
+            } else {
+                req.flash('OK', 'Error. Ha seleccionado un ciclo erróneo para la malla curricular', '/subject');
+            }
         }
-    });
+    })
 }
 
 SubjectController.all_subject = (req, res) => {
@@ -71,26 +72,7 @@ SubjectController.update_subject = (req, res) => {
                     }
                 });
             } else {
-                new CurriculumCycle({
-                    curriculum: req.body.curriculum,
-                    cycle: req.body.cycle
-                }).save((err, curriculumCycle) => {
-                    if (err) console.log(err);
-                    else {
-                        var update = {
-                            name: req.body.name,
-                            numCredit: req.body.numCredit,
-                            curriculum_cycle: curriculumCycle
-                        };
-                        Subject.findByIdAndUpdate(req.params.id, update, (err, subjectUpdated) => {
-                            if (err) req.flash('BAD', 'Ocurrio un error al actualizar la materia', '/subject');
-                            else {
-                                if (!subjectUpdated) req.flash('OK', 'No se pudo actualizar la materia', '/subject');
-                                else req.flash('GOOD', 'Se ha actualizado la materia con éxito', '/subject');
-                            }
-                        });
-                    }
-                });
+                req.flash('OK', 'Error. Ha seleccionado un ciclo erróneo para la malla curricular', '/subject');
             }
         }
     });
@@ -98,18 +80,18 @@ SubjectController.update_subject = (req, res) => {
 
 SubjectController.delete_subject = (req, res) => {
 
-    SubjectTeacher.findOne({subject:req.params.id},(err,subjectTeacher)=>{
-        if(err) console.log(err);
-        else{
-            if(subjectTeacher){
+    SubjectTeacher.findOne({ subject: req.params.id }, (err, subjectTeacher) => {
+        if (err) console.log(err);
+        else {
+            if (subjectTeacher) {
                 res.status(200).send('Yes');
-            }else{
-                SubjectPeriod.findOne({subject:req.params.id},(err,subjectPeriod)=>{
-                    if(err) console.log(err);
-                    else{
-                        if(subjectPeriod){
+            } else {
+                SubjectPeriod.findOne({ subject: req.params.id }, (err, subjectPeriod) => {
+                    if (err) console.log(err);
+                    else {
+                        if (subjectPeriod) {
                             res.status(200).send('Yes');
-                        }else{
+                        } else {
                             Subject.findByIdAndRemove(req.params.id, (err, subjectRemoved) => {
                                 if (err) console.log(err);
                                 else res.status(200).send('OK');

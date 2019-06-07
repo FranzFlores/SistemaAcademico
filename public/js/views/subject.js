@@ -82,8 +82,7 @@ function editSubject(){
             url: url,
             success: function (data, textStatus, jqXHR) {
                 console.log(data);
-                $("#name").val(data.name);
-                $("#numCredit").val(data.numCredit);
+                $("#name").val(data.name); 
                 $("#button").text("Editar");
                 $("#button").attr('data-id',idSubject);
             }, error: function (jqXHR, textStatus, errorThrown) {

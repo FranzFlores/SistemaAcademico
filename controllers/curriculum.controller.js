@@ -53,6 +53,8 @@ CurriculumController.all_curriculum = (req, res) => {
     });
 }
 
+
+
 CurriculumController.get_curriculum = (req, res) => {
     Curriculum.findById(req.params.id, (err, curriculum) => {
         if (err) res.status(500).send('error en la petición');

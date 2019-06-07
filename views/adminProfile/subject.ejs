@@ -5,17 +5,28 @@
             <h4 class="center-align title-form">Materias</h4>
             <div class="card-content">
                 <%- locals.flash %>
-                <form  action="/subject/create" method="POST" id="subjectForm">
+                <form action="/subject/create" method="POST" id="subjectForm">
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="name" type="text" name="name" class="validate" required >
+                            <input id="name" type="text" name="name" class="validate" required>
                             <label for="name">Nombre Materia</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="numCredit" type="text" name="numCredit" class="validate" required>
-                            <label for="numCredit">Número de créditos</label>
+                            <select name="curriculum" id="curriculums">
+                            </select>
+                            <label for="career">Malla Curricular-Carrera</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select name="numCredit" id="numCredits">
+                                <% for(var i=1;i<=10;i++){ %>
+                                <option value="<%=i%>"><%= i%></option>
+                                <% } %>
+                            </select>
+                            <label for="numCredit">Número de Créditos</label>
                         </div>
                     </div>
                     <div class="row">

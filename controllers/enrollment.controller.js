@@ -16,10 +16,13 @@ EnrollmentController.load_enrollement_view = (req, res) => {
             Student.findOne({ person: person._id }).populate({ path: 'curriculum', select: '_id' }).exec((err, student) => {
                 if (err) console.log(err);
                 else {
-                    CurriculumCycle.find({curriculum:student.curriculum._id},(err,curriculum_cycle)=>{
-
+                    CurriculumCycle.find({curriculum:student.curriculum._id}).populate({path:'cycle',select:'name'}).exec((err,curriculum_cycles)=>{
+                        if(err) console.log(err);
+                        else{
+                            console.log(curriculum_cycles);
+                            
+                        }
                     });
-                    Subject.find({})
                 }
             });
             // var subjects = [];
