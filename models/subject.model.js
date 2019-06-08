@@ -8,7 +8,11 @@ const subjectSchema = new Schema({
     curriculum_cycle: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "CurriculumCycle"
-    }
+    },
+    unites: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Unity"
+    }]
 }, { timestamps: { createdAt: 'created_at', updateAt: 'update_at' } });
 
 module.exports = mongoose.model('Subject', subjectSchema);

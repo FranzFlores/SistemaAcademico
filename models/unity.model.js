@@ -9,7 +9,11 @@ const unitySchema = new Schema({
     subjectTeacher: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "SubjectTeacher" 
-    }
+    },
+    class: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Class"
+    }]
 }, { timestamps: { createdAt: 'created_at', updateAt: 'update_at' } });
 
 module.exports = mongoose.model('Unity', unitySchema);

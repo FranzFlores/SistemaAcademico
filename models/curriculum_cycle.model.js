@@ -10,7 +10,11 @@ const curriculumCycleSchema = new Schema({
     cycle: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Cycle"
-    }
+    },
+    subject: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Subject"
+    }]
 }, { timestamps: { createdAt: 'created_at', updateAt: 'update_at' } });
 
 module.exports = mongoose.model('CurriculumCycle', curriculumCycleSchema);
