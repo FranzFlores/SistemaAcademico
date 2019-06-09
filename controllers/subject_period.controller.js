@@ -53,7 +53,7 @@ PeriodSubjectController.save_subject_period = (req, res) => {
 
 
 PeriodSubjectController.all_period_subjects = (req, res) => {
-    PeriodSubject.find().populate({path: 'period',select:'name'}).populate({path: 'subject',select:'name',populate: { path: 'curriculum_cycle', populate: { path: 'curriculum',select:'_id', populate:{path:'career',select:'name'}}}}).exec((err, periodsubjects) => {
+    PeriodSubject.find().populate({path: 'period',select:'name'}).populate({path: 'subject',select:'name',populate: { path: 'curriculum_cycle',select:'_id', populate: { path: 'curriculum',select:'_id', populate:{path:'career',select:'name'}}}}).exec((err, periodsubjects) => {
         if (err) console.log(err);
         else res.status(200).send(periodsubjects)
     });

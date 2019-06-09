@@ -1,6 +1,7 @@
 'use strict'
 
 var Career = require('../models/career.model');
+var Faculty = require('../models/faculty.model');
 var Curriculum = require('../models/curriculum.model');
 
 var CareerController = {};
@@ -15,7 +16,6 @@ CareerController.load_carrer_view = (req, res) => {
 
 
 CareerController.save_career = (req, res) => {
-    console.log(req.body);
     new Career({
         name: req.body.name,
         description: req.body.description,
@@ -27,8 +27,13 @@ CareerController.save_career = (req, res) => {
             req.flash('BAD', 'Ocurrio un error al guardar', '/career');
         }
         else {
-            if (!newCareer) req.flash('OK', 'No se pudo guardar la carrera', '/career');
-            else req.flash('GOOD', 'Se ha guardado la carrera con exito', '/career');
+            Faculty.findByIdAndUpdate(req.body.faculty,{$push:{careers:newCareer._id}},{new:true},(err,carrer)=>{
+                if(err) console.log(err);
+                else{
+                    if (!newCareer) req.flash('OK', 'No se pudo guardar la carrera', '/career');
+                    else req.flash('GOOD', 'Se ha guardado la carrera con exito', '/career');
+                }
+            });
         }
     });
 }

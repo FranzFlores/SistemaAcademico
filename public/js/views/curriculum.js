@@ -65,7 +65,7 @@ function deleteCurriculum() {
                     M.toast({ html: 'No se puede eliminar la Malla Curricular porque tiene elementos Asociadas' });
                 } else if (data == "OK") {
                     M.toast({ html: 'Facultad Eliminada con éxito ' });
-                    window.location.href = "http://localhost:3000/faculty";
+                    window.location.href = "http://localhost:3000/curriculum";
                 }
             }, error: function (jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);

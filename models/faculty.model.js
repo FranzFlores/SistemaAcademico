@@ -5,9 +5,9 @@ const { Schema } = mongoose;
 const facultySchema = new Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
-    carrers: [{
+    careers: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Carreer"
+        ref: "Career"
     }]
 }, { timestamps: { createdAt: 'created_at', updateAt: 'update_at' } });
 

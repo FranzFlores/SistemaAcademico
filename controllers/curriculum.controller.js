@@ -2,6 +2,7 @@
 
 var Curriculum = require('../models/curriculum.model');
 var CurriculumCycle = require('../models/curriculum_cycle.model');
+var Carrer = require('../models/career.model');
 var Cycle = require('../models/cycle.model');
 var CurriculumController = {};
 
@@ -25,23 +26,35 @@ CurriculumController.save_curriculum = (req, res) => {
     }).save((err, newCurriculum) => {
         if (err) console.log(err);
         else {
-            for (let index = 1; index <= req.body.numCycles; index++) {
-                Cycle.findOne({number:index},(err,cycle)=>{
-                    if(err) console.log(err);
-                    else{
-                        new CurriculumCycle({
-                            curriculum: newCurriculum._id,
-                            cycle: cycle._id
-                        }).save((err, curriculumCycle) => {
-                            if (err) req.flash('BAD', "Ha ocurrido un error al guardar la malla curricular", "/curriculum");
+            Carrer.findByIdAndUpdate(req.body.career,{$push:{curriculums:newCurriculum._id}},{new:true},(err,result)=>{
+                if(err) req.flash('BAD', "Ha ocurrido un error al guardar la malla curricular", "/curriculum");
+                else{
+                console.log(result);
+                    var curriculum_cycles = [];
+                    for (let index = 1; index <= req.body.numCycles; index++) {
+                        Cycle.findOne({number:index},(err,cycle)=>{
+                            if(err) console.log(err);
                             else{
-                                console.log(curriculumCycle);
-                                if(index==req.body.numCycles) req.flash('GOOD', "Se ha guardado la malla curricular con éxito", "/curriculum");
+                                var curriculum_cycle={};
+                                curriculum_cycle.curriculum = newCurriculum._id;
+                                curriculum_cycle.cycle = cycle._id;
+
+                                curriculum_cycles.push(curriculum_cycle);
+
+                                if(index==req.body.numCycles){
+                                    CurriculumCycle.collection.insert(curriculum_cycles,(err,result)=>{
+                                        if(err) req.flash('BAD', "Ha ocurrido un error al guardar la malla curricular", "/curriculum");
+                                        else{
+                                         console.log(result);
+                                         req.flash('GOOD', "Se ha guardado la malla curricular con éxito", "/curriculum");
+                                        }
+                                    });
+                                }
                             }
-                        }); 
-                    }
-                })     
-            }  
+                        })     
+                    }  
+                }                
+            });
         }  
     });
 }
@@ -82,13 +95,19 @@ CurriculumController.delete_curriculum = (req, res) => {
     CurriculumCycle.findOne({ curriculum: req.params.id }, (err, result) => {
         if (err) console.log(err);
         else {
-            if (result) {
+            if (result.subjects.length!=0) {
                 res.status(200).send('Yes');
             } else {
-                Curriculum.findByIdAndRemove(req.params.id, (err, curriculumRemoved) => {
-                    if (err) console.log(err);
-                    else res.status(200).send('OK');
-                });
+                CurriculumCycle.deleteMany({curriculum:req.params.id},(err,result)=>{
+                    if(err) console.log(err);
+                    else{
+                        console.log(result);
+                        Curriculum.findByIdAndRemove(req.params.id, (err, curriculumRemoved) => {
+                            if (err) console.log(err);
+                            else res.status(200).send('OK');
+                        });
+                    }
+                }) 
             }
         }
     });

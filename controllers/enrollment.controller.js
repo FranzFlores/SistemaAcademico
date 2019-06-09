@@ -18,31 +18,9 @@ EnrollmentController.load_enrollement_view = (req, res) => {
             Student.findOne({ person: person._id }).populate({ path: 'curriculum', select: '_id' }).exec((err, student) => {
                 if (err) console.log(err);
                 else {
-                    CurriculumCycle.find({ curriculum: student.curriculum._id }).populate({ path: 'cycle', options:{sort:{ 'number':1 }}}).exec((err, curriculum_cycles) => {
+                    CurriculumCycle.find({ curriculum: student.curriculum._id }).populate({ path: 'cycle',select:'name'}).populate({path:'subjects',select:'name'}).exec((err, curriculum_cycles) => {
                         if (err) console.log(err);
-                        else {
-                            var cont = 0;
-                            curriculum_cycles.forEach(element => {
-                                
-                                Subject.find({ curriculum_cycle: element._id }, (err, subjects) => {
-                                    if (err) console.log(err);
-                                    else {
-                                       
-                                        if (subjects) {
-                                            var obj = {};
-                                            obj.cycle = element.cycle.name;
-                                            obj.subjects = subjects;
-                                            cycles.push(obj);
-                                        }
-                                        if (cont == 9) {
-                                            console.log(cycles); 
-                                            res.render('studentProfile/enrollment', { title: 'Matrícula', cycles:cycles });
-                                        }
-                                        cont++;
-                                    }
-                                })
-                            })
-                        }
+                        else res.render('studentProfile/enrollment', { title: 'Matrícula', cycles:curriculum_cycles });
                     });
                 }
             });

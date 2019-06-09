@@ -11,7 +11,7 @@ const curriculumCycleSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Cycle"
     },
-    subject: [{
+    subjects: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Subject"
     }]

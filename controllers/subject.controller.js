@@ -29,8 +29,13 @@ SubjectController.save_subject = (req, res) => {
                         req.flash('BAD', 'Ocurrio un error al guardar la materia', '/subject');
                     }
                     else {
-                        if (!newSubject) req.flash('OK', 'No se pudo guardar la materia', '/subject');
-                        else req.flash('GOOD', 'Se ha guardado la materia con exito', '/subject');
+                        CurriculumCycle.findByIdAndUpdate(curriculum_cycle._id,{$push:{subjects:newSubject}},{new:true},(err,result)=>{
+                            if(err) console.log(err);
+                            else{
+                                if (!newSubject) req.flash('OK', 'No se pudo guardar la materia', '/subject');
+                                else req.flash('GOOD', 'Se ha guardado la materia con exito', '/subject');
+                            }
+                        });         
                     }
                 });
             } else {
@@ -41,7 +46,7 @@ SubjectController.save_subject = (req, res) => {
 }
 
 SubjectController.all_subject = (req, res) => {
-    Subject.find().populate({ path: 'curriculum_cycle', populate: { path: 'curriculum', select: 'year', populate: { path: "career", select: 'name' } } }).exec((err, subjects) => {
+    Subject.find().sort('name').populate({ path: 'curriculum_cycle', populate: { path: 'curriculum', select: 'year', populate: { path: "career", select: 'name' } } }).exec((err, subjects) => {
         if (err) res.status(500).send("Error");
         else res.status(200).send(subjects);
     });

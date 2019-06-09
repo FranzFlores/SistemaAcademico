@@ -10,7 +10,7 @@ const unitySchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "SubjectTeacher" 
     },
-    class: [{
+    classes: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Class"
     }]

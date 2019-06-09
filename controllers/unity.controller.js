@@ -7,27 +7,12 @@ var helpers = require('../lib/helpers');
 var UnityController = {};
 
 UnityController.load_content_home_view = (req, res) => {
-    var unity=[];
-    SubjectTeacher.findById(req.params.id).populate({ path: 'subject', select: 'name' }).exec((err, subjectTeacher) => {
+    var unity = [];
+    SubjectTeacher.findById(req.params.id).populate({ path: 'subject', select: 'name' }).populate({ path: 'unities', populate: { path: 'classes' } }).exec((err, subjectTeacher) => {
         if (err) console.log(err);
         else {
-           Unity.find({subjectTeacher:subjectTeacher},(err,unities)=>{
-               unities.forEach(element=>{
-                    Class.find({unity:element._id},(err,classes)=>{
-                        if(err) console.log(err);
-                        else{
-                            var obj = {};
-                            obj.unity = element;
-                            obj.classes = classes;
-                            unity.push(obj);
-                            if(unities[unities.length-1].name==element.name){                                
-                               res.render('teacherProfile/content_home', { title: "Materia", subjectTeacher: subjectTeacher,unities:unity });
-                            }
-                        }
-                    });
-               });
-           
-           }); 
+            res.send( subjectTeacher);
+            //res.render('teacherProfile/content_home', { title: "Materia", subjectTeacher: subjectTeacher });
         }
     });
 };
@@ -43,10 +28,10 @@ UnityController.load_create_view = (req, res) => {
 UnityController.save_unity = (req, res) => {
     var start_unity = helpers.formatDate(req.body.start_unity);
     var end_unity = helpers.formatDate(req.body.end_unity);
-    
-    SubjectTeacher.findById(req.body.subjectTeacher,(err,subjectTeacher)=>{
-        if(err) console.log(err);
-        else{
+
+    SubjectTeacher.findById(req.body.subjectTeacher, (err, subjectTeacher) => {
+        if (err) console.log(err);
+        else {
             new Unity({
                 name: req.body.name,
                 start_unity: start_unity,
@@ -55,10 +40,10 @@ UnityController.save_unity = (req, res) => {
             }).save((err, newunity) => {
                 if (err) {
                     console.log(err);
-                    req.flash('BAD', 'Ha ocurrido un error al guardar la Unidad','/unity/'+subjectTeacher._id);
+                    req.flash('BAD', 'Ha ocurrido un error al guardar la Unidad', '/unity/' + subjectTeacher._id);
                 } else {
                     console.log(newunity);
-                    req.flash('GOOD', 'Se ha guardado con éxito la Unidad','/unity/'+subjectTeacher._id);
+                    req.flash('GOOD', 'Se ha guardado con éxito la Unidad', '/unity/' + subjectTeacher._id);
                 }
             });
         }
