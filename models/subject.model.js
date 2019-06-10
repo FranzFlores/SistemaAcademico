@@ -9,6 +9,14 @@ const subjectSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "CurriculumCycle"
     },
+    subject_teacher:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "SubjectTeacher"
+    }],
+    subject_period:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "SubjectPeriod"
+    }],
     unites: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Unity"

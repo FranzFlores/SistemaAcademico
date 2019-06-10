@@ -26,8 +26,13 @@ ClassController.save_class = (req, res) => {
             }).save((err, newClass) => {                
                 if (err) req.flash('BAD','Ocurrio un error al guardar la clase','/unity/'+unity.subjectTeacher);
                 else{
-                    console.log(newClass);
-                    req.flash('GOOD','Se ha guardado Correctamente la clase','/unity/'+unity.subjectTeacher);
+                    Unity.findByIdAndUpdate(unity._id, { $push: { classes: newClass._id } }, { new: true }, (err, result) => {
+                        if (err) console.log(err);
+                        else {
+                            console.log(result);
+                            req.flash('GOOD','Se ha guardado Correctamente la clase','/unity/'+unity.subjectTeacher);
+                        }
+                    });                   
                 } 
             });
         }

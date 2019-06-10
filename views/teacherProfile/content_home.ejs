@@ -8,48 +8,48 @@
 
 
 <h3 class="center-align title-form">Unidades</h3>
-<%subjectTeacher.unities.forEach(function(unity){%>
+<% subjectTeacher.unities.forEach(function(unity){ %>
 <div class="row">
     <div class="col-md-6 center-align">
-        <h4 class="title-form"><%=unity.unity.name%></h4>
+        <h4 class="title-form"><%= unity.name %></h4>
     </div>
     <div class="col-md-6 valign-wrapper right-align"><a class=" waves-effect waves-light btn-large"
-            href="/class/new/<%=unity.unity._id%>">Añadir Clase</a></div>
+            href="/class/new/<%=unity._id%>">Añadir Clase</a></div>
 </div>
 <div class="row">
     <div class="col-md-6">
         <p><span class="profile-info">Fecha Inicio</span>
-            <%=unity.unity.start_unity.getDate() + '/' +unity.unity.start_unity.getMonth() + '/' + unity.unity.start_unity.getFullYear()%>
+            <%=unity.start_unity.getDate() + '/' +unity.start_unity.getMonth() + '/' + unity.start_unity.getFullYear()%>
         </p>
     </div>
     <div class="col-md-6">
         <p><span class="profile-info">Fecha Final</span>
-            <%=unity.unity.end_unity.getDate() + '/' +unity.unity.end_unity.getMonth() + '/' + unity.unity.end_unity.getFullYear()%>
+            <%=unity.end_unity.getDate() + '/' + unity.end_unity.getMonth() + '/' + unity.end_unity.getFullYear() %>
         </p>
     </div>
 </div>
-
 <ul class="collapsible">
-    <%unity.classes.forEach(function(classes){%>
-    <li>
-        <div class="collapsible-header"><%=classes.topic%></div>
-        <div class="collapsible-body">
-            <h5 class="title-form center-align">Detalles de la Clase</h5>
-            <div class="row">
-                <div class="col-md-6">
-                    <p><span class="info">Fecha de la Clase</span>
-                        <%=classes.date.getDate() + '/' +classes.date.getMonth() + '/' + classes.date.getFullYear()%>
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <p><span class="info">Paralelo</span>
-                        <%=classes.parallel%>
-                    </p>
+
+    <% unity.classes.forEach(function(clas) { %>
+        <li>
+            <div class="collapsible-header"><%= clas.topic%></div>
+            <div class="collapsible-body">
+                <h5 class="title-form center-align">Detalles de la Clase</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><span class="info">Fecha de la Clase</span>
+                            <%=clas.date.getDate() + '/' +clas.date.getMonth() + '/' + clas.date.getFullYear() %>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><span class="info">Paralelo</span>
+                            <%= clas.parallel %>
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </li>
-    <%});%>
+        </li>
+    <% }) %>
 </ul>
 <%});%>
 

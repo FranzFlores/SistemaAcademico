@@ -10,17 +10,16 @@ var EnrollmentController = {};
 
 EnrollmentController.load_enrollement_view = (req, res) => {
 
-    var cycles = [];
-
     Person.findById(req.params.id, (err, person) => {
         if (err) console.log(err);
         else {
             Student.findOne({ person: person._id }).populate({ path: 'curriculum', select: '_id' }).exec((err, student) => {
                 if (err) console.log(err);
                 else {
-                    CurriculumCycle.find({ curriculum: student.curriculum._id }).populate({ path: 'cycle',select:'name'}).populate({path:'subjects',select:'name'}).exec((err, curriculum_cycles) => {
+                    CurriculumCycle.find({ curriculum: student.curriculum._id }).populate({path:'curriculum', select:'_id',populate:{path:'career',select:'name'}}).populate({ path: 'cycle',select:'name'}).populate({path:'subjects',select:'name'}).exec((err, curriculum_cycles) => {
                         if (err) console.log(err);
-                        else res.render('studentProfile/enrollment', { title: 'Matrícula', cycles:curriculum_cycles });
+                        else 
+                        res.render('studentProfile/enrollment', { title: 'Matrícula', cycles:curriculum_cycles });
                     });
                 }
             });

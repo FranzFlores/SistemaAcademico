@@ -1,10 +1,10 @@
 <%-include('../header')%>
 
-<h3 class="center-align">Materias Disponibles</h3>
+<h3 class="center-align">Carrera de <%= cycles[0].curriculum.career.name%></h3>
 <ul class="collapsible">
     <% cycles.forEach(function(cycle){  %>
     <li>
-        <div class="collapsible-header"><%=cycle.cycle.name%></div>
+        <div class="collapsible-header"><%=cycle.cycle.name%> Ciclo</div>
         <div class="collapsible-body">
             <ul class="collection">
                 <% cycle.subjects.forEach(function(subject){ %>

@@ -2,17 +2,23 @@
 
 var Unity = require('../models/unity.model');
 var SubjectTeacher = require('../models/subject_teacher.model');
+var SubjectPeriod = require('../models/subject_period.model');
 var Class = require('../models/class.model');
 var helpers = require('../lib/helpers');
 var UnityController = {};
 
 UnityController.load_content_home_view = (req, res) => {
-    var unity = [];
+
+    SubjectPeriod.findById(req.params.id).populate({ path: 'subject', select: '_id' }).exec((err,subjectPeriod)=>{
+        if(err) console.log(err);
+        
+    });
+
     SubjectTeacher.findById(req.params.id).populate({ path: 'subject', select: 'name' }).populate({ path: 'unities', populate: { path: 'classes' } }).exec((err, subjectTeacher) => {
         if (err) console.log(err);
         else {
-            res.send( subjectTeacher);
-            //res.render('teacherProfile/content_home', { title: "Materia", subjectTeacher: subjectTeacher });
+         //   res.send(subjectTeacher);
+            res.render('teacherProfile/content_home', { title: "Materia", subjectTeacher: subjectTeacher });
         }
     });
 };
@@ -37,13 +43,18 @@ UnityController.save_unity = (req, res) => {
                 start_unity: start_unity,
                 end_unity: end_unity,
                 subjectTeacher: subjectTeacher._id
-            }).save((err, newunity) => {
+            }).save((err, newUnity) => {
                 if (err) {
                     console.log(err);
                     req.flash('BAD', 'Ha ocurrido un error al guardar la Unidad', '/unity/' + subjectTeacher._id);
                 } else {
-                    console.log(newunity);
-                    req.flash('GOOD', 'Se ha guardado con éxito la Unidad', '/unity/' + subjectTeacher._id);
+                    SubjectTeacher.findByIdAndUpdate(subjectTeacher._id, { $push: { unities: newUnity._id } }, { new: true }, (err, result) => {
+                        if (err) console.log(err);
+                        else {
+                            console.log(result);
+                            req.flash('GOOD', 'Se ha guardado con éxito la Unidad', '/unity/' + subjectTeacher._id);
+                        }
+                    });
                 }
             });
         }

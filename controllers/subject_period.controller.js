@@ -1,12 +1,14 @@
 'use strict'
 
 var PeriodSubject = require('../models/subject_period.model');
+var Subject = require('../models/subject.model');
 var helpers = require('../lib/helpers');
 var PeriodSubjectController = {};
 
 PeriodSubjectController.save_subject_period = (req, res) => {
     var subjects = req.body['subjects[]'];
     if (Array.isArray(subjects)) {
+        var cont = 0;
         subjects.forEach(element => {
             PeriodSubject.findOne({ subject: element }, (err, response) => {
                 if (err) console.log(err);
@@ -16,9 +18,14 @@ PeriodSubjectController.save_subject_period = (req, res) => {
                             subject: element,
                             period: req.body.period
                         }).save((err, periodSubject) => {
-                            if (err) res.send('error');
+                            if (err) console.log(err);
                             else {
-                                console.log(periodSubject);
+                                console.log(cont);
+                                
+                                Subject.findByIdAndUpdate(element,{$push:{subject_period:periodSubject._id}},{new:true},(err,carrer)=>{
+                                    if(err) console.log(err);
+                                    else console.log('ok');
+                                });
                                 if (subjects[subjects.length - 1] == element) {
                                     res.status(200).send('ok');
                                 }
@@ -27,6 +34,7 @@ PeriodSubjectController.save_subject_period = (req, res) => {
                     }else{
                         res.status(200).send('yes');
                     }
+                    cont++;
                 }
             });
         });
